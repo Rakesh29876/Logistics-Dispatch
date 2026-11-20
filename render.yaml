@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: logistics-dispatch-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: DOMO_SUBDOMAIN
+        value: gwcteq-partner
+      - key: DOMO_TOKEN
+        sync: false
+      - key: DOMO_MODEL
+        value: domo.domo_ai.domogpt-large-v2.2:anthropic
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: CORS_ORIGINS
+        value: https://*.vercel.app,http://localhost:5173

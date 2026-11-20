@@ -1,0 +1,37 @@
+# Environments & Secrets
+.env
+.env.*
+*.env
+.env.local
+!.env.example
+!*.env.example
+
+# Python
+backend/.venv/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+*.egg-info/
+
+# Node & Frontend
+node_modules/
+ui/node_modules/
+dist/
+ui/dist/
+.vite/
+
+# Databases & Backups
+*.db
+*.sqlite
+*.sqlite3
+logistics.db
+backend/logistics.db
+
+# Operating System & Logs
+*.log
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
