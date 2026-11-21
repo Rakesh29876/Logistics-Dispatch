@@ -25,28 +25,164 @@ const CARRIER_COLORS = {
   DEFAULT: { cab: 0x334155, trailer: 0x0ea5e9, text: '#ffffff', name: 'Logistics Fleet' },
 }
 
-/* ==================== PROCEDURAL TEXTURE GENERATORS ==================== */
+/* ==================== PROCEDURAL HIGH-RESOLUTION TEXTURE GENERATORS ==================== */
 
-// 1. Corrugated Industrial Siding Material (Vertical Metal Ribs)
+// 1. High-Precision Architectural Metal Cladding (Kingspan / Tata BlueScope Profile with PBR Ribs & Highlights)
 function createCorrugatedTexture(baseHex = '#1e293b', ribHex = '#334155') {
   const canvas = document.createElement('canvas')
-  canvas.width = 128
-  canvas.height = 128
+  canvas.width = 256
+  canvas.height = 256
   const ctx = canvas.getContext('2d')
   ctx.fillStyle = baseHex
-  ctx.fillRect(0, 0, 128, 128)
-  ctx.fillStyle = ribHex
-  for (let x = 0; x < 128; x += 16) {
-    ctx.fillRect(x, 0, 6, 128)
+  ctx.fillRect(0, 0, 256, 256)
+
+  // Architectural composite micro-ribs with specular highlight and ambient crevice
+  for (let x = 0; x < 256; x += 16) {
+    // Crevice shadow
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.35)'
+    ctx.fillRect(x, 0, 2, 256)
+    // Panel flat face
+    ctx.fillStyle = ribHex
+    ctx.fillRect(x + 2, 0, 10, 256)
+    // Specular highlight edge
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.18)'
+    ctx.fillRect(x + 2, 0, 1.5, 256)
+    // Fastener rivets every 64px
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)'
+    for (let y = 32; y < 256; y += 64) {
+      ctx.fillRect(x + 6, y, 2, 2)
+    }
   }
   const tex = new THREE.CanvasTexture(canvas)
   tex.wrapS = THREE.RepeatWrapping
   tex.wrapT = THREE.RepeatWrapping
-  tex.repeat.set(4, 2)
+  tex.repeat.set(6, 3)
   return tex
 }
 
-// 2. Yellow & Black Hazard Safety Stripes
+// 2. Heavy Industrial Concrete Yard Floor (Expansion Joint Bays, Surface Grain & Tonal Variation)
+function createConcreteYardTexture(isDark = false) {
+  const canvas = document.createElement('canvas')
+  canvas.width = 512
+  canvas.height = 512
+  const ctx = canvas.getContext('2d')
+
+  // Base concrete tone
+  ctx.fillStyle = isDark ? '#111827' : '#e2e8f0'
+  ctx.fillRect(0, 0, 512, 512)
+
+  // Subtle concrete aggregate noise
+  const imgData = ctx.getImageData(0, 0, 512, 512)
+  const d = imgData.data
+  for (let i = 0; i < d.length; i += 4) {
+    const noise = (Math.random() - 0.5) * 14
+    d[i] = Math.min(255, Math.max(0, d[i] + noise))
+    d[i + 1] = Math.min(255, Math.max(0, d[i + 1] + noise))
+    d[i + 2] = Math.min(255, Math.max(0, d[i + 2] + noise))
+  }
+  ctx.putImageData(imgData, 0, 0)
+
+  // 64px expansion joint grid lines (6m x 6m scale)
+  ctx.strokeStyle = isDark ? 'rgba(0, 0, 0, 0.65)' : 'rgba(71, 85, 105, 0.45)'
+  ctx.lineWidth = 2
+  for (let p = 0; p <= 512; p += 64) {
+    ctx.beginPath()
+    ctx.moveTo(p, 0)
+    ctx.lineTo(p, 512)
+    ctx.stroke()
+    ctx.beginPath()
+    ctx.moveTo(0, p)
+    ctx.lineTo(512, p)
+    ctx.stroke()
+  }
+
+  const tex = new THREE.CanvasTexture(canvas)
+  tex.wrapS = THREE.RepeatWrapping
+  tex.wrapT = THREE.RepeatWrapping
+  tex.repeat.set(12, 8)
+  return tex
+}
+
+// 3. Dense Asphalt Highway & Internal Corridor (Aggregates, Painted Lanes & Wear)
+function createAsphaltRoadTexture(isDark = false) {
+  const canvas = document.createElement('canvas')
+  canvas.width = 512
+  canvas.height = 256
+  const ctx = canvas.getContext('2d')
+
+  // Deep dark asphalt matrix
+  ctx.fillStyle = isDark ? '#090d16' : '#1e293b'
+  ctx.fillRect(0, 0, 512, 256)
+
+  // Fine aggregate texture
+  const imgData = ctx.getImageData(0, 0, 512, 256)
+  const d = imgData.data
+  for (let i = 0; i < d.length; i += 4) {
+    const speckle = (Math.random() - 0.5) * 18
+    d[i] = Math.min(255, Math.max(0, d[i] + speckle))
+    d[i + 1] = Math.min(255, Math.max(0, d[i + 1] + speckle))
+    d[i + 2] = Math.min(255, Math.max(0, d[i + 2] + speckle))
+  }
+  ctx.putImageData(imgData, 0, 0)
+
+  // White edge safety lane lines
+  ctx.fillStyle = '#f8fafc'
+  ctx.fillRect(0, 16, 512, 5)
+  ctx.fillRect(0, 235, 512, 5)
+
+  // Double yellow centerline highway division
+  ctx.fillStyle = '#eab308'
+  ctx.fillRect(0, 122, 512, 4)
+  ctx.fillRect(0, 130, 512, 4)
+
+  const tex = new THREE.CanvasTexture(canvas)
+  tex.wrapS = THREE.RepeatWrapping
+  tex.wrapT = THREE.RepeatWrapping
+  tex.repeat.set(8, 1)
+  return tex
+}
+
+// 4. Modern Photovoltaic Solar Panel Texture
+function createSolarPanelTexture(isDark = false) {
+  const canvas = document.createElement('canvas')
+  canvas.width = 256
+  canvas.height = 256
+  const ctx = canvas.getContext('2d')
+
+  ctx.fillStyle = isDark ? '#0b132b' : '#1e3a8a'
+  ctx.fillRect(0, 0, 256, 256)
+
+  // Photovoltaic silicon cell grid with silver busbars
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)'
+  ctx.lineWidth = 1
+  for (let x = 0; x <= 256; x += 42) {
+    ctx.beginPath()
+    ctx.moveTo(x, 0)
+    ctx.lineTo(x, 256)
+    ctx.stroke()
+  }
+  for (let y = 0; y <= 256; y += 42) {
+    ctx.beginPath()
+    ctx.moveTo(0, y)
+    ctx.lineTo(256, y)
+    ctx.stroke()
+  }
+
+  // Thin silver grid fingers
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)'
+  ctx.lineWidth = 0.5
+  for (let y = 0; y <= 256; y += 6) {
+    ctx.beginPath()
+    ctx.moveTo(0, y)
+    ctx.lineTo(256, y)
+    ctx.stroke()
+  }
+
+  const tex = new THREE.CanvasTexture(canvas)
+  return tex
+}
+
+// 5. Yellow & Black Hazard Safety Stripes
 function createHazardTexture() {
   const canvas = document.createElement('canvas')
   canvas.width = 128
@@ -1361,37 +1497,203 @@ function buildHighBayPalletRacking({ width = 24.0, depth = 2.4, height = 7.5, ti
   return group
 }
 
-/* ==================== LANDSCAPE TREE & GREENERY CLUSTERS ==================== */
+/* ==================== REALISTIC LANDSCAPE TREES & GREENERY BOULEVARD ==================== */
 function buildLandscapeTree(x, z, scale = 1.0) {
   const group = new THREE.Group()
 
-  const matTrunk = new THREE.MeshStandardMaterial({ color: 0x451a03, roughness: 0.95 })
-  const matFoliage1 = new THREE.MeshStandardMaterial({ color: 0x15803d, roughness: 0.82 })
-  const matFoliage2 = new THREE.MeshStandardMaterial({ color: 0x166534, roughness: 0.85 })
-  const matFoliage3 = new THREE.MeshStandardMaterial({ color: 0x22c55e, roughness: 0.80 })
+  const matBark = new THREE.MeshStandardMaterial({ color: 0x3e2723, roughness: 0.96, metalness: 0.04 })
+  const matFoliageDark = new THREE.MeshStandardMaterial({ color: 0x14532d, roughness: 0.85 })
+  const matFoliageMid = new THREE.MeshStandardMaterial({ color: 0x166534, roughness: 0.82 })
+  const matFoliageLight = new THREE.MeshStandardMaterial({ color: 0x22c55e, roughness: 0.78 })
 
-  // Trunk
-  const trunkH = 1.8 * scale
-  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.18 * scale, 0.28 * scale, trunkH, 8), matTrunk)
+  // Tapered organic trunk with natural root flare
+  const trunkH = 2.4 * scale
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.18 * scale, 0.36 * scale, trunkH, 10), matBark)
   trunk.position.set(0, trunkH / 2, 0)
   trunk.castShadow = true
   group.add(trunk)
 
-  // 3 Stacked Foliage Spheres / Cones
-  const f1 = new THREE.Mesh(new THREE.ConeGeometry(1.6 * scale, 2.2 * scale, 8), matFoliage1)
-  f1.position.set(0, trunkH + 0.8 * scale, 0)
-  f1.castShadow = true
+  // Primary natural limbs / branches
+  const b1 = new THREE.Mesh(new THREE.CylinderGeometry(0.08 * scale, 0.15 * scale, 1.2 * scale, 7), matBark)
+  b1.position.set(0.24 * scale, trunkH * 0.75, 0.14 * scale)
+  b1.rotation.set(0.35, 0.4, -0.45)
+  const b2 = new THREE.Mesh(new THREE.CylinderGeometry(0.07 * scale, 0.13 * scale, 1.1 * scale, 7), matBark)
+  b2.position.set(-0.24 * scale, trunkH * 0.8, -0.14 * scale)
+  b2.rotation.set(-0.3, -0.4, 0.5)
+  group.add(b1, b2)
 
-  const f2 = new THREE.Mesh(new THREE.ConeGeometry(1.3 * scale, 1.8 * scale, 8), matFoliage2)
-  f2.position.set(0, trunkH + 1.8 * scale, 0)
-  f2.castShadow = true
+  // Clustered organic foliage masses (Dodecahedrons with natural multi-tone leaf shading)
+  const foliageGeo = new THREE.DodecahedronGeometry(1.0 * scale, 1)
+  const clusters = [
+    { pos: [0, trunkH + 1.2 * scale, 0], scale: [1.6, 1.35, 1.6], mat: matFoliageMid },
+    { pos: [-0.6 * scale, trunkH + 0.8 * scale, 0.4 * scale], scale: [1.15, 0.95, 1.15], mat: matFoliageDark },
+    { pos: [0.7 * scale, trunkH + 0.9 * scale, -0.3 * scale], scale: [1.2, 1.05, 1.15], mat: matFoliageLight },
+    { pos: [0.1 * scale, trunkH + 1.85 * scale, -0.2 * scale], scale: [1.25, 1.1, 1.2], mat: matFoliageLight },
+    { pos: [-0.35 * scale, trunkH + 1.4 * scale, -0.55 * scale], scale: [1.05, 0.9, 1.05], mat: matFoliageDark },
+    { pos: [0.4 * scale, trunkH + 1.45 * scale, 0.5 * scale], scale: [1.1, 0.95, 1.0], mat: matFoliageMid },
+  ]
+  clusters.forEach(({ pos, scale: s, mat }) => {
+    const fol = new THREE.Mesh(foliageGeo, mat)
+    fol.position.set(...pos)
+    fol.scale.set(...s)
+    fol.castShadow = true
+    fol.receiveShadow = true
+    group.add(fol)
+  })
 
-  const f3 = new THREE.Mesh(new THREE.ConeGeometry(0.9 * scale, 1.4 * scale, 8), matFoliage3)
-  f3.position.set(0, trunkH + 2.6 * scale, 0)
-  f3.castShadow = true
+  // Concrete Planter Curb Ring & Soil Base
+  const planterMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.88 })
+  const planter = new THREE.Mesh(new THREE.CylinderGeometry(1.2 * scale, 1.28 * scale, 0.22, 16, 1, true), planterMat)
+  planter.position.set(0, 0.11, 0)
+  const soil = new THREE.Mesh(new THREE.CylinderGeometry(1.18 * scale, 1.18 * scale, 0.2, 16), matBark)
+  soil.position.set(0, 0.1, 0)
+  soil.receiveShadow = true
+  group.add(planter, soil)
 
-  group.add(f1, f2, f3)
   group.position.set(x, 0.08, z)
+  return group
+}
+
+/* ==================== REALISTIC HIGH-MAST LIGHTING TOWERS ==================== */
+function buildRealisticHighMastTower(x, z) {
+  const group = new THREE.Group()
+  const matGalvanized = new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.85, roughness: 0.28 })
+  const matFixture = new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.7, roughness: 0.4 })
+  const matLens = new THREE.MeshBasicMaterial({ color: 0xfef08a })
+  const matRedStrobe = new THREE.MeshBasicMaterial({ color: 0xef4444 })
+
+  // Concrete pedestal footing with anchor bolts
+  const footing = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 1.1, 0.5, 12), new THREE.MeshStandardMaterial({ color: 0x64748b, roughness: 0.9 }))
+  footing.position.set(0, 0.25, 0)
+  footing.receiveShadow = true
+  group.add(footing)
+
+  // 16m Tapered Polygonal Steel Mast
+  const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.48, 16.0, 8), matGalvanized)
+  mast.position.set(0, 8.25, 0)
+  mast.castShadow = true
+  group.add(mast)
+
+  // Climbing ladder with safety cages up the shaft
+  const ladder = new THREE.Mesh(new THREE.BoxGeometry(0.22, 15.5, 0.08), matGalvanized)
+  ladder.position.set(0, 8.1, 0.38)
+  group.add(ladder)
+
+  // Circular / Octagonal Luminaire Service Head Frame
+  const headRing = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.3, 0.18, 12, 1, true), matGalvanized)
+  headRing.position.set(0, 16.2, 0)
+  const headSpokes = new THREE.Mesh(new THREE.BoxGeometry(2.5, 0.08, 0.12), matGalvanized)
+  headSpokes.position.set(0, 16.2, 0)
+  const headSpokesCross = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.08, 2.5), matGalvanized)
+  headSpokesCross.position.set(0, 16.2, 0)
+  group.add(headRing, headSpokes, headSpokesCross)
+
+  // 6 Directional High-Output LED Floodlight Projector Heads
+  for (let a = 0; a < 6; a++) {
+    const angle = (a * Math.PI) / 3
+    const fx = Math.cos(angle) * 1.15
+    const fz = Math.sin(angle) * 1.15
+
+    const floodHousing = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.32, 0.38), matFixture)
+    floodHousing.position.set(fx, 16.05, fz)
+    floodHousing.rotation.y = -angle
+    floodHousing.rotation.x = 0.35 // Tilted 20 degrees down toward yard
+    floodHousing.castShadow = true
+
+    const floodLens = new THREE.Mesh(new THREE.PlaneGeometry(0.44, 0.28), matLens)
+    floodLens.position.set(0, -0.01, 0.2)
+    floodHousing.add(floodLens)
+    group.add(floodHousing)
+  }
+
+  // Dual Red Aviation Safety Obstruction Beacons on top spire
+  const spire = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.08, 1.2, 8), matGalvanized)
+  spire.position.set(0, 16.9, 0)
+  const beacon = new THREE.Mesh(new THREE.SphereGeometry(0.1, 10, 10), matRedStrobe)
+  beacon.position.set(0, 17.5, 0)
+  group.add(spire, beacon)
+
+  group.position.set(x, 0.08, z)
+  return group
+}
+
+/* ==================== REALISTIC ROOFTOP INDUSTRIAL HVAC CHILLERS ==================== */
+function buildRealisticHVACChiller(width = 4.2, depth = 2.6, height = 2.0) {
+  const group = new THREE.Group()
+  const matChillerBody = new THREE.MeshStandardMaterial({ color: 0xcfd8dc, metalness: 0.55, roughness: 0.35 })
+  const matLouver = new THREE.MeshStandardMaterial({ color: 0x37474f, metalness: 0.7, roughness: 0.4 })
+  const matFanCowl = new THREE.MeshStandardMaterial({ color: 0x263238, metalness: 0.8, roughness: 0.3 })
+  const matFanBlades = new THREE.MeshBasicMaterial({ color: 0x111827 })
+
+  // Steel vibration isolator dunnage rails
+  const dunnageMat = new THREE.MeshStandardMaterial({ color: 0x455a64, metalness: 0.8, roughness: 0.3 })
+  const rail1 = new THREE.Mesh(new THREE.BoxGeometry(width + 0.4, 0.25, 0.25), dunnageMat)
+  rail1.position.set(0, 0.12, depth / 2 - 0.2)
+  const rail2 = new THREE.Mesh(new THREE.BoxGeometry(width + 0.4, 0.25, 0.25), dunnageMat)
+  rail2.position.set(0, 0.12, -depth / 2 + 0.2)
+  group.add(rail1, rail2)
+
+  // Main Chiller Cabinet Box
+  const body = new THREE.Mesh(new THREE.BoxGeometry(width, height - 0.4, depth), matChillerBody)
+  body.position.set(0, (height - 0.4) / 2 + 0.25, 0)
+  body.castShadow = true
+  body.receiveShadow = true
+  group.add(body)
+
+  // Side Ventilation Louvers
+  const louverFront = new THREE.Mesh(new THREE.BoxGeometry(width - 0.6, height - 0.9, 0.05), matLouver)
+  louverFront.position.set(0, (height - 0.4) / 2 + 0.25, depth / 2 + 0.03)
+  const louverBack = new THREE.Mesh(new THREE.BoxGeometry(width - 0.6, height - 0.9, 0.05), matLouver)
+  louverBack.position.set(0, (height - 0.4) / 2 + 0.25, -depth / 2 - 0.03)
+  group.add(louverFront, louverBack)
+
+  // Top Spun Dual Cooling Fan Cowls
+  const fanSpacing = width / 2.5
+  ;[-fanSpacing / 2, fanSpacing / 2].forEach(fx => {
+    const cowl = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.95, 0.4, 16, 1, true), matFanCowl)
+    cowl.position.set(fx, height + 0.05, 0)
+    const grille = new THREE.Mesh(new THREE.CircleGeometry(0.84, 16), matFanBlades)
+    grille.rotation.x = -Math.PI / 2
+    grille.position.set(fx, height + 0.24, 0)
+    group.add(cowl, grille)
+  })
+
+  return group
+}
+
+/* ==================== PHOTOVOLTAIC ROOFTOP SOLAR PANEL ARRAYS ==================== */
+function buildPhotovoltaicSolarArray(numRows = 4, panelsPerRow = 8, isDark = false) {
+  const group = new THREE.Group()
+  const matFrame = new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.9, roughness: 0.25 })
+  const solarTex = createSolarPanelTexture(isDark)
+  const matCell = new THREE.MeshStandardMaterial({
+    map: solarTex,
+    color: isDark ? 0x0f172a : 0x1e3a8a,
+    roughness: 0.2,
+    metalness: 0.8,
+  })
+
+  const pWidth = 2.4
+  const pLength = 1.4
+
+  for (let r = 0; r < numRows; r++) {
+    const rz = (r - (numRows - 1) / 2) * 2.2
+    for (let c = 0; c < panelsPerRow; c++) {
+      const cx = (c - (panelsPerRow - 1) / 2) * 2.6
+
+      // Panel module tilted 18 degrees facing south toward sunlight
+      const panel = new THREE.Mesh(new THREE.BoxGeometry(pWidth, 0.05, pLength), matCell)
+      panel.position.set(cx, 0.4, rz)
+      panel.rotation.x = 0.31 // 18 degrees tilt
+      panel.castShadow = true
+
+      // Aluminum mounting leg
+      const leg = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.45, 0.06), matFrame)
+      leg.position.set(cx, 0.2, rz - 0.5)
+
+      group.add(panel, leg)
+    }
+  }
 
   return group
 }
@@ -1822,15 +2124,15 @@ function buildIndustrialSiloComplex(isDark = false) {
   const group = new THREE.Group()
 
   const matSilo = new THREE.MeshStandardMaterial({
-    color: isDark ? 0x94a3b8 : 0xe2e8f0,
-    metalness: 0.85,
+    color: isDark ? 0xb0bec5 : 0xdde3ea,
+    metalness: 0.92,
     roughness: 0.22,
   })
-  const matSteel = new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.7, roughness: 0.3 })
-  const matSafetyYellow = new THREE.MeshStandardMaterial({ color: 0xfacc15, roughness: 0.4 })
-  const matBluePipe = new THREE.MeshStandardMaterial({ color: 0x0284c7, metalness: 0.6 })
-  const matYellowPipe = new THREE.MeshStandardMaterial({ color: 0xeab308, metalness: 0.6 })
-  const matTealPipe = new THREE.MeshStandardMaterial({ color: 0x0d9488, metalness: 0.6 })
+  const matSteel = new THREE.MeshStandardMaterial({ color: 0x475569, metalness: 0.86, roughness: 0.28 })
+  const matSafetyYellow = new THREE.MeshStandardMaterial({ color: 0xeab308, roughness: 0.5, metalness: 0.2 })
+  const matBluePipe = new THREE.MeshStandardMaterial({ color: 0x0284c7, metalness: 0.7, roughness: 0.3 })
+  const matYellowPipe = new THREE.MeshStandardMaterial({ color: 0xca8a04, metalness: 0.7, roughness: 0.3 })
+  const matTealPipe = new THREE.MeshStandardMaterial({ color: 0x0d9488, metalness: 0.7, roughness: 0.3 })
 
   // Concrete Foundation Slab (24m x 14m)
   const pad = new THREE.Mesh(new THREE.BoxGeometry(24, 0.4, 14), new THREE.MeshStandardMaterial({ color: isDark ? 0x1e293b : 0x94a3b8, roughness: 0.85 }))
@@ -1845,36 +2147,45 @@ function buildIndustrialSiloComplex(isDark = false) {
 
   siloPositions.forEach((sx, idx) => {
     // Silo Cylinder Body
-    const cyl = new THREE.Mesh(new THREE.CylinderGeometry(siloRadius, siloRadius, siloHeight, 24), matSilo)
+    const cyl = new THREE.Mesh(new THREE.CylinderGeometry(siloRadius, siloRadius, siloHeight, 32), matSilo)
     cyl.position.set(sx, siloHeight / 2 + 1.6, 2.0)
     cyl.castShadow = true
     cyl.receiveShadow = true
 
-    // Conical Top Cap
-    const cap = new THREE.Mesh(new THREE.ConeGeometry(siloRadius + 0.1, 1.8, 24), matSteel)
+    // Circumferential Steel Stiffener Rings
+    ;[0.28, 0.52, 0.76].forEach(f => {
+      const ring = new THREE.Mesh(new THREE.CylinderGeometry(siloRadius + 0.04, siloRadius + 0.04, 0.15, 32, 1, true), matSteel)
+      ring.position.set(sx, siloHeight * f + 1.6, 2.0)
+      group.add(ring)
+    })
+
+    // Conical Top Cap with Relief Vent
+    const cap = new THREE.Mesh(new THREE.ConeGeometry(siloRadius + 0.08, 1.8, 32), matSteel)
     cap.position.set(sx, siloHeight + 2.5, 2.0)
+    const vent = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.6, 12), matSteel)
+    vent.position.set(sx, siloHeight + 3.6, 2.0)
 
     // Conical Bottom Discharge Hopper
-    const hopper = new THREE.Mesh(new THREE.ConeGeometry(siloRadius, 1.6, 16), matSteel)
+    const hopper = new THREE.Mesh(new THREE.ConeGeometry(siloRadius, 1.6, 20), matSteel)
     hopper.rotation.x = Math.PI
     hopper.position.set(sx, 0.8, 2.0)
 
-    // 4 Support Legs
+    // 4 Heavy Structural Support Legs
     ;[-1.5, 1.5].forEach(lx => {
       ;[-1.5, 1.5].forEach(lz => {
-        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.2, 1.6, 8), matSteel)
+        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.22, 1.6, 8), matSteel)
         leg.position.set(sx + lx, 0.8, 2.0 + lz)
         group.add(leg)
       })
     })
 
     // Spiral / Vertical Access Ladder with Safety Cages
-    const ladder = new THREE.Mesh(new THREE.BoxGeometry(0.4, siloHeight, 0.1), matSafetyYellow)
-    ladder.position.set(sx, siloHeight / 2 + 1.6, 2.0 + siloRadius + 0.12)
-    group.add(cyl, cap, hopper, ladder)
+    const ladder = new THREE.Mesh(new THREE.BoxGeometry(0.35, siloHeight, 0.08), matSafetyYellow)
+    ladder.position.set(sx, siloHeight / 2 + 1.6, 2.0 + siloRadius + 0.1)
+    group.add(cyl, cap, vent, hopper, ladder)
 
     // Stencil Silo Number
-    const sTag = makeSignBoard(`SILO 0${idx + 1}`, 'RESIN / POLYMER', '#090d16', '#38bdf8', 2.4, 0.8)
+    const sTag = makeSignBoard(`SILO 0${idx + 1}`, 'RAW BULK POLYMER', '#090d16', '#38bdf8', 2.4, 0.8)
     sTag.position.set(sx, 8.5, 2.0 + siloRadius + 0.15)
     group.add(sTag)
   })
@@ -2356,11 +2667,11 @@ export default function DigitalTwin3D({ twinData, theme, userRole }) {
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' })
     renderer.setSize(width, height)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25))
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
     renderer.shadowMap.enabled = true
-    renderer.shadowMap.type = THREE.PCFShadowMap
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap
     renderer.toneMapping = THREE.ACESFilmicToneMapping
-    renderer.toneMappingExposure = 1.05
+    renderer.toneMappingExposure = isDark ? 1.14 : 1.18
 
     container.innerHTML = ''
     container.appendChild(renderer.domElement)
@@ -2373,21 +2684,23 @@ export default function DigitalTwin3D({ twinData, theme, userRole }) {
     controls.maxDistance = 280
     controls.target.set(0, 2, -10)
 
-    // Lighting Rig
-    const hemiLight = new THREE.HemisphereLight(0xe0f2fe, isDark ? 0x0f172a : 0x64748b, isDark ? 0.65 : 0.85)
+    // Cinematic Industrial Lighting Rig (Natural Sky Dome + Warm Radiant Sun)
+    const hemiLight = new THREE.HemisphereLight(0xbae6fd, isDark ? 0x0f172a : 0x78716c, isDark ? 0.75 : 0.95)
     scene.add(hemiLight)
 
-    const sunLight = new THREE.DirectionalLight(0xffffff, isDark ? 1.1 : 1.25)
-    sunLight.position.set(45, 65, 35)
+    const sunLight = new THREE.DirectionalLight(0xfffbeb, isDark ? 1.25 : 1.45)
+    sunLight.position.set(55, 75, 45)
     sunLight.castShadow = true
-    sunLight.shadow.mapSize.width = 1024
-    sunLight.shadow.mapSize.height = 1024
+    sunLight.shadow.mapSize.width = 2048
+    sunLight.shadow.mapSize.height = 2048
     sunLight.shadow.camera.near = 5
-    sunLight.shadow.camera.far = 200
-    sunLight.shadow.camera.left = -90
-    sunLight.shadow.camera.right = 90
-    sunLight.shadow.camera.top = 75
-    sunLight.shadow.camera.bottom = -75
+    sunLight.shadow.camera.far = 240
+    sunLight.shadow.camera.left = -95
+    sunLight.shadow.camera.right = 95
+    sunLight.shadow.camera.top = 80
+    sunLight.shadow.camera.bottom = -80
+    sunLight.shadow.bias = -0.0003
+    sunLight.shadow.normalBias = 0.02
     scene.add(sunLight)
 
     // High-Mast Night Lights Array across entire expanded campus
@@ -2419,27 +2732,28 @@ export default function DigitalTwin3D({ twinData, theme, userRole }) {
     outerTerrain.receiveShadow = true
     scene.add(outerTerrain)
 
-    // 2. Heavy Industrial Concrete Yard Floor (190m x 130m - covers all units, rear plant B, silos & docks!)
+    // 2. Heavy Industrial Concrete Yard Floor (190m x 130m with expansion joints & realistic PBR texture)
+    const concreteYardTex = createConcreteYardTexture(isDark)
     const yardPavement = new THREE.Mesh(
       new THREE.BoxGeometry(190, 0.16, 130),
-      new THREE.MeshStandardMaterial({ color: isDark ? 0x0e1726 : 0xdde3ea, roughness: 0.82 })
+      new THREE.MeshStandardMaterial({
+        map: concreteYardTex,
+        color: isDark ? 0x94a3b8 : 0xffffff,
+        roughness: 0.76,
+        metalness: 0.08,
+      })
     )
     yardPavement.position.set(0, 0.08, -14.0)
     yardPavement.receiveShadow = true
     scene.add(yardPavement)
 
-    // High-Mast Yard Floodlight Towers in Expanded Campus Corners & Rear Yards
-    const mastMat = new THREE.MeshStandardMaterial({ color: 0x475569, metalness: 0.8, roughness: 0.3 })
+    // High-Mast Yard Floodlight Towers (Galvanized Steel Tapered Masts + 6 Directional LED Projectors + Red Aviation Beacons)
     ;[
       [-52, -36], [52, -36], [-52, 14], [52, 14],
       [0, -36], [-18, 14], [18, 14]
     ].forEach(([mx, mz]) => {
-      const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.55, 16, 8), mastMat)
-      mast.position.set(mx, 8.0, mz)
-      mast.castShadow = true
-      const head = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.45, 1.2), new THREE.MeshStandardMaterial({ color: 0xfacc15 }))
-      head.position.set(mx, 16.2, mz)
-      scene.add(mast, head)
+      const mastTower = buildRealisticHighMastTower(mx, mz)
+      scene.add(mastTower)
     })
 
     const pickables = []
@@ -2491,6 +2805,13 @@ export default function DigitalTwin3D({ twinData, theme, userRole }) {
       skylightGlass.position.set(rx + 4.9, 8.9, -12.0)
       scene.add(roofPeak, skylightGlass)
     }
+
+    // Industrial Rooftop HVAC Chillers & Ventilation Handling on Unit A
+    const unitAChiller1 = buildRealisticHVACChiller(3.8, 2.2, 1.6)
+    unitAChiller1.position.set(-14.0, 8.2, -12.0)
+    const unitAChiller2 = buildRealisticHVACChiller(3.8, 2.2, 1.6)
+    unitAChiller2.position.set(-26.0, 8.2, -12.0)
+    scene.add(unitAChiller1, unitAChiller2)
 
     // Heavy Industrial Chimneys with Red/White Bands & Steam
     const steamPlumes = []
@@ -2661,6 +2982,18 @@ export default function DigitalTwin3D({ twinData, theme, userRole }) {
     // Translucent Central Skylight Ribbon
     const whSkylight = new THREE.Mesh(new THREE.BoxGeometry(24.0, 0.2, 3.2), new THREE.MeshBasicMaterial({ color: 0xbae6fd, transparent: true, opacity: 0.45 }))
     whSkylight.position.set(13.0, 9.96, -12.4)
+
+    // Photovoltaic Rooftop Solar Array (Modern Sustainable Factory)
+    const whSolar = buildPhotovoltaicSolarArray(3, 7, isDark)
+    whSolar.position.set(13.0, 10.0, -16.2)
+    scene.add(whSolar)
+
+    // Rooftop Industrial HVAC Chillers with Dual Cooling Fans
+    const whChiller1 = buildRealisticHVACChiller(4.2, 2.4, 1.8)
+    whChiller1.position.set(4.5, 9.95, -8.6)
+    const whChiller2 = buildRealisticHVACChiller(4.2, 2.4, 1.8)
+    whChiller2.position.set(21.5, 9.95, -8.6)
+    scene.add(whChiller1, whChiller2)
 
     // 3. Front Wall Above Dock Doors (Upper Clerestory Facade)
     const whFrontUpper = new THREE.Mesh(new THREE.BoxGeometry(27.6, 4.4, 0.35), matWhUpper)
@@ -3224,13 +3557,29 @@ export default function DigitalTwin3D({ twinData, theme, userRole }) {
     scene.add(wbKiosk, wbKioskRoof, wbWindow, wbScreen, wbSign)
 
     // ==================== 4. ASPHALT ROADWAY, 360° RING ROADS & HIGHWAY ====================
-    const matAsphalt = new THREE.MeshStandardMaterial({ color: isDark ? 0x172133 : 0x334155, roughness: 0.9 })
+    const roadAsphaltTex = createAsphaltRoadTexture(isDark)
+    const matAsphalt = new THREE.MeshStandardMaterial({
+      map: roadAsphaltTex,
+      color: isDark ? 0x94a3b8 : 0xffffff,
+      roughness: 0.86,
+      metalness: 0.05,
+    })
 
     // Front Internal Ring Road (Connecting Gate 01, Weighbridge WB-01, Staging Yard, Docks)
     const internalRoad = new THREE.Mesh(new THREE.BoxGeometry(140, 0.1, 6.0), matAsphalt)
     internalRoad.position.set(0, 0.12, 6.5)
     internalRoad.receiveShadow = true
     scene.add(internalRoad)
+
+    // Speed Bumps & Safety Calming Bars at Gate 01 & Weighbridge
+    const matSpeedBump = new THREE.MeshStandardMaterial({ map: createHazardTexture(), roughness: 0.8 })
+    ;[-32.0, -16.5, 4.0].forEach(bx => {
+      const bump = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 5.8, 12), matSpeedBump)
+      bump.rotation.x = Math.PI / 2
+      bump.position.set(bx, 0.18, 6.5)
+      bump.castShadow = true
+      scene.add(bump)
+    })
 
     // Rear Logistics Ring Expressway (Width 8.0m, connecting East and West loops behind Plant B & Silos)
     const rearExpressway = new THREE.Mesh(new THREE.BoxGeometry(140, 0.1, 8.0), matAsphalt)
