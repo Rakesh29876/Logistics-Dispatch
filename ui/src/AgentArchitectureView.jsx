@@ -1795,17 +1795,17 @@ export default function AgentArchitectureView({
         </div>
       </div>
 
-      {/* ================= ROW 2: BOTTOM SEGMENT - INFORMATION DETAILS (55% WIDTH) & STAGING HEATMAP (45% WIDTH) ================= */}
+      {/* ================= ROW 2: BOTTOM SEGMENT - INFORMATION DETAILS (50% WIDTH) & STAGING HEATMAP (50% WIDTH) ================= */}
       <div
         style={{
           minHeight: '310px',
           display: 'grid',
-          gridTemplateColumns: 'minmax(0, 5.5fr) minmax(0, 4.5fr)',
+          gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)',
           gap: '8px',
           alignItems: 'stretch',
         }}
       >
-        {/* ================= ROW 2, COL 1: DYNAMIC STAGE, ITEM & PROBLEM DETAILS (INFORMATION TAB - 55% WIDTH, NOT CLUMSY) ================= */}
+        {/* ================= ROW 2, COL 1: DYNAMIC STAGE, ITEM & PROBLEM DETAILS (INFORMATION TAB - 50% WIDTH) ================= */}
         <div
           className="arch-card"
           style={{
@@ -1819,22 +1819,22 @@ export default function AgentArchitectureView({
             display: 'flex',
             flexDirection: 'column',
             height: '100%',
-            minHeight: 0,
+            minHeight: '310px',
             overflow: 'hidden',
             boxSizing: 'border-box',
             transition: 'border 0.2s ease',
           }}
         >
           {/* Header with Switcher Tabs: Stage / Item / Problem */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'nowrap', gap: '8px', marginBottom: '5px', flexShrink: 0, height: '26px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', rowGap: '6px', columnGap: '8px', marginBottom: '5px', flexShrink: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0, flexShrink: 1 }}>
               <activeInspectData.icon size={15} color={activeInspectData.iconColor} style={{ flexShrink: 0 }} />
-              <h3 style={{ margin: 0, fontSize: '12.8px', fontWeight: 800, color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              <h3 style={{ margin: 0, fontSize: '12.5px', fontWeight: 800, color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {activeInspectData.title}
               </h3>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0, flexWrap: 'nowrap' }}>
               <div style={{ display: 'inline-flex', background: 'var(--bg-subtle, #f1f5f9)', borderRadius: '16px', padding: '2px', border: '1px solid var(--border-color, #e2e8f0)', gap: '2px' }}>
                 <button
                   type="button"
@@ -1843,12 +1843,13 @@ export default function AgentArchitectureView({
                     padding: '2px 8px',
                     borderRadius: '12px',
                     border: 'none',
-                    fontSize: '9.5px',
+                    fontSize: '9.2px',
                     fontWeight: 700,
                     cursor: 'pointer',
                     background: inspectMode === 'stage' ? '#7c3aed' : 'transparent',
                     color: inspectMode === 'stage' ? '#ffffff' : 'var(--text-secondary)',
                     transition: 'all 0.15s ease',
+                    whiteSpace: 'nowrap',
                   }}
                   title="View Architecture Pipeline Stage Details"
                 >
@@ -1862,12 +1863,13 @@ export default function AgentArchitectureView({
                       padding: '2px 8px',
                       borderRadius: '12px',
                       border: 'none',
-                      fontSize: '9.5px',
+                      fontSize: '9.2px',
                       fontWeight: 700,
                       cursor: 'pointer',
                       background: inspectMode === 'item' ? '#2563eb' : 'transparent',
                       color: inspectMode === 'item' ? '#ffffff' : 'var(--text-secondary)',
                       transition: 'all 0.15s ease',
+                      whiteSpace: 'nowrap',
                     }}
                     title={`View ${itemDetails[selectedItem]?.shortName || 'Item'} Details`}
                   >
@@ -1881,12 +1883,13 @@ export default function AgentArchitectureView({
                     padding: '2px 8px',
                     borderRadius: '12px',
                     border: 'none',
-                    fontSize: '9.5px',
+                    fontSize: '9.2px',
                     fontWeight: 700,
                     cursor: 'pointer',
                     background: inspectMode === 'problem' ? '#dc2626' : 'transparent',
                     color: inspectMode === 'problem' ? '#ffffff' : 'var(--text-secondary)',
                     transition: 'all 0.15s ease',
+                    whiteSpace: 'nowrap',
                   }}
                   title="View Problem Solved Details"
                 >
@@ -2106,92 +2109,143 @@ export default function AgentArchitectureView({
             background: 'var(--bg-card, #ffffff)',
             border: '1px solid var(--border-color, #e2e8f0)',
             borderRadius: '12px',
-            padding: '10px 14px 8px',
+            padding: '10px 12px 8px',
             boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
             display: 'flex',
             flexDirection: 'column',
             height: '100%',
-            minHeight: 0,
-            overflow: 'hidden',
+            minHeight: '310px',
             boxSizing: 'border-box',
           }}
         >
-          {/* Header with Switcher Tabs */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px', flexWrap: 'nowrap', gap: '8px', flexShrink: 0, height: '26px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
-              <Table2 size={15} color={heatmapMode === 'materials' ? '#7c3aed' : '#0ea5e9'} />
-              <h3 style={{ margin: 0, fontSize: '13px', fontWeight: 800, color: 'var(--text-primary)', whiteSpace: 'nowrap' }}>
+          {/* Header with Switcher Tabs - Responsive Wrap Protected */}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '6px',
+              flexWrap: 'wrap',
+              rowGap: '6px',
+              columnGap: '8px',
+              flexShrink: 0,
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0, flexShrink: 1 }}>
+              <Table2 size={15} color={heatmapMode === 'materials' ? '#7c3aed' : '#0ea5e9'} style={{ flexShrink: 0 }} />
+              <h3
+                style={{
+                  margin: 0,
+                  fontSize: '12.5px',
+                  fontWeight: 800,
+                  color: 'var(--text-primary)',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+                title={
+                  heatmapMode === 'materials'
+                    ? 'Material Inventory & Dispatch Staging Heatmap'
+                    : (heatmapMode === 'orders' ? 'Customer Delivery Date & Dispatch Heatmap' : 'Corridor Fleet Transport Heatmap')
+                }
+              >
                 {heatmapMode === 'materials'
-                  ? 'Material Inventory & Dispatch Staging Heatmap'
-                  : (heatmapMode === 'orders' ? 'Customer Delivery Date & Dispatch Heatmap' : 'Corridor Fleet Transport Heatmap')
+                  ? 'Material & Staging Heatmap'
+                  : (heatmapMode === 'orders' ? 'Customer Orders Heatmap' : 'Fleet Transport Heatmap')
                 }
               </h3>
             </div>
 
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
-              <div style={{ display: 'inline-flex', background: 'var(--bg-subtle, #f1f5f9)', borderRadius: '20px', padding: '2px', border: '1px solid var(--border-color, #e2e8f0)', gap: '2px' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', flexShrink: 0, flexWrap: 'nowrap' }}>
+              <div
+                style={{
+                  display: 'inline-flex',
+                  background: 'var(--bg-subtle, #f1f5f9)',
+                  borderRadius: '16px',
+                  padding: '2px',
+                  border: '1px solid var(--border-color, #e2e8f0)',
+                  gap: '2px',
+                }}
+              >
                 <button
                   type="button"
                   onClick={() => { setHeatmapMode('materials'); setSelectedCell(null) }}
                   style={{
                     padding: '2px 8px',
-                    borderRadius: '14px',
+                    borderRadius: '12px',
                     border: 'none',
-                    fontSize: '9.5px',
+                    fontSize: '9.2px',
                     fontWeight: 700,
                     cursor: 'pointer',
                     background: heatmapMode === 'materials' ? '#7c3aed' : 'transparent',
                     color: heatmapMode === 'materials' ? '#ffffff' : 'var(--text-secondary)',
                     transition: 'all 0.15s ease',
+                    whiteSpace: 'nowrap',
                   }}
+                  title="View Material Inventory & Staging Matrix"
                 >
-                  📦 Materials &amp; Inventory
+                  📦 Materials
                 </button>
                 <button
                   type="button"
                   onClick={() => { setHeatmapMode('orders'); setSelectedCell(null) }}
                   style={{
                     padding: '2px 8px',
-                    borderRadius: '14px',
+                    borderRadius: '12px',
                     border: 'none',
-                    fontSize: '9.5px',
+                    fontSize: '9.2px',
                     fontWeight: 700,
                     cursor: 'pointer',
                     background: heatmapMode === 'orders' ? '#0ea5e9' : 'transparent',
                     color: heatmapMode === 'orders' ? '#ffffff' : 'var(--text-secondary)',
                     transition: 'all 0.15s ease',
+                    whiteSpace: 'nowrap',
                   }}
+                  title="View Customer Delivery Date Matrix"
                 >
-                  🏢 Customer Orders
+                  🏢 Orders
                 </button>
                 <button
                   type="button"
                   onClick={() => { setHeatmapMode('shipments'); setSelectedCell(null) }}
                   style={{
                     padding: '2px 8px',
-                    borderRadius: '14px',
+                    borderRadius: '12px',
                     border: 'none',
-                    fontSize: '9.5px',
+                    fontSize: '9.2px',
                     fontWeight: 700,
                     cursor: 'pointer',
                     background: heatmapMode === 'shipments' ? '#0ea5e9' : 'transparent',
                     color: heatmapMode === 'shipments' ? '#ffffff' : 'var(--text-secondary)',
                     transition: 'all 0.15s ease',
+                    whiteSpace: 'nowrap',
                   }}
+                  title="View Fleet Trips & Transport Matrix"
                 >
-                  🚚 Fleet Trips
+                  🚚 Fleet
                 </button>
               </div>
 
-              <span style={{ fontSize: '8.5px', fontWeight: 700, padding: '2px 6px', borderRadius: '4px', background: heatmapMode === 'materials' ? 'rgba(124, 58, 237, 0.12)' : 'rgba(14, 165, 233, 0.12)', color: heatmapMode === 'materials' ? '#7c3aed' : '#0284c7', letterSpacing: '0.03em', whiteSpace: 'nowrap' }}>
-                {heatmapMode === 'materials' ? '6 CRITICAL MATERIALS' : (heatmapMode === 'orders' ? '4 ACCOUNTS' : '1,000 TRIPS')}
+              <span
+                style={{
+                  fontSize: '8.5px',
+                  fontWeight: 700,
+                  padding: '2px 6px',
+                  borderRadius: '4px',
+                  background: heatmapMode === 'materials' ? 'rgba(124, 58, 237, 0.12)' : 'rgba(14, 165, 233, 0.12)',
+                  color: heatmapMode === 'materials' ? '#7c3aed' : '#0284c7',
+                  letterSpacing: '0.03em',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {heatmapMode === 'materials' ? '6 MATERIALS' : (heatmapMode === 'orders' ? '4 ACCOUNTS' : '1,000 TRIPS')}
               </span>
             </div>
           </div>
 
-          {/* Heatmap Grid Matrix - Stretched Vertically & Wide Across 45% Width */}
-          <div style={{ width: '100%', flex: 1, minHeight: '190px', display: 'flex', flexDirection: 'column' }}>
-            <table style={{ width: '100%', height: '100%', flex: 1, borderCollapse: 'separate', borderSpacing: '4px', fontSize: '10px', tableLayout: 'fixed' }}>
+          {/* Heatmap Grid Matrix - Stretched Vertically & Wide Across 50% Width */}
+          <div style={{ width: '100%', flex: 1, minHeight: '190px', display: 'flex', flexDirection: 'column', overflowX: 'auto' }}>
+            <table style={{ width: '100%', minWidth: '460px', height: '100%', flex: 1, borderCollapse: 'separate', borderSpacing: '4px', fontSize: '10px', tableLayout: 'fixed' }}>
               <thead>
                 <tr style={{ height: '22px' }}>
                   <th style={{ width: '25%', textAlign: 'left', padding: '2px 4px', color: 'var(--text-muted)', fontSize: '8.8px', fontWeight: 800 }}>
