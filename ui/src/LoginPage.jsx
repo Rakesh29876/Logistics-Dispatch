@@ -93,7 +93,8 @@ export default function LoginPage({ onLoginSuccess, theme, onToggleTheme }) {
     }
     setLoading(true)
     try {
-      const r = await fetch(`${API_BASE}/api/auth/login`, {
+      const loginUrl = `${API_BASE}/api/auth/login`
+      const r = await fetch(loginUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -102,8 +103,20 @@ export default function LoginPage({ onLoginSuccess, theme, onToggleTheme }) {
           remember_me: rememberMe,
         }),
       })
-      const res = await r.json()
+      const text = await r.text()
+      let res = {}
+      try {
+        res = text ? JSON.parse(text) : {}
+      } catch {
+        if (r.status === 405 || !API_BASE) {
+          throw new Error('Backend URL not connected. Please set VITE_API_BASE_URL in Vercel settings to your Render backend URL and redeploy.')
+        }
+        throw new Error(`Server returned status ${r.status}`)
+      }
       if (!r.ok) {
+        if (r.status === 405 || !API_BASE) {
+          throw new Error('Backend URL not connected. Please set VITE_API_BASE_URL in Vercel settings to your Render backend URL and redeploy.')
+        }
         throw new Error(res.detail || 'Authentication failed.')
       }
       onLoginSuccess(res.access_token, res.user, rememberMe)
