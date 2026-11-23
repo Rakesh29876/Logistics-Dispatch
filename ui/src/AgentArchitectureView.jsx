@@ -1249,16 +1249,14 @@ export default function AgentArchitectureView({
     <div
       className="arch-page-container"
       style={{
-        height: '100%',
-        maxHeight: '100%',
-        overflow: 'hidden',
+        minHeight: '100%',
         boxSizing: 'border-box',
-        padding: '8px 14px 6px',
+        padding: '8px 14px 16px',
         maxWidth: '1680px',
         margin: '0 auto',
         display: 'flex',
         flexDirection: 'column',
-        gap: '6px',
+        gap: '8px',
       }}
     >
       {/* ================= TOP SUB-HEADER & NAVIGATION PILLS ================= */}
@@ -1338,38 +1336,34 @@ export default function AgentArchitectureView({
         </div>
       </div>
 
-      {/* ================= ROW 1: TOP SEGMENT - ARCHITECTURE PIPELINE (77% WIDTH, 285px HEIGHT) & PROBLEMS SOLVED (23% WIDTH) ================= */}
+      {/* ================= ROW 1: TOP SEGMENT - ARCHITECTURE PIPELINE (77% WIDTH, UNCLIPPED RESPONSIVE) & PROBLEMS SOLVED (23% WIDTH) ================= */}
       <div
         style={{
-          height: '285px',
-          minHeight: '285px',
-          maxHeight: '285px',
+          minHeight: '305px',
+          height: 'auto',
           flexShrink: 0,
           display: 'grid',
           gridTemplateColumns: 'minmax(0, 7.7fr) minmax(0, 2.3fr)',
           gap: '8px',
           alignItems: 'stretch',
-          overflow: 'hidden',
         }}
       >
-        {/* ================= ROW 1, COL 1: SYSTEM ARCHITECTURE PIPELINE (77% WIDTH, 285px HEIGHT, 5 EQUAL-HEIGHT CARDS) ================= */}
+        {/* ================= ROW 1, COL 1: SYSTEM ARCHITECTURE PIPELINE (77% WIDTH, 5 EQUAL-HEIGHT CARDS) ================= */}
         <div
           className="arch-card"
           style={{
             background: 'var(--bg-card, #ffffff)',
             border: '1px solid var(--border-color, #e2e8f0)',
             borderRadius: '12px',
-            padding: '10px 12px',
+            padding: '10px 12px 12px',
             boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
             display: 'flex',
             flexDirection: 'column',
-            height: '100%',
-            minHeight: 0,
-            overflow: 'hidden',
+            minHeight: '285px',
             boxSizing: 'border-box',
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px', flexShrink: 0, height: '22px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexShrink: 0, height: '22px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
               <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: 'rgba(124, 58, 237, 0.12)', color: '#7c3aed', display: 'grid', placeItems: 'center' }}>
                 <Home size={14} />
@@ -1384,7 +1378,7 @@ export default function AgentArchitectureView({
           </div>
 
           {/* 5-Stage Horizontal Flow Container - Equal Height Across All 5 Cards with 77% Width Room */}
-          <div style={{ display: 'flex', alignItems: 'stretch', gap: '5px', width: '100%', flex: 1, height: 'calc(100% - 28px)', minHeight: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'stretch', gap: '6px', width: '100%', flex: 1, minHeight: '235px' }}>
             {stages.map((stage, idx) => {
               const isSelected = selectedStage === stage.id
               const StageIcon = stage.headerIcon
@@ -1412,15 +1406,15 @@ export default function AgentArchitectureView({
                       boxSizing: 'border-box',
                     }}
                   >
-                    {/* Header with Circular Step Badge, Title and Header Icon - Fixed 46px on ALL 5 Cards */}
+                    {/* Header with Circular Step Badge, Title and Header Icon - Fixed 52px with unclipped typography */}
                     <div
                       style={{
                         background: stage.headerBg,
                         color: '#ffffff',
-                        padding: '4px 4px',
-                        height: '46px',
-                        minHeight: '46px',
-                        maxHeight: '46px',
+                        padding: '4px 4px 4px',
+                        height: '52px',
+                        minHeight: '52px',
+                        maxHeight: '52px',
                         textAlign: 'center',
                         display: 'flex',
                         flexDirection: 'column',
@@ -1431,16 +1425,16 @@ export default function AgentArchitectureView({
                         boxSizing: 'border-box',
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px', height: '16px' }}>
                         <div
                           style={{
-                            width: '17px',
-                            height: '17px',
+                            width: '16px',
+                            height: '16px',
                             borderRadius: '50%',
                             background: '#ffffff',
                             color: stage.headerIconColor || '#1e293b',
                             fontWeight: 900,
-                            fontSize: '10px',
+                            fontSize: '9.5px',
                             display: 'grid',
                             placeItems: 'center',
                             boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
@@ -1450,29 +1444,29 @@ export default function AgentArchitectureView({
                           {stage.number}
                         </div>
                         {stage.headerImg ? (
-                          <img src={stage.headerImg} alt="header" style={{ width: '17px', height: '17px', objectFit: 'contain' }} />
+                          <img src={stage.headerImg} alt="header" style={{ width: '15px', height: '15px', objectFit: 'contain' }} />
                         ) : (
-                          <StageIcon size={14} color="#ffffff" strokeWidth={2.3} />
+                          <StageIcon size={13} color="#ffffff" strokeWidth={2.3} />
                         )}
                       </div>
-                      <b style={{ fontSize: '9.8px', display: 'block', letterSpacing: '0.01em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%', fontWeight: 800 }}>
+                      <b style={{ fontSize: '9.5px', lineHeight: 1.25, display: 'block', letterSpacing: '0.01em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%', fontWeight: 800 }}>
                         {stage.title}
                       </b>
-                      <small style={{ fontSize: '8px', opacity: 0.92, display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>
+                      <small style={{ fontSize: '8.2px', lineHeight: 1.2, opacity: 0.95, display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%', fontWeight: 500 }}>
                         {stage.sub}
                       </small>
                     </div>
 
-                    {/* Card Body - STRICTLY calc(100% - 46px) on ALL 5 Cards */}
+                    {/* Card Body */}
                     <div
                       style={{
                         padding: '6px 5px',
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'space-between',
+                        gap: '4px',
                         flex: 1,
-                        height: 'calc(100% - 46px)',
-                        minHeight: 0,
+                        minHeight: '180px',
                         boxSizing: 'border-box',
                         background: (isSelected && inspectMode === 'stage') ? 'rgba(124, 58, 237, 0.03)' : 'transparent',
                       }}
@@ -1482,18 +1476,19 @@ export default function AgentArchitectureView({
                           style={{
                             flex: 1,
                             height: '100%',
+                            minHeight: '180px',
                             width: '100%',
                             background: 'linear-gradient(180deg, rgba(30, 64, 175, 0.06) 0%, rgba(30, 64, 175, 0.015) 100%)',
                             border: (inspectMode === 'item' && (selectedItem === 'fastapi_engine' || selectedItem === 'async_normalizer'))
                               ? '2px solid #2563eb'
                               : '1px solid rgba(30, 64, 175, 0.22)',
                             borderRadius: '7px',
-                            padding: '8px 6px',
+                            padding: '6px 5px',
                             textAlign: 'center',
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
-                            justifyContent: 'space-between',
+                            justifyContent: 'space-around',
                             boxSizing: 'border-box',
                             boxShadow: (inspectMode === 'item' && (selectedItem === 'fastapi_engine' || selectedItem === 'async_normalizer'))
                               ? '0 0 0 2px rgba(37, 99, 235, 0.35)'
@@ -1510,11 +1505,10 @@ export default function AgentArchitectureView({
                             }}
                             title="Click to inspect FastAPI Engine details"
                             style={{
-                              width: '54px',
-                              height: '54px',
+                              width: '42px',
+                              height: '42px',
                               display: 'grid',
                               placeItems: 'center',
-                              marginTop: '2px',
                               cursor: 'pointer',
                               flexShrink: 0,
                               transition: 'transform 0.15s ease',
@@ -1532,7 +1526,7 @@ export default function AgentArchitectureView({
                                 }}
                               />
                             ) : (
-                              <Server size={28} color="#1d4ed8" strokeWidth={2.4} />
+                              <Server size={26} color="#1d4ed8" strokeWidth={2.4} />
                             )}
                           </div>
 
@@ -1546,10 +1540,10 @@ export default function AgentArchitectureView({
                             }}
                             style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', width: '100%', cursor: 'pointer' }}
                           >
-                            <b style={{ fontSize: '11.5px', color: '#1e3a8a', display: 'block', fontWeight: 800, lineHeight: 1.2, letterSpacing: '0.01em' }}>
+                            <b style={{ fontSize: '11px', color: '#1e3a8a', display: 'block', fontWeight: 800, lineHeight: 1.25, letterSpacing: '0.01em' }}>
                               {stage.engine}
                             </b>
-                            <span style={{ fontSize: '8.5px', color: '#64748b', display: 'block', fontWeight: 600, letterSpacing: '0.01em' }}>
+                            <span style={{ fontSize: '8.2px', color: '#64748b', display: 'block', fontWeight: 600, lineHeight: 1.2, letterSpacing: '0.01em' }}>
                               {stage.port}
                             </span>
                           </div>
@@ -1564,10 +1558,11 @@ export default function AgentArchitectureView({
                             }}
                             title="Click to inspect Async Normalizer details"
                             style={{
-                              fontSize: '9px',
+                              fontSize: '8.5px',
+                              lineHeight: 1.2,
                               background: inspectMode === 'item' && selectedItem === 'async_normalizer' ? 'rgba(37, 99, 235, 0.15)' : '#ffffff',
                               color: '#1e40af',
-                              padding: '4px 11px',
+                              padding: '3px 8px',
                               borderRadius: '14px',
                               border: inspectMode === 'item' && selectedItem === 'async_normalizer' ? '2px solid #2563eb' : '1px solid rgba(37, 99, 235, 0.35)',
                               display: 'inline-flex',
@@ -1582,7 +1577,7 @@ export default function AgentArchitectureView({
                             }}
                           >
                             {stage.tagImg ? (
-                              <img src={stage.tagImg} alt="tag" style={{ width: '15px', height: '15px', objectFit: 'contain', flexShrink: 0 }} />
+                              <img src={stage.tagImg} alt="tag" style={{ width: '14px', height: '14px', objectFit: 'contain', flexShrink: 0 }} />
                             ) : (
                               <Zap size={11} color="#eab308" />
                             )}
@@ -1626,14 +1621,14 @@ export default function AgentArchitectureView({
                                 background: itemBg,
                                 border: itemBorder,
                                 borderRadius: '7px',
-                                padding: '4px 8px',
+                                padding: '3px 7px',
                                 display: 'flex',
                                 alignItems: 'center',
-                                gap: '8px',
+                                gap: '7px',
                                 boxShadow: itemShadow,
-                                flex: 1,
-                                minHeight: 0,
-                                maxHeight: '40px',
+                                height: '38px',
+                                minHeight: '38px',
+                                flex: '1 0 38px',
                                 boxSizing: 'border-box',
                                 cursor: 'pointer',
                                 transition: 'all 0.15s ease',
@@ -1644,8 +1639,8 @@ export default function AgentArchitectureView({
                               {it.imgSrc ? (
                                 <div
                                   style={{
-                                    width: isWb ? '36px' : '30px',
-                                    height: '28px',
+                                    width: isWb ? '32px' : '26px',
+                                    height: '26px',
                                     borderRadius: '5px',
                                     overflow: 'hidden',
                                     display: 'grid',
@@ -1669,8 +1664,8 @@ export default function AgentArchitectureView({
                               ) : (
                                 <div
                                   style={{
-                                    width: '28px',
-                                    height: '28px',
+                                    width: '26px',
+                                    height: '26px',
                                     borderRadius: '5px',
                                     background: it.iconBg || 'rgba(100, 116, 139, 0.12)',
                                     border: `1px solid ${it.iconBorder || 'rgba(100, 116, 139, 0.25)'}`,
@@ -1679,20 +1674,20 @@ export default function AgentArchitectureView({
                                     flexShrink: 0,
                                   }}
                                 >
-                                  <ItemIcon size={14} color={it.iconColor || 'var(--text-primary)'} strokeWidth={2.4} />
+                                  <ItemIcon size={13} color={it.iconColor || 'var(--text-primary)'} strokeWidth={2.4} />
                                 </div>
                               )}
 
-                              <div style={{ minWidth: 0, flex: 1 }}>
+                              <div style={{ minWidth: 0, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                                 <b
                                   style={{
-                                    fontSize: '9.8px',
+                                    fontSize: '9.5px',
                                     color: isThisItemSelected ? '#6d28d9' : (isWb ? '#92400e' : (isGov ? '#0f766e' : 'var(--text-primary)')),
                                     whiteSpace: 'nowrap',
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',
                                     display: 'block',
-                                    lineHeight: 1.18,
+                                    lineHeight: 1.25,
                                     fontWeight: 800,
                                   }}
                                 >
@@ -1706,7 +1701,7 @@ export default function AgentArchitectureView({
                                     whiteSpace: 'nowrap',
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',
-                                    lineHeight: 1.12,
+                                    lineHeight: 1.2,
                                   }}
                                 >
                                   {it.sub}
@@ -1731,24 +1726,22 @@ export default function AgentArchitectureView({
           </div>
         </div>
 
-        {/* ================= ROW 1, COL 2: PROBLEMS SOLVED BY AGENTS (23% WIDTH, 285px HEIGHT) ================= */}
+        {/* ================= ROW 1, COL 2: PROBLEMS SOLVED BY AGENTS (23% WIDTH) ================= */}
         <div
           className="arch-card"
           style={{
             background: 'var(--bg-card, #ffffff)',
             border: '1px solid var(--border-color, #e2e8f0)',
             borderRadius: '12px',
-            padding: '10px 11px',
+            padding: '10px 11px 12px',
             boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
             display: 'flex',
             flexDirection: 'column',
-            height: '100%',
-            minHeight: 0,
-            overflow: 'hidden',
+            minHeight: '285px',
             boxSizing: 'border-box',
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px', flexShrink: 0, height: '22px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexShrink: 0, height: '22px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <Flame size={15} color="#ef4444" />
               <h3 style={{ margin: 0, fontSize: '12.5px', fontWeight: 800, color: 'var(--text-primary)', whiteSpace: 'nowrap' }}>
@@ -1761,7 +1754,7 @@ export default function AgentArchitectureView({
           </div>
 
           {/* 5 Problem Bars - Fits neatly within 23% width */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', flex: 1, justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', flex: 1, minHeight: '220px', justifyContent: 'space-between' }}>
             {problems.map((prob) => {
               const isProbSelected = selectedProblem === prob.id && inspectMode === 'problem'
               const ProbIcon = prob.icon
@@ -1776,7 +1769,7 @@ export default function AgentArchitectureView({
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    padding: '7px 11px',
+                    padding: '0 10px',
                     borderRadius: '7px',
                     background: prob.bg,
                     borderLeft: `4px solid ${prob.border}`,
@@ -1785,16 +1778,16 @@ export default function AgentArchitectureView({
                     transform: isProbSelected ? 'translateY(-1px)' : 'none',
                     cursor: 'pointer',
                     transition: 'all 0.15s ease',
-                    flex: 1,
-                    minHeight: 0,
-                    maxHeight: '40px',
+                    height: '38px',
+                    minHeight: '38px',
+                    flex: '1 0 38px',
                     boxSizing: 'border-box',
                   }}
                 >
-                  <b style={{ fontSize: '10.5px', fontWeight: 800, color: prob.textColor, letterSpacing: '0.03em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <b style={{ fontSize: '10px', lineHeight: 1.25, fontWeight: 800, color: prob.textColor, letterSpacing: '0.02em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {prob.title}
                   </b>
-                  <ProbIcon size={15} color={prob.border} style={{ flexShrink: 0, marginLeft: '6px' }} />
+                  <ProbIcon size={14} color={prob.border} style={{ flexShrink: 0, marginLeft: '6px' }} />
                 </div>
               )
             })}
@@ -1805,13 +1798,11 @@ export default function AgentArchitectureView({
       {/* ================= ROW 2: BOTTOM SEGMENT - INFORMATION DETAILS (55% WIDTH) & STAGING HEATMAP (45% WIDTH) ================= */}
       <div
         style={{
-          flex: 1,
-          minHeight: 0,
+          minHeight: '310px',
           display: 'grid',
           gridTemplateColumns: 'minmax(0, 5.5fr) minmax(0, 4.5fr)',
           gap: '8px',
           alignItems: 'stretch',
-          overflow: 'hidden',
         }}
       >
         {/* ================= ROW 2, COL 1: DYNAMIC STAGE, ITEM & PROBLEM DETAILS (INFORMATION TAB - 55% WIDTH, NOT CLUMSY) ================= */}
@@ -2199,7 +2190,7 @@ export default function AgentArchitectureView({
           </div>
 
           {/* Heatmap Grid Matrix - Stretched Vertically & Wide Across 45% Width */}
-          <div style={{ width: '100%', flex: 1, minHeight: 0, height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+          <div style={{ width: '100%', flex: 1, minHeight: '190px', display: 'flex', flexDirection: 'column' }}>
             <table style={{ width: '100%', height: '100%', flex: 1, borderCollapse: 'separate', borderSpacing: '4px', fontSize: '10px', tableLayout: 'fixed' }}>
               <thead>
                 <tr style={{ height: '22px' }}>

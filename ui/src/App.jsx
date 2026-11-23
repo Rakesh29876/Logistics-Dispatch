@@ -885,7 +885,7 @@ export default function App() {
         )}
 
         {pagePermitted && page === 'architecture' && (
-          <div className="content" style={{ padding: 0, height: 'calc(100vh - 52px)', maxHeight: 'calc(100vh - 52px)', overflow: 'hidden' }}>
+          <div className="content" style={{ padding: 0, minHeight: 'calc(100vh - 52px)', overflowY: 'auto', overflowX: 'hidden' }}>
             <AgentArchitectureView
               authFetch={authFetch}
               onNavigate={(target) => {
