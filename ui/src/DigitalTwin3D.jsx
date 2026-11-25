@@ -207,6 +207,265 @@ function createHazardTexture() {
   return tex
 }
 
+// 6. Realistic Concrete Scale Deck with Tire Wear Tracks & Yellow Borders (Matching Weighbridge Photo)
+function createTireWearScaleTexture(isDark = false) {
+  const canvas = document.createElement('canvas')
+  canvas.width = 512
+  canvas.height = 256
+  const ctx = canvas.getContext('2d')
+
+  // Industrial concrete/steel platform base
+  ctx.fillStyle = isDark ? '#1e293b' : '#64748b'
+  ctx.fillRect(0, 0, 512, 256)
+
+  // Anti-skid ribbed cross-hatch
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.12)'
+  for (let x = 0; x < 512; x += 10) {
+    ctx.fillRect(x, 0, 2, 256)
+  }
+
+  // Dark Rubber Tire Wear Tracks (Two heavy tire wear paths running horizontally where heavy truck axles roll)
+  // Track 1 (Left wheels)
+  const grad1 = ctx.createLinearGradient(0, 36, 0, 96)
+  grad1.addColorStop(0, 'rgba(15, 23, 42, 0.08)')
+  grad1.addColorStop(0.35, 'rgba(15, 23, 42, 0.78)')
+  grad1.addColorStop(0.65, 'rgba(15, 23, 42, 0.88)')
+  grad1.addColorStop(1, 'rgba(15, 23, 42, 0.08)')
+  ctx.fillStyle = grad1
+  ctx.fillRect(0, 36, 512, 60)
+
+  // Track 2 (Right wheels)
+  const grad2 = ctx.createLinearGradient(0, 160, 0, 220)
+  grad2.addColorStop(0, 'rgba(15, 23, 42, 0.08)')
+  grad2.addColorStop(0.35, 'rgba(15, 23, 42, 0.78)')
+  grad2.addColorStop(0.65, 'rgba(15, 23, 42, 0.88)')
+  grad2.addColorStop(1, 'rgba(15, 23, 42, 0.08)')
+  ctx.fillStyle = grad2
+  ctx.fillRect(0, 160, 512, 60)
+
+  // Fine longitudinal tire tread scratches & groove marks
+  ctx.fillStyle = 'rgba(15, 23, 42, 0.5)'
+  for (let i = 0; i < 35; i++) {
+    const y1 = 42 + Math.random() * 48
+    ctx.fillRect(0, y1, 512, 1.2)
+    const y2 = 166 + Math.random() * 48
+    ctx.fillRect(0, y2, 512, 1.2)
+  }
+
+  // Outer perimeter safety yellow edge warning lines
+  ctx.fillStyle = '#facc15'
+  ctx.fillRect(0, 6, 512, 10)
+  ctx.fillRect(0, 240, 512, 10)
+
+  // Transverse yellow stop bar
+  ctx.fillRect(490, 16, 12, 224)
+
+  const tex = new THREE.CanvasTexture(canvas)
+  return tex
+}
+
+// 7. Distinctive Blue Digital Weighbridge Signboards (Matching Weighbridge Photo)
+function createWeighbridgeBlueSignTexture(laneCode = '1 - 2', laneName = 'NO.1 WEIGHBRIDGE') {
+  const canvas = document.createElement('canvas')
+  canvas.width = 320
+  canvas.height = 160
+  const ctx = canvas.getContext('2d')
+
+  // High-intensity Royal/Cobalt Blue background
+  ctx.fillStyle = '#1d4ed8'
+  ctx.fillRect(0, 0, 320, 160)
+
+  // White crisp safety border
+  ctx.strokeStyle = '#ffffff'
+  ctx.lineWidth = 6
+  ctx.strokeRect(6, 6, 308, 148)
+
+  // Top Large Code (e.g. "1 - 2" or "0 - 5")
+  ctx.fillStyle = '#ffffff'
+  ctx.font = '900 64px Arial, sans-serif'
+  ctx.textAlign = 'center'
+  ctx.fillText(laneCode, 160, 72)
+
+  // White divider line
+  ctx.fillRect(24, 88, 272, 3)
+
+  // Bottom Lane Title (e.g. "NO.1 WEIGHBRIDGE" or "NO.2 WEIGHBRIDGE")
+  ctx.font = '800 22px Arial, sans-serif'
+  ctx.fillText(laneName, 160, 126)
+
+  const tex = new THREE.CanvasTexture(canvas)
+  return tex
+}
+
+// 8. Overhead Digital Loading Bay Indicator Monitor (Matching Warehouse Loading Bay Photo)
+function createOverheadBayMonitorTexture(bayNum = 1, statusColor = '#22c55e', statusLabel = 'AVAILABLE') {
+  const canvas = document.createElement('canvas')
+  canvas.width = 384
+  canvas.height = 216
+  const ctx = canvas.getContext('2d')
+
+  // Black monitor bezel & display
+  ctx.fillStyle = '#090d16'
+  ctx.fillRect(0, 0, 384, 216)
+
+  // Screen subtle border
+  ctx.strokeStyle = '#1e293b'
+  ctx.lineWidth = 4
+  ctx.strokeRect(4, 4, 376, 208)
+
+  // Big glowing status circle in center/left (Exactly like reference Photo)
+  const circleX = 110
+  const circleY = 108
+  const radius = 54
+
+  // Outer soft glow
+  const glow = ctx.createRadialGradient(circleX, circleY, radius * 0.6, circleX, circleY, radius * 1.35)
+  glow.addColorStop(0, statusColor)
+  glow.addColorStop(1, 'rgba(0, 0, 0, 0)')
+  ctx.fillStyle = glow
+  ctx.beginPath()
+  ctx.arc(circleX, circleY, radius * 1.35, 0, Math.PI * 2)
+  ctx.fill()
+
+  // Main solid bright LED circle
+  ctx.fillStyle = statusColor
+  ctx.beginPath()
+  ctx.arc(circleX, circleY, radius, 0, Math.PI * 2)
+  ctx.fill()
+
+  // Subtle glossy highlight on the LED lens
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.45)'
+  ctx.beginPath()
+  ctx.arc(circleX - 14, circleY - 14, radius * 0.45, 0, Math.PI * 2)
+  ctx.fill()
+
+  // Right side text: Bay number & Status
+  ctx.fillStyle = '#f8fafc'
+  ctx.font = '900 44px Montserrat, sans-serif'
+  ctx.textAlign = 'left'
+  ctx.fillText(`BAY 0${bayNum}`, 196, 95)
+
+  ctx.fillStyle = statusColor
+  ctx.font = '800 20px Montserrat, sans-serif'
+  ctx.fillText(statusLabel, 198, 140)
+
+  const tex = new THREE.CanvasTexture(canvas)
+  return tex
+}
+
+// 9. Painted Green Floor Directional Guide Arrows (Matching Warehouse Loading Bay Photo)
+function createGreenFloorArrowTexture() {
+  const canvas = document.createElement('canvas')
+  canvas.width = 128
+  canvas.height = 256
+  const ctx = canvas.getContext('2d')
+
+  // Transparent base
+  ctx.clearRect(0, 0, 128, 256)
+
+  // Painted Neon Green Chevron Arrow
+  ctx.fillStyle = '#22c55e'
+  ctx.beginPath()
+  ctx.moveTo(64, 18)     // tip
+  ctx.lineTo(120, 115)   // right wing tip
+  ctx.lineTo(88, 115)    // right inner elbow
+  ctx.lineTo(88, 230)    // right base
+  ctx.lineTo(40, 230)    // left base
+  ctx.lineTo(40, 115)    // left inner elbow
+  ctx.lineTo(8, 115)     // left wing tip
+  ctx.closePath()
+  ctx.fill()
+
+  // White safety edge trim on arrow
+  ctx.strokeStyle = '#ffffff'
+  ctx.lineWidth = 4
+  ctx.stroke()
+
+  const tex = new THREE.CanvasTexture(canvas)
+  return tex
+}
+
+// 10. Blue Plastic Pallet Stack (Matching Warehouse Interior Photo)
+function buildBluePalletStack(count = 5) {
+  const group = new THREE.Group()
+  const matBlue = new THREE.MeshStandardMaterial({ color: 0x1d4ed8, roughness: 0.35, metalness: 0.25 })
+  const matPlasticDark = new THREE.MeshStandardMaterial({ color: 0x1e3a8a, roughness: 0.45 })
+
+  for (let i = 0; i < count; i++) {
+    const yBase = i * 0.16
+    const deck = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.035, 1.0), matBlue)
+    deck.position.set(0, yBase + 0.14, 0)
+    const botDeck = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.03, 1.0), matBlue)
+    botDeck.position.set(0, yBase + 0.015, 0)
+    group.add(deck, botDeck)
+    ;[-0.45, 0, 0.45].forEach(bx => {
+      ;[-0.38, 0, 0.38].forEach(bz => {
+        const foot = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.09, 0.16), matPlasticDark)
+        foot.position.set(bx, yBase + 0.075, bz)
+        group.add(foot)
+      })
+    })
+  }
+  return group
+}
+
+// 11. Natural Pine Wooden Euro-Pallet Stack (Matching Warehouse Photo)
+function buildWoodPalletStack(count = 5) {
+  const group = new THREE.Group()
+  const matWood = new THREE.MeshStandardMaterial({ color: 0xd97706, roughness: 0.85 })
+  const matBlock = new THREE.MeshStandardMaterial({ color: 0xb45309, roughness: 0.9 })
+
+  for (let i = 0; i < count; i++) {
+    const yBase = i * 0.16
+    for (let s = -0.42; s <= 0.42; s += 0.21) {
+      const slat = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.025, 0.14), matWood)
+      slat.position.set(0, yBase + 0.14, s)
+      group.add(slat)
+    }
+    ;[-0.48, 0, 0.48].forEach(bx => {
+      ;[-0.38, 0, 0.38].forEach(bz => {
+        const blk = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.10, 0.16), matBlock)
+        blk.position.set(bx, yBase + 0.075, bz)
+        group.add(blk)
+      })
+    })
+  }
+  return group
+}
+
+// 12. Automated Red-and-White Boom Barrier Gate (Matching Weighbridge Photo)
+function buildBarrierBoomGate({ x = 0, y = 0.12, z = 0, rotationY = 0, isOpen = false }) {
+  const group = new THREE.Group()
+  group.position.set(x, y, z)
+  group.rotation.y = rotationY
+
+  const matHousing = new THREE.MeshStandardMaterial({ color: 0xfacc15, metalness: 0.5, roughness: 0.3 })
+  const pedestal = new THREE.Mesh(new THREE.BoxGeometry(0.42, 1.35, 0.42), matHousing)
+  pedestal.position.set(0, 0.675, 0)
+  pedestal.castShadow = true
+
+  const led = new THREE.Mesh(new THREE.SphereGeometry(0.08, 10, 10), new THREE.MeshBasicMaterial({ color: isOpen ? 0x22c55e : 0xef4444 }))
+  led.position.set(0, 1.42, 0)
+  group.add(pedestal, led)
+
+  const pivot = new THREE.Group()
+  pivot.position.set(0, 1.15, 0.22)
+  if (isOpen) {
+    pivot.rotation.x = -Math.PI / 2.3
+  }
+
+  const armLen = 4.6
+  for (let s = 0; s < 10; s++) {
+    const segLen = armLen / 10
+    const segMat = new THREE.MeshStandardMaterial({ color: s % 2 === 0 ? 0xdc2626 : 0xf8fafc, roughness: 0.4 })
+    const seg = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.12, segLen), segMat)
+    seg.position.set(0, 0, segLen / 2 + s * segLen)
+    pivot.add(seg)
+  }
+  group.add(pivot)
+  return group
+}
+
 // 3. Commercial Trailer Side Texture with Brand Logo & Ribs
 function createTrailerSideTexture(carrierKey, riskLevel) {
   const cInfo = CARRIER_COLORS[carrierKey] || CARRIER_COLORS.DEFAULT
@@ -417,6 +676,26 @@ function buildRealisticSemiTruck(v, isDark = false) {
   // Sun Visor over Windshield
   const visor = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.12, 1.4), matCab)
   visor.position.set(trailerLen / 2 + cabLen + 0.1, 2.15, 0)
+
+  // Aerodynamic Sleeper Cab High-Roof Fairing (Matching Class 8 Staging Yard Fleet in reference Photo)
+  const fairingGeom = new THREE.BoxGeometry(cabLen * 0.88, 0.52, cabWidth * 0.96)
+  const fairing = new THREE.Mesh(fairingGeom, matCab)
+  fairing.position.set(trailerLen / 2 + cabLen / 2 + 0.05, 2.52, 0)
+  fairing.castShadow = true
+
+  const fairingSlope = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.45, cabWidth * 0.94), matCab)
+  fairingSlope.position.set(trailerLen / 2 + cabLen - 0.12, 2.44, 0)
+  fairingSlope.rotation.z = -0.32
+  fairingSlope.castShadow = true
+
+  // Side Aerodynamic Cab Extenders (closing gap between sleeper and trailer)
+  ;[-cabWidth / 2 - 0.02, cabWidth / 2 + 0.02].forEach(ez => {
+    const extender = new THREE.Mesh(new THREE.BoxGeometry(0.55, 1.8, 0.05), matCab)
+    extender.position.set(trailerLen / 2 + 0.18, 1.4, ez)
+    group.add(extender)
+  })
+
+  group.add(fairing, fairingSlope)
 
   // Dual Chrome Vertical Exhaust Stacks
   ;[-0.68, 0.68].forEach(sz => {
@@ -2522,7 +2801,7 @@ const CAMERA_PRESETS = {
   plant_b: { label: 'Plant Unit B (Heavy Powertrain)', pos: [-24, 18, -48], target: [-22, 4, -28] },
   silos: { label: 'Raw Material Silo Farm & Tanks', pos: [6, 18, -48], target: [6, 6, -29] },
   utilities: { label: 'Cooling Towers & Utilities', pos: [32, 16, -46], target: [30, 4, -28] },
-  weighbridge: { label: 'Weighbridge WB-01 Commercial Scale', pos: [-20, 7.5, 16], target: [-22, 1.8, 6.5] },
+  weighbridge: { label: 'Dual Weighbridge WB-01 & WB-02 (Pit Scale)', pos: [-10, 6.2, 17.5], target: [-22, 2.8, 7.5] },
   staging: { label: 'Vehicle Staging Yard & Buffer', pos: [-2, 9, 20], target: [-2, 1.5, 12] },
   docks: { label: 'Loading Docks Bays 01-06 (Truck Apron)', pos: [13, 8.5, 12], target: [13, 2.0, -3.0] },
   warehouse_racks: { label: 'FG Warehouse High-Bay Racks & Cross-Dock', pos: [13, 7.5, -2.0], target: [13, 3.5, -12.0] },
@@ -2535,7 +2814,7 @@ const CAMERA_PRESETS = {
 
 const CAMPUS_ZONES = [
   { id: 'gate', label: 'Gate & Security', icon: ShieldCheck, pos: [-36, 7, 14], target: [-36, 1.8, 6.5] },
-  { id: 'weighbridge', label: 'Weighbridge WB-01', icon: Scale, pos: [-20, 7.5, 16], target: [-22, 1.8, 6.5] },
+  { id: 'weighbridge', label: 'Weighbridge Dual Lanes', icon: Scale, pos: [-10, 6.2, 17.5], target: [-22, 2.8, 7.5] },
   { id: 'staging', label: 'Staging Yard', icon: Truck, pos: [-2, 9, 20], target: [-2, 1.5, 12] },
   { id: 'docks', label: 'Loading Docks 01-06', icon: Truck, pos: [13, 8.5, 10], target: [13, 2.0, -3.0] },
   { id: 'production', label: 'Unit A Assembly', icon: Factory, pos: [-22, 14, 10], target: [-20, 3, -12] },
@@ -2559,7 +2838,7 @@ export default function DigitalTwin3D({ twinData, theme, userRole }) {
   const [shiftMode, setShiftMode] = useState('day') // 'day' | 'night'
   const [autoOrbit, setAutoOrbit] = useState(false)
   const [selectedItem, setSelectedItem] = useState(null)
-  const [weighStatus, setWeighStatus] = useState('WB-01 Scale: Monitoring Inbound & Outbound Fleet')
+  const [weighStatus, setWeighStatus] = useState('Dual Weighbridge (WB-01 & WB-02): Active Telemetry & Weight Verification')
   const [showTelemetryHud, setShowTelemetryHud] = useState(false)
   const [layers, setLayers] = useState({ buildings: true, vehicles: true, employees: true, infra: true, labels: true })
   const [sideNavCollapsed, setSideNavCollapsed] = useState(false)
@@ -2684,12 +2963,12 @@ export default function DigitalTwin3D({ twinData, theme, userRole }) {
     controls.maxDistance = 280
     controls.target.set(0, 2, -10)
 
-    // Cinematic Industrial Lighting Rig (Natural Sky Dome + Warm Radiant Sun)
-    const hemiLight = new THREE.HemisphereLight(0xbae6fd, isDark ? 0x0f172a : 0x78716c, isDark ? 0.75 : 0.95)
+    // Cinematic Golden Hour / Industrial Natural Lighting Rig (Sky Dome + Warm Radiant Sun)
+    const hemiLight = new THREE.HemisphereLight(0x93c5fd, isDark ? 0x0f172a : 0xfef08a, isDark ? 0.75 : 0.95)
     scene.add(hemiLight)
 
-    const sunLight = new THREE.DirectionalLight(0xfffbeb, isDark ? 1.25 : 1.45)
-    sunLight.position.set(55, 75, 45)
+    const sunLight = new THREE.DirectionalLight(0xffeedd, isDark ? 1.25 : 1.55)
+    sunLight.position.set(65, 58, 42)
     sunLight.castShadow = true
     sunLight.shadow.mapSize.width = 2048
     sunLight.shadow.mapSize.height = 2048
@@ -3087,10 +3366,14 @@ export default function DigitalTwin3D({ twinData, theme, userRole }) {
     dockCurb.position.set(13, 0.95, -2.5)
     scene.add(dockCurb)
 
-    // HEAVY CONCRETE RECESSED TRUCK APRON IN FRONT OF DOCKS (32m x 16m)
+    // HEAVY POLISHED CONCRETE TRUCK APRON IN FRONT OF DOCKS (32m x 16m with realistic industrial finish)
     const apronConcrete = new THREE.Mesh(
       new THREE.BoxGeometry(32.0, 0.12, 16.0),
-      new THREE.MeshStandardMaterial({ color: isDark ? 0x1e293b : 0x94a3b8, roughness: 0.85 })
+      new THREE.MeshStandardMaterial({
+        color: isDark ? 0x1e293b : 0x94a3b8,
+        roughness: 0.38, // Polished industrial concrete sheen matching reference Photo
+        metalness: 0.18,
+      })
     )
     apronConcrete.position.set(13.0, 0.06, 2.0)
     apronConcrete.receiveShadow = true
@@ -3103,6 +3386,49 @@ export default function DigitalTwin3D({ twinData, theme, userRole }) {
       jointLine.position.set(ax, 0.13, 2.0)
       scene.add(jointLine)
     }
+
+    // GREEN PAINTED DIRECTIONAL FLOOR GUIDE ARROWS (Matching Warehouse Loading Bay reference photo)
+    const arrowTex = createGreenFloorArrowTexture()
+    const arrowMat = new THREE.MeshBasicMaterial({ map: arrowTex, transparent: true, depthWrite: false })
+    ;[
+      [5.2, 0.13, 2.0],
+      [13.4, 0.13, 2.0],
+      [21.6, 0.13, 2.0],
+      [9.3, 0.13, 7.2],
+      [17.5, 0.13, 7.2],
+    ].forEach(([ax, ay, az]) => {
+      const arrowMesh = new THREE.Mesh(new THREE.PlaneGeometry(1.6, 2.8), arrowMat)
+      arrowMesh.rotation.x = -Math.PI / 2
+      arrowMesh.position.set(ax, ay, az)
+      scene.add(arrowMesh)
+    })
+
+    // PAINTED YELLOW SAFETY BOUNDARY LINES ON FLOOR (Walkways and Truck Bays)
+    const matFloorYellow = new THREE.MeshBasicMaterial({ color: 0xfacc15 })
+    ;[-0.5, 26.5].forEach(lx => {
+      const yellowBorder = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.02, 16.0), matFloorYellow)
+      yellowBorder.position.set(lx, 0.13, 2.0)
+      scene.add(yellowBorder)
+    })
+
+    // WHITE PEDESTRIAN ZEBRA CROSSWALK STRIPES
+    const matZebra = new THREE.MeshBasicMaterial({ color: 0xf8fafc })
+    for (let zx = -0.2; zx <= 26.5; zx += 1.2) {
+      const stripe = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.02, 1.8), matZebra)
+      stripe.position.set(zx, 0.13, -1.2)
+      scene.add(stripe)
+    }
+
+    // REAL PALLET STACKS (Blue Plastic & Natural Wood Euro-Pallets staged on floor like in photo)
+    const bluePallets1 = buildBluePalletStack(6)
+    bluePallets1.position.set(25.0, 0.12, 1.2)
+    const bluePallets2 = buildBluePalletStack(5)
+    bluePallets2.position.set(0.6, 0.12, 3.8)
+    const woodPallets1 = buildWoodPalletStack(5)
+    woodPallets1.position.set(25.0, 0.12, 4.2)
+    const woodPallets2 = buildWoodPalletStack(6)
+    woodPallets2.position.set(0.6, 0.12, 0.8)
+    scene.add(bluePallets1, bluePallets2, woodPallets1, woodPallets2)
 
     // 6 DEDICATED INDUSTRIAL LOADING DOCK BAYS (BAYS 01 - 06) WITH ACCORDION SHELTERS & WHEEL GUIDES
     const dockBays = []
@@ -3160,10 +3486,25 @@ export default function DigitalTwin3D({ twinData, theme, userRole }) {
       lightGreen.position.set(bayX + 1.85, 4.24, -4.75)
       scene.add(signalHousing, lightRed, lightGreen)
 
+      // REALISTIC OVERHEAD DIGITAL BAY STATUS MONITOR (Angled down, with Glowing Circular LED Ring like in reference Photo)
+      const bayColors = ['#22c55e', '#38bdf8', '#f59e0b', '#22c55e', '#ef4444', '#38bdf8']
+      const bayStatusNames = ['AVAILABLE', 'LOADING', 'STAGED', 'UNLOADING', 'HOLD', 'EXPRESS']
+      const statusColor = bayColors[bay]
+      const statusLabel = bayStatusNames[bay]
+
+      const monitorTex = createOverheadBayMonitorTexture(bay + 1, statusColor, statusLabel)
+      const monitorMat = new THREE.MeshBasicMaterial({ map: monitorTex })
+      const monitorMesh = new THREE.Mesh(new THREE.BoxGeometry(2.3, 1.3, 0.08), monitorMat)
+      const monitorArm = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.85, 8), new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.8 }))
+      monitorArm.position.set(bayX, 6.4, -4.7)
+      monitorMesh.position.set(bayX, 5.85, -4.55)
+      monitorMesh.rotation.x = 0.22 // 13-degree downward viewing angle matching reference Photo
+      scene.add(monitorArm, monitorMesh)
+
       // Bay Number Stencil Sign
       const bayStatusText = bay === 3 ? 'INBOUND UNLOADING' : (bay === 0 || bay === 1) ? 'OUTBOUND LOADING' : bay === 4 ? 'PALLET STAGING' : bay === 5 ? 'EXPRESS COURIER' : 'QA INSPECTION'
       const baySign = makeSignBoard(`BAY 0${bay + 1}`, bayStatusText, '#0f172a', bay === 3 ? '#38bdf8' : (bay === 0 || bay === 1) ? '#ef4444' : '#16a34a', 3.0, 0.8)
-      baySign.position.set(bayX, 5.3, -4.85)
+      baySign.position.set(bayX, 5.15, -4.85)
       scene.add(door, baySign)
 
       // DIVERSE REALISTIC FLEET & CARGO DOCKED AT ALL 6 BAYS
@@ -3435,126 +3776,217 @@ export default function DigitalTwin3D({ twinData, theme, userRole }) {
     forklift.position.set(13, 0.2, -8.0)
     scene.add(forklift)
 
-    // ==================== 3. AUTOMATED HEAVY-DUTY WEIGHBRIDGE STATION (WB-01) ====================
-    const matScaleDeck = new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.75, roughness: 0.35 }) // Anti-skid diamond steel deck
+    // ==================== 3. REALISTIC DUAL-LANE WEIGHBRIDGE COMPLEX (MATCHING REFERENCE PHOTO) ====================
+    // Features Dual Scale Pits (WB-01 & WB-02), Overhead Bridge Control Cabin, Blue Digital Signs, Hazard Curbs & Boom Gates
+    const scaleTireTex1 = createTireWearScaleTexture(isDark)
+    const scaleTireTex2 = createTireWearScaleTexture(isDark)
+    const matScaleDeck1 = new THREE.MeshStandardMaterial({ map: scaleTireTex1, roughness: 0.55, metalness: 0.35 })
+    const matScaleDeck2 = new THREE.MeshStandardMaterial({ map: scaleTireTex2, roughness: 0.55, metalness: 0.35 })
     const matConcreteRamp = new THREE.MeshStandardMaterial({ color: isDark ? 0x1e293b : 0x94a3b8, roughness: 0.85 })
+    const matHazardCurb = new THREE.MeshStandardMaterial({ map: createHazardTexture(), roughness: 0.6 })
 
-    // Anti-Skid Diamond Steel Scale Deck (9.2m x 0.38m x 4.4m)
-    const wbPit = new THREE.Mesh(new THREE.BoxGeometry(9.2, 0.38, 4.4), matScaleDeck)
-    wbPit.position.set(-22.0, 0.20, 6.5)
-    wbPit.receiveShadow = true
-    wbPit.userData = {
-      pickable: true,
-      kind: 'zone',
-      data: {
-        zone: 'Automated Weighbridge Station WB-01',
-        purpose: 'Automated Gross / Tare Commercial Vehicle Weighing (NABL Certified 60T)',
-        active_vehicles: filteredVehicles.length,
-        note: 'High-precision digital pit scale with RFID + ANPR camera sequencing and dynamic LED scoreboard.'
+    // DUAL SCALE DECKS (Lane 1: z = 4.8 | Lane 2: z = 10.4)
+    const wbLanes = [
+      { id: 'WB-01', laneIndex: 1, z: 4.8, code: '1 - 2', title: 'NO.1 WEIGHBRIDGE', mat: matScaleDeck1 },
+      { id: 'WB-02', laneIndex: 2, z: 10.4, code: '0 - 5', title: 'NO.2 WEIGHBRIDGE', mat: matScaleDeck2 },
+    ]
+
+    wbLanes.forEach(lane => {
+      // Scale Platform with Real Dark Rubber Tire Wear Tracks (9.6m x 0.36m x 4.2m)
+      const deck = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.36, 4.2), lane.mat)
+      deck.position.set(-22.0, 0.18, lane.z)
+      deck.receiveShadow = true
+      deck.userData = {
+        pickable: true,
+        kind: 'zone',
+        data: {
+          zone: `${lane.id} Automated Pit Scale (${lane.title})`,
+          code: lane.code,
+          purpose: 'Gross & Tare Commercial Vehicle Weight Measurement (Certified 60T NABL)',
+          active_vehicles: filteredVehicles.length,
+          note: 'Equipped with dual tire wear channels, digital load-cells, RFID scanners, and ANPR license verification.'
+        }
       }
-    }
-    scene.add(wbPit)
-    pickables.push(wbPit)
+      scene.add(deck)
+      pickables.push(deck)
 
-    // INBOUND CONCRETE APPROACH RAMP (Sloped entry ramp with directional road arrow)
-    const rampIn = new THREE.Mesh(new THREE.BoxGeometry(4.8, 0.24, 4.4), matConcreteRamp)
-    rampIn.position.set(-28.6, 0.12, 6.5)
-    rampIn.rotation.z = -0.04
-    rampIn.receiveShadow = true
-    scene.add(rampIn)
+      // Sloped Entry Concrete Ramp (x: -28.8)
+      const rampIn = new THREE.Mesh(new THREE.BoxGeometry(4.8, 0.24, 4.2), matConcreteRamp)
+      rampIn.position.set(-28.8, 0.12, lane.z)
+      rampIn.rotation.z = -0.04
+      rampIn.receiveShadow = true
+      scene.add(rampIn)
 
-    // OUTBOUND CONCRETE EXIT RAMP (Sloped exit ramp)
-    const rampOut = new THREE.Mesh(new THREE.BoxGeometry(4.8, 0.24, 4.4), matConcreteRamp)
-    rampOut.position.set(-15.4, 0.12, 6.5)
-    rampOut.rotation.z = 0.04
-    rampOut.receiveShadow = true
-    scene.add(rampOut)
+      // Sloped Exit Concrete Ramp (x: -15.2)
+      const rampOut = new THREE.Mesh(new THREE.BoxGeometry(4.8, 0.24, 4.2), matConcreteRamp)
+      rampOut.position.set(-15.2, 0.12, lane.z)
+      rampOut.rotation.z = 0.04
+      rampOut.receiveShadow = true
+      scene.add(rampOut)
 
-    // 4 Corner Load Cell Inspection Plates (Caution Red Corner Covers)
-    ;[-4.1, 4.1].forEach(lx => {
-      ;[-1.8, 1.8].forEach(lz => {
-        const loadcell = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.04, 0.5), new THREE.MeshStandardMaterial({ color: 0xdc2626 }))
-        loadcell.position.set(-22.0 + lx, 0.40, 6.5 + lz)
-        scene.add(loadcell)
+      // 4 Corner Load Cell Inspection Plates (Red Covers)
+      ;[-4.2, 4.2].forEach(lx => {
+        ;[-1.8, 1.8].forEach(lz => {
+          const loadcell = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.04, 0.48), new THREE.MeshStandardMaterial({ color: 0xdc2626 }))
+          loadcell.position.set(-22.0 + lx, 0.38, lane.z + lz)
+          scene.add(loadcell)
+        })
+      })
+
+      // Dual Red/Green LED Traffic Light on Stanchion
+      const signalHousing = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.65, 0.18), new THREE.MeshStandardMaterial({ color: 0x0f172a }))
+      signalHousing.position.set(-16.8, 2.6, lane.z - 2.2)
+      const sigRed = new THREE.Mesh(new THREE.SphereGeometry(0.09, 10, 10), new THREE.MeshBasicMaterial({ color: 0xef4444 }))
+      sigRed.position.set(-16.8, 2.76, lane.z - 2.1)
+      const sigGreen = new THREE.Mesh(new THREE.SphereGeometry(0.09, 10, 10), new THREE.MeshBasicMaterial({ color: 0x22c55e }))
+      sigGreen.position.set(-16.8, 2.44, lane.z - 2.1)
+      scene.add(signalHousing, sigRed, sigGreen)
+
+      // Automated Red/White Striped Barrier Boom Gate at Scale Exit
+      const boomGate = buildBarrierBoomGate({ x: -16.8, y: 0.12, z: lane.z - 2.15, rotationY: 0, isOpen: false })
+      scene.add(boomGate)
+    })
+
+    // HEAVY YELLOW-AND-BLACK HAZARD STRIPED CRASH CURBS & DIVIDERS (Matching reference photo)
+    // 1. Central Crash Divider Block between Lane 1 and Lane 2
+    const centerDivider = new THREE.Mesh(new THREE.BoxGeometry(10.8, 0.58, 0.72), matHazardCurb)
+    centerDivider.position.set(-22.0, 0.35, 7.6)
+    scene.add(centerDivider)
+
+    // Central safety bollards at approach ends
+    ;[-27.6, -16.4].forEach(bx => {
+      const bollard = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.95, 12), matHazardCurb)
+      bollard.position.set(bx, 0.55, 7.6)
+      scene.add(bollard)
+    })
+
+    // 2. Outer Hazard Curbs for Lane 1 (z = 2.45) and Lane 2 (z = 12.75)
+    const curbLane1 = new THREE.Mesh(new THREE.BoxGeometry(10.8, 0.52, 0.35), matHazardCurb)
+    curbLane1.position.set(-22.0, 0.32, 2.45)
+    const curbLane2 = new THREE.Mesh(new THREE.BoxGeometry(10.8, 0.52, 0.35), matHazardCurb)
+    curbLane2.position.set(-22.0, 0.32, 12.75)
+    scene.add(curbLane1, curbLane2)
+
+    // Safety bollards on outer approach entries
+    ;[-27.6, -16.4].forEach(bx => {
+      const b1 = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.95, 12), matHazardCurb)
+      b1.position.set(bx, 0.55, 2.45)
+      const b2 = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.95, 12), matHazardCurb)
+      b2.position.set(bx, 0.55, 12.75)
+      scene.add(b1, b2)
+    })
+
+    // OVERHEAD COVERED CONTROL BRIDGE SPANNING OVER BOTH LANES (Matching reference photo structure)
+    // Structure spans from z = 2.0 to z = 13.2 (width 11.2m, height 3.8m, depth 4.8m)
+    const bridgeSidingTex = createCorrugatedTexture(isDark ? '#1e293b' : '#f1f5f9', isDark ? '#0f172a' : '#cbd5e1')
+    const matBridgeWall = new THREE.MeshStandardMaterial({
+      map: bridgeSidingTex,
+      color: isDark ? 0x94a3b8 : 0xffffff,
+      roughness: 0.45,
+      metalness: 0.25,
+    })
+    const matBridgeRoof = new THREE.MeshStandardMaterial({ color: isDark ? 0x0f172a : 0x334155, roughness: 0.5 })
+    const matWindowFrame = new THREE.MeshStandardMaterial({ color: 0x0f766e, roughness: 0.3 }) // Teal/green frame from photo
+    const matWindowGlass = new THREE.MeshPhysicalMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.45, roughness: 0.05 })
+
+    // Elevated Bridge Cabin Body
+    const bridgeCabin = new THREE.Mesh(new THREE.BoxGeometry(4.8, 3.4, 11.6), matBridgeWall)
+    bridgeCabin.position.set(-22.0, 5.7, 7.6)
+    bridgeCabin.castShadow = true
+
+    const bridgeRoof = new THREE.Mesh(new THREE.BoxGeometry(5.2, 0.35, 12.2), matBridgeRoof)
+    bridgeRoof.position.set(-22.0, 7.55, 7.6)
+    scene.add(bridgeCabin, bridgeRoof)
+
+    // 4 Vertical Inspection Windows with Green/Teal Frames (Facing Inbound Traffic at x = -19.5)
+    ;[3.8, 5.8, 9.4, 11.4].forEach(wz => {
+      // Window Frame
+      const frame = new THREE.Mesh(new THREE.BoxGeometry(0.12, 1.8, 1.1), matWindowFrame)
+      frame.position.set(-19.55, 6.0, wz)
+      // Glass Pane
+      const glass = new THREE.Mesh(new THREE.BoxGeometry(0.06, 1.6, 0.92), matWindowGlass)
+      glass.position.set(-19.5, 6.0, wz)
+      scene.add(frame, glass)
+    })
+
+    // Steel Support Columns under the Bridge (Yellow/black hazard striping at bases)
+    const matBridgePillar = new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.8, roughness: 0.25 })
+    ;[-24.0, -20.0].forEach(px => {
+      ;[2.45, 7.6, 12.75].forEach(pz => {
+        // Steel column
+        const col = new THREE.Mesh(new THREE.BoxGeometry(0.48, 4.0, 0.48), matBridgePillar)
+        col.position.set(px, 2.0, pz)
+        // Hazard base wrap (lower 1.2m)
+        const baseHazard = new THREE.Mesh(new THREE.BoxGeometry(0.54, 1.2, 0.54), matHazardCurb)
+        baseHazard.position.set(px, 0.6, pz)
+        scene.add(col, baseHazard)
       })
     })
 
-    // High-Visibility Hazard Safety Curbs Along Both Scale Edges
-    ;[-2.25, 2.25].forEach(zOff => {
-      const curb = new THREE.Mesh(new THREE.BoxGeometry(9.2, 0.48, 0.26), new THREE.MeshStandardMaterial({ map: createHazardTexture() }))
-      curb.position.set(-22.0, 0.32, 6.5 + zOff)
-      scene.add(curb)
+    // DISTINCTIVE BLUE DIGITAL SIGNS MOUNTED ABOVE EACH LANE (Exact match to reference photo!)
+    // Sign 1: "1 - 2 NO.1 WEIGHBRIDGE" mounted directly above Lane 1
+    const signTex1 = createWeighbridgeBlueSignTexture('1 - 2', 'NO.1 WEIGHBRIDGE')
+    const signMat1 = new THREE.MeshBasicMaterial({ map: signTex1 })
+    const blueSign1 = new THREE.Mesh(new THREE.BoxGeometry(0.14, 1.15, 2.2), signMat1)
+    blueSign1.position.set(-19.55, 4.25, 4.8)
+    scene.add(blueSign1)
+
+    // Sign 2: "0 - 5 NO.2 WEIGHBRIDGE" mounted directly above Lane 2
+    const signTex2 = createWeighbridgeBlueSignTexture('0 - 5', 'NO.2 WEIGHBRIDGE')
+    const signMat2 = new THREE.MeshBasicMaterial({ map: signTex2 })
+    const blueSign2 = new THREE.Mesh(new THREE.BoxGeometry(0.14, 1.15, 2.2), signMat2)
+    blueSign2.position.set(-19.55, 4.25, 10.4)
+    scene.add(blueSign2)
+
+    // Overhead ANPR License Plate Cameras & Dome Sensor Housings under the bridge ceiling
+    wbLanes.forEach(lane => {
+      // Cylindrical surveillance dome housing
+      const dome = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.22, 14), new THREE.MeshStandardMaterial({ color: 0x0f172a }))
+      dome.position.set(-22.0, 3.85, lane.z)
+      // Infrared red sensor eye
+      const eye = new THREE.Mesh(new THREE.SphereGeometry(0.08, 10, 10), new THREE.MeshBasicMaterial({ color: 0xef4444 }))
+      eye.position.set(-22.0, 3.72, lane.z)
+      scene.add(dome, eye)
     })
 
-    // Cantilever Overhead Gantry with RFID & ANPR Scanners
-    const gantryMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.85, roughness: 0.25 })
-    ;[-2.8, 2.8].forEach(zOff => {
-      const stanchion = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.28, 5.4, 10), gantryMat)
-      stanchion.position.set(-22.0, 2.7, 6.5 + zOff)
-      scene.add(stanchion)
+    // REAL CARGO TRUCKS POSITIONED ON WEIGHBRIDGE DECKS (Matching reference photo!)
+    // Truck on Lane 1: Heavy Red Cab Lorry (matching red truck on left in photo)
+    const wbTruckData1 = { carrier: 'Delhivery', vehicle_type: '32FT_TRUCK', shipment_id: 'WB-SCALE-01', risk_level: 'LOW' }
+    const redScaleTruck = build10WheelLorry(wbTruckData1, isDark)
+    redScaleTruck.group.position.set(-22.0, 0.18, 4.8)
+    redScaleTruck.group.rotation.y = 0
+    scene.add(redScaleTruck.group)
+    pickables.push(redScaleTruck.hitbox)
+
+    // Truck on Lane 2: Modern Metallic Silver JAC-style Cab-Over (matching silver truck on right in photo)
+    const wbTruckData2 = { carrier: 'DEFAULT', vehicle_type: '32FT_TRUCK', shipment_id: 'WB-SCALE-02', risk_level: 'LOW' }
+    const silverScaleTruck = buildRealisticSemiTruck(wbTruckData2, isDark)
+    silverScaleTruck.group.position.set(-22.0, 0.18, 10.4)
+    silverScaleTruck.group.rotation.y = 0
+    scene.add(silverScaleTruck.group)
+    pickables.push(silverScaleTruck.hitbox)
+
+    // Weighbridge Marshal Worker stationed between lanes
+    const wWeighMarshal = buildHumanWorker({
+      name: 'R. Senthil',
+      role: 'Weighbridge Operations Lead',
+      department: 'Commercial Weighment & Tare Audit',
+      task: 'Weight Gross/Tare Verification & Boom Gate Clearance',
+      shift: 'Day Shift A',
+      vestColor: 0x22c55e,
+      hatColor: 0xffffff,
+      tool: 'clipboard',
+      isDark,
     })
-    const gantryCrossbeam = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.5, 6.4), gantryMat)
-    gantryCrossbeam.position.set(-22.0, 5.3, 6.5)
-    scene.add(gantryCrossbeam)
+    wWeighMarshal.group.position.set(-15.8, 0.12, 7.6)
+    wWeighMarshal.group.rotation.y = -Math.PI / 2
+    scene.add(wWeighMarshal.group)
+    pickables.push(wWeighMarshal.hitbox)
 
-    // Dual ANPR Infrared Cameras on Gantry
-    ;[-1.4, 1.4].forEach(cz => {
-      const camHousing = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.25, 0.3), new THREE.MeshStandardMaterial({ color: 0xf1f5f9 }))
-      camHousing.position.set(-22.0, 4.9, 6.5 + cz)
-      const camLens = new THREE.Mesh(new THREE.SphereGeometry(0.08, 8, 8), new THREE.MeshBasicMaterial({ color: 0xef4444 }))
-      camLens.position.set(-22.2, 4.9, 6.5 + cz)
-      scene.add(camHousing, camLens)
-    })
-
-    // DYNAMIC LED OVERHEAD DIGITAL SCOREBOARD READOUT
-    const scaleDisplay = makeDynamicScaleDisplay()
-    scaleDisplay.mesh.position.set(-22.0, 6.6, 6.5)
-    scene.add(scaleDisplay.mesh)
-
-    // Automated Red/White Boom Barrier Gate
-    const barrierPost = new THREE.Mesh(new THREE.BoxGeometry(0.4, 1.4, 0.4), new THREE.MeshStandardMaterial({ color: 0xfacc15 }))
-    barrierPost.position.set(-17.5, 0.7, 4.2)
-    const barrierArmPivot = new THREE.Group()
-    barrierArmPivot.position.set(-17.5, 1.25, 4.2)
-    const barrierArm = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.12, 4.8), new THREE.MeshStandardMaterial({ color: 0xdc2626 }))
-    barrierArm.position.set(0, 0, 2.4)
-    barrierArmPivot.add(barrierArm)
-    scene.add(barrierPost, barrierArmPivot)
-
-    // Dual Traffic Signal Light on Weighbridge (Red / Green)
-    const wbSignalMat = new THREE.MeshBasicMaterial({ color: 0x16a34a })
-    const wbSignal = new THREE.Mesh(new THREE.SphereGeometry(0.26, 12, 12), wbSignalMat)
-    wbSignal.position.set(-17.5, 2.8, 4.2)
-    scene.add(wbSignal)
-
-    // Scanning Green Laser Beam on Weighbridge
-    const scanBeamMat = new THREE.MeshBasicMaterial({ color: 0x10b981, transparent: true, opacity: 0.35 })
-    const scanBeam = new THREE.Mesh(new THREE.BoxGeometry(0.2, 4.2, 3.8), scanBeamMat)
-    scanBeam.position.set(-22.0, 2.4, 6.5)
-    scene.add(scanBeam)
-
-    // REALISTIC WEIGHBRIDGE OPERATOR CONTROL CABIN / CABIN BOOTH
-    const wbKiosk = new THREE.Mesh(new THREE.BoxGeometry(4.2, 3.2, 3.2), new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.4 }))
-    wbKiosk.position.set(-22.0, 1.6, 11.4)
-    const wbKioskRoof = new THREE.Mesh(new THREE.BoxGeometry(4.6, 0.35, 3.6), new THREE.MeshStandardMaterial({ color: 0x0284c7 }))
-    wbKioskRoof.position.set(-22.0, 3.35, 11.4)
-
-    // Large Panoramic Viewing Window facing the Scale Platform
-    const wbWindow = new THREE.Mesh(
-      new THREE.BoxGeometry(3.2, 1.4, 0.1),
-      new THREE.MeshPhysicalMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.45, roughness: 0.05 })
-    )
-    wbWindow.position.set(-22.0, 1.9, 9.75)
-
-    // Interior Operator Terminal Glowing Screen
-    const wbScreen = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.4, 0.08), new THREE.MeshBasicMaterial({ color: 0x2dd4bf }))
-    wbScreen.position.set(-22.0, 1.5, 10.4)
-
-    // Weighbridge Station Exterior Certification Signboard
-    const wbSign = makeSignBoard('WB-01 AUTOMATED COMMERCIAL SCALE', 'CERTIFIED CAPACITY: 60 TONS · NABL APPROVED', '#090d16', '#2dd4bf', 4.4, 0.9)
-    wbSign.position.set(-22.0, 3.9, 9.8)
-
-    scene.add(wbKiosk, wbKioskRoof, wbWindow, wbScreen, wbSign)
+    // Station Exterior Master Identification Billboard
+    const wbSign = makeSignBoard('DUAL COMMERCIAL WEIGHBRIDGE WB-01 & WB-02', 'LANES 1 & 2 · AUTOMATED ANPR & GROSS/TARE SCALE · NABL 60T', '#090d16', '#38bdf8', 11.2, 1.4)
+    wbSign.position.set(-22.0, 7.7, 7.6)
+    scene.add(wbSign)
 
     // ==================== 4. ASPHALT ROADWAY, 360° RING ROADS & HIGHWAY ====================
     const roadAsphaltTex = createAsphaltRoadTexture(isDark)
@@ -3768,8 +4200,8 @@ export default function DigitalTwin3D({ twinData, theme, userRole }) {
     labelProd.position.set(-20, 12.5, -12.0)
     const labelDock = makeLabelSprite('2. LOADING DOCK BAYS (01 - 06)', 'Finished Goods Staging & Active Unloading', isDark)
     labelDock.position.set(13, 12.5, -4.0)
-    const labelScale = makeLabelSprite('3. WEIGHBRIDGE WB-01', 'Automated Commercial Scale & Yard Marshal', isDark)
-    labelScale.position.set(-22, 9.2, 6.5)
+    const labelScale = makeLabelSprite('3. DUAL WEIGHBRIDGE (WB-01 & WB-02)', 'Dual Scale Pits · ANPR & Yard Marshal', isDark)
+    labelScale.position.set(-22, 9.8, 7.6)
     const labelHighway = makeLabelSprite('4. HIGHWAY CORRIDOR', 'Active In-Transit GPS Fleet', isDark)
     labelHighway.position.set(0, 4.5, 29.0)
     const labelDispatch = makeLabelSprite('5. DISPATCH CONTROL TOWER', 'Central Logistics Command & GPS Fleet Telemetry', isDark)
@@ -3817,47 +4249,96 @@ export default function DigitalTwin3D({ twinData, theme, userRole }) {
     scene.add(stagingYard.group)
     pickables.push(stagingYard.hitbox)
 
-    // Waiting Parked Commercial Vehicles in Staging Slots
-    // Slot 01: 10-Wheel Heavy Lorry waiting for dock call-up
+    // Waiting Parked Commercial Vehicles in Staging Slots (Matching parallel fleet rows in reference Photo)
+    // Slot 01: Class-8 White Sleeper Cab Semi-Truck with High-Roof Fairing
     const stageTruckData1 = {
-      carrier: 'TCI', vehicle_type: '32FT_TRUCK', shipment_id: 'INB-00821', customer_order_id: 'CO-000104',
-      shipment_qty: 1250, vehicle_utilization_pct: 94.0, transit_tat_hrs: 24, risk_level: 'LOW',
-      recommended_action: 'Staged in Slot 01. Awaiting Bay 04 clearance for finished goods unloading.'
+      carrier: 'DEFAULT', vehicle_type: '32FT_TRUCK', shipment_id: 'STG-00124', customer_order_id: 'CO-000104',
+      shipment_qty: 1450, vehicle_utilization_pct: 95.0, transit_tat_hrs: 24, risk_level: 'LOW',
+      recommended_action: 'Staged in Slot 01. White Class 8 tractor awaiting Bay 01 call-up upon WMS release.'
     }
-    const stagingTruck1 = build10WheelLorry(stageTruckData1, isDark)
-    stagingTruck1.group.position.set(-11.3, 0.12, 12.5)
+    const stagingTruck1 = buildRealisticSemiTruck(stageTruckData1, isDark)
+    stagingTruck1.group.position.set(-11.4, 0.12, 12.5)
     stagingTruck1.group.rotation.y = 0.22
     scene.add(stagingTruck1.group)
     pickables.push(stagingTruck1.hitbox)
 
-    // Slot 02: 6-Wheel Medium Lorry
+    // Slot 02: Class-8 White Sleeper Cab Semi-Truck
     const stageTruckData2 = {
-      carrier: 'BlueDart', vehicle_type: '20FT_TRUCK', shipment_id: 'INB-00959', customer_order_id: 'CO-000088',
-      shipment_qty: 850, vehicle_utilization_pct: 88.5, transit_tat_hrs: 18, risk_level: 'MEDIUM',
-      recommended_action: 'Priority Inbound Vehicle. Scheduled for immediate Weighbridge sequence.'
+      carrier: 'Delhivery', vehicle_type: '32FT_TRUCK', shipment_id: 'STG-00125', customer_order_id: 'CO-000088',
+      shipment_qty: 1320, vehicle_utilization_pct: 92.5, transit_tat_hrs: 18, risk_level: 'LOW',
+      recommended_action: 'Staged in Slot 02. Pre-cleared by Weighbridge WB-01, queued for Loading Bay 02.'
     }
-    const stagingTruck2 = build6WheelLorry(stageTruckData2, isDark)
-    stagingTruck2.group.position.set(-7.5, 0.12, 12.5)
+    const stagingTruck2 = buildRealisticSemiTruck(stageTruckData2, isDark)
+    stagingTruck2.group.position.set(-7.6, 0.12, 12.5)
     stagingTruck2.group.rotation.y = 0.22
     scene.add(stagingTruck2.group)
     pickables.push(stagingTruck2.hitbox)
 
-    // Staging Area Yard Coordinator Worker
+    // Slot 03: 10-Wheel Heavy Haul Lorry (TCI Freight)
+    const stageTruckData3 = {
+      carrier: 'TCI', vehicle_type: '32FT_TRUCK', shipment_id: 'STG-00126', customer_order_id: 'CO-000115',
+      shipment_qty: 1100, vehicle_utilization_pct: 88.0, transit_tat_hrs: 32, risk_level: 'MEDIUM',
+      recommended_action: 'Staged in Slot 03. Heavy commercial hauler awaiting outbound manifest.'
+    }
+    const stagingTruck3 = build10WheelLorry(stageTruckData3, isDark)
+    stagingTruck3.group.position.set(-3.8, 0.12, 12.5)
+    stagingTruck3.group.rotation.y = 0.22
+    scene.add(stagingTruck3.group)
+    pickables.push(stagingTruck3.hitbox)
+
+    // Slot 04: Class-8 BlueDart Semi-Truck
+    const stageTruckData4 = {
+      carrier: 'BlueDart', vehicle_type: '32FT_TRUCK', shipment_id: 'STG-00127', customer_order_id: 'CO-000092',
+      shipment_qty: 1280, vehicle_utilization_pct: 90.0, transit_tat_hrs: 20, risk_level: 'LOW',
+      recommended_action: 'Staged in Slot 04. Expedited corridor dispatch clearance pending.'
+    }
+    const stagingTruck4 = buildRealisticSemiTruck(stageTruckData4, isDark)
+    stagingTruck4.group.position.set(0.0, 0.12, 12.5)
+    stagingTruck4.group.rotation.y = 0.22
+    scene.add(stagingTruck4.group)
+    pickables.push(stagingTruck4.hitbox)
+
+    // Staging Area Yard Personnel (Matching high-vis vest workers in reference Photo)
+    // Worker 1: Staging Coordinator with tablet
     const wStagingCoord = buildHumanWorker({
       name: 'K. Mohan',
-      role: 'Yard Staging Coordinator',
+      role: 'Chief Yard Dispatch Marshal',
       department: 'Fleet Logistics & Yard Operations',
-      task: 'Directing waiting vehicles from staging slots to Loading Bays 01-06',
-      shift: 'Day Shift A',
-      vestColor: 0xeab308,
-      hatColor: 0xfacc15,
+      task: 'Coordinating Parallel Truck Queue & Assigning Dock Sequences',
+      shift: 'Day Shift A (06:00 - 14:30)',
+      vestColor: 0x84cc16, // Bright lime-green high-vis vest like in photo
+      hatColor: 0xffffff,
       tool: 'tablet',
       isDark,
     })
-    wStagingCoord.group.position.set(-2.0, 0.12, 14.5)
-    wStagingCoord.group.rotation.y = Math.PI
+    wStagingCoord.group.position.set(-2.0, 0.12, 14.8)
+    wStagingCoord.group.rotation.y = Math.PI * 0.9
     scene.add(wStagingCoord.group)
     pickables.push(wStagingCoord.hitbox)
+
+    // Worker 2: Manifest Inspector with clipboard
+    const wInspector = buildHumanWorker({
+      name: 'D. Suresh',
+      role: 'Fleet Pre-Trip Safety Auditor',
+      department: 'Fleet Compliance',
+      task: 'Inspecting E-Way Bills, Driver Licenses & Seal Numbers',
+      shift: 'Day Shift A',
+      vestColor: 0xfacc15, // Bright yellow high-vis vest
+      hatColor: 0xffffff,
+      tool: 'clipboard',
+      isDark,
+    })
+    wInspector.group.position.set(-1.0, 0.12, 14.6)
+    wInspector.group.rotation.y = -Math.PI * 0.8
+    scene.add(wInspector.group)
+    pickables.push(wInspector.hitbox)
+
+    // Palletized Staging Buffer Area in Yard (Shrink-wrapped cartons staged outdoors)
+    const outdoorPallets1 = buildWoodPalletStack(4)
+    outdoorPallets1.position.set(4.5, 0.12, 12.5)
+    const outdoorPallets2 = buildBluePalletStack(5)
+    outdoorPallets2.position.set(6.2, 0.12, 12.5)
+    scene.add(outdoorPallets1, outdoorPallets2)
 
     // ==================== 5. SIMULATED HERO TRUCK & HIGHWAY FLEET ====================
     const heroData = filteredVehicles[0] || {
