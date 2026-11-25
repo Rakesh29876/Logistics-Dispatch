@@ -172,8 +172,8 @@ export default function TatSmartDockView({
           className={`tab-pill ${activeTab === 'inward' ? 'active' : ''}`}
           style={{ display: 'flex', alignItems: 'center', gap: '7px', padding: '7px 16px', fontSize: '12.5px' }}
         >
-          <Truck size={14} />
-          <span>Manual Vehicle Inwarding (Gate Entry to Exit)</span>
+          <ShieldCheck size={14} color={activeTab === 'inward' ? '#ffffff' : '#2563eb'} />
+          <span>Security Gate &amp; Vehicle Load Inspection</span>
           <span
             style={{
               fontSize: '10px',
@@ -184,7 +184,7 @@ export default function TatSmartDockView({
               fontWeight: 800,
             }}
           >
-            GATE IN-OUT
+            GATE-01 CHECKPOINT
           </span>
         </button>
         <button

@@ -1080,6 +1080,12 @@ class VehicleManualEntryIn(BaseModel):
     priority: str = "P1"
     freight_cost_inr: float = 48500.0
     planned_tat_hrs: float = 48.0
+    load_type: str | None = "FINISHED_GOODS"
+    inspection_verdict: str | None = "APPROVED_WEIGHBRIDGE"
+    hazard_class: str | None = None
+    security_marshal: str | None = "Marshal K. Venkatesh (SEC-884)"
+    seal_no: str | None = None
+    checklist_status: str | None = "ALL_PASSED"
     notes: str | None = None
 
 
@@ -1207,6 +1213,10 @@ def create_manual_vehicle_entry(body: VehicleManualEntryIn, user: dict = Depends
             "carrier": body.carrier,
             "plant_id": body.plant_id,
             "dock_bay": body.dock_bay,
+            "load_type": body.load_type or "FINISHED_GOODS",
+            "inspection_verdict": body.inspection_verdict or "APPROVED_WEIGHBRIDGE",
+            "hazard_class": body.hazard_class,
+            "security_marshal": body.security_marshal or "Marshal K. Venkatesh (SEC-884)",
             "tare_weight_kg": body.tare_weight_kg,
             "gross_weight_kg": body.gross_weight_kg,
             "net_weight_kg": net_weight,
