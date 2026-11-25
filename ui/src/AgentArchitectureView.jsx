@@ -610,6 +610,7 @@ export default function AgentArchitectureView({
       badgeColor: '#16a34a',
       icon: Warehouse,
       iconColor: '#16a34a',
+      imgSrc: '/arch-icons/card1_wms.png',
       description: 'Synchronizes live warehouse inventory snapshots across finished-goods warehouses FG-WH-01 and FG-WH-02, verifying physical stock availability against requested customer orders and isolating QA hold lots.',
       protocols: 'PROTOCOLS: Manhattan WMS REST API · SSCC-18 Pallet Barcodes · MQTT Staging Sensors',
       tables: 'DATABASE TABLES: fact_inventory_daily_snapshot, dim_inventory_lot, fact_dock_bay',
@@ -1644,7 +1645,7 @@ export default function AgentArchitectureView({
                               {it.imgSrc ? (
                                 <div
                                   style={{
-                                    width: isWb ? '32px' : '26px',
+                                    width: (isWb || it.id === 'wms') ? '32px' : '26px',
                                     height: '26px',
                                     borderRadius: '5px',
                                     overflow: 'hidden',
