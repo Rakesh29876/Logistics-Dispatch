@@ -281,7 +281,7 @@ export default function TatSmartDockView({
         <VehicleEntryExitManualForm
           authFetch={authFetch}
           onToast={onToast}
-          onNavigateToTwin={() => setPage('twin3d')}
+          onNavigateToTwin={() => setPage('overview')}
           onNavigateToQueue={() => setActiveTab('dock')}
         />
       )}

@@ -7,7 +7,6 @@ import {
   Sparkles, Sun, Timer, TrendingUp, Truck, UserCircle2, Users, Warehouse, X, Zap
 } from 'lucide-react'
 import LoginPage from './LoginPage'
-import DigitalTwin3D from './DigitalTwin3D'
 import ErrorBoundary from './ErrorBoundary'
 import MetricInfo from './MetricInfo'
 import AgentArchitectureView from './AgentArchitectureView'
@@ -252,7 +251,7 @@ export default function App() {
         if (!r.ok) throw new Error('Session expired')
         const u = await r.json()
         setUser(u)
-        setPage('twin3d')
+        setPage(ROLE_DEFAULT_PAGE[u.role] || 'architecture')
       } catch {
         handleClearSession()
       } finally {
@@ -668,7 +667,6 @@ export default function App() {
     { id: 'overview', label: 'Operations Dashboard', icon: LayoutDashboard, show: true },
     { id: 'delay', label: 'Vehicle Operations', icon: Truck, show: hasPerm('delay_risk', 'tat_optimization', 'dock_allocation'), badge: 'OPS' },
     { id: 'integrations', label: 'Data Source Integrations', icon: Database, show: true, badge: '5 LIVE' },
-    { id: 'twin3d', label: '3D Digital Twin', icon: Box, show: hasPerm('digital_twin'), badge: '3D' },
     { id: 'assistant', label: 'AI Assistant', icon: Bot, show: hasPerm('ai_assistant'), badge: 'AI' },
     { id: 'pipeline_flow', label: 'Data Pipeline & Telemetry', icon: Cpu, show: hasPerm('agent_architecture', 'pipeline_monitoring'), badge: 'LIVE' },
     { id: 'users', label: 'User Management', icon: Users, show: hasPerm('user_management', 'audit_logs') },
@@ -805,16 +803,12 @@ export default function App() {
             {/* Live Operational Status Telemetry Pill */}
             <div
               className="health-pill"
-              onClick={() => setPage('twin3d')}
-              title="Click to launch 360° Interactive 3D Facility Digital Twin"
-              style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}
+              title="Real-Time PostgreSQL Database Sync & Active Fleet Operations"
+              style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
             >
               <i style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', display: 'inline-block', boxShadow: '0 0 8px #10b981' }} />
               <span style={{ fontWeight: 700, fontSize: '10.5px', letterSpacing: '0.3px' }}>
                 LIVE OPERATIONS · NEON DB SYNC
-              </span>
-              <span style={{ padding: '1px 6px', borderRadius: '4px', background: 'rgba(14, 165, 233, 0.15)', color: '#0ea5e9', fontSize: '9.5px', fontWeight: 800 }}>
-                3D TWIN
               </span>
             </div>
 
@@ -873,16 +867,6 @@ export default function App() {
           <DataSourceIntegrationsView onNavigate={setPage} />
         )}
 
-        {pagePermitted && page === 'twin3d' && (
-          <ErrorBoundary title="3D Digital Twin Render Error" onGoHome={() => setPage('overview')}>
-            <DigitalTwin3D
-              twinData={twinData}
-              theme={theme}
-              userRole={user?.role || 'MANAGER'}
-              onInspectJourney={inspectJourney}
-            />
-          </ErrorBoundary>
-        )}
 
         {pagePermitted && page === 'architecture' && (
           <div className="content" style={{ padding: 0, minHeight: 'calc(100vh - 52px)', overflowY: 'auto', overflowX: 'hidden' }}>
@@ -961,7 +945,6 @@ export default function App() {
                   <Zap size={14} />
                   <span>Run Agent Trigger Flow</span>
                 </button>
-                <button className="btn-secondary" onClick={() => setPage('twin3d')}><Box size={14} /> Open 3D Twin</button>
               </div>
             </div>
 
@@ -1498,14 +1481,6 @@ export default function App() {
                     }}
                   >
                     4. Agent Trigger Flow &amp; Email
-                  </button>
-                  <button
-                    type="button"
-                    className="walkthrough-step-btn"
-                    onClick={() => setPage('twin3d')}
-                    style={{ background: 'linear-gradient(135deg, #0ea5e9 0%, #0d9488 100%)', borderColor: '#38bdf8', color: '#ffffff' }}
-                  >
-                    <Box size={12} /> 5. 3D Digital Twin
                   </button>
                 </div>
               </div>

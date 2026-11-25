@@ -104,25 +104,25 @@ const STAGES = [
     liveMetric: '360° Facility Visual Twin · Single Pane of Glass',
     whatWeUse: [
       { name: 'Unified Logistics Control Tower', role: 'Executive fleet KPIs, plant filters & TAT tracking' },
-      { name: '3D Photorealistic Digital Twin', role: 'Three.js WebGL 360° spatial simulation of facility' },
+      { name: 'Real-Time Dispatch Telemetry', role: 'Live operations and vehicle sequencing' },
       { name: 'Interactive SVG Analytics', role: 'Dual-series area trends, donut charts & bubble matrix' },
       { name: '1-Click Journey Audit Drawers', role: 'Full shipment history from gate-in to exit' },
       { name: 'Executive Report Generator', role: 'One-click board-ready PDF & Excel exports' },
     ],
-    navTarget: 'twin3d',
-    navLabel: 'Launch 3D Digital Twin',
-    script: "Operations teams no longer need to switch between ten disconnected tabs or chase drivers on WhatsApp. The Presentation Layer delivers a single Unified Control Tower covering Executive KPIs, Dispatch Staging, and Corridor TAT. Most impressively, our interactive 3D Digital Twin gives leadership complete 360-degree visibility of the manufacturing campus, allowing you to click any truck or loading bay to inspect live weight, driver credentials, and delay status in real time.",
+    navTarget: 'overview',
+    navLabel: 'Open Operations Dashboard',
+    script: "Operations teams no longer need to switch between ten disconnected tabs or chase drivers on WhatsApp. The Presentation Layer delivers a single Unified Control Tower covering Executive KPIs, Dispatch Staging, and Corridor TAT. Operations leadership gains complete visibility across all facilities and corridors in real time.",
     flowCards: [
       { step: 1, title: 'Executive Control Tower', sys: 'Unified Dashboard', purpose: 'Live KPIs, delay distributions, carrier scorecards & plant-by-plant filter views.', impact: 'Instant executive oversight' },
-      { step: 2, title: '3D Campus Digital Twin', sys: 'WebGL Spatial Engine', purpose: '360° real-time 3D model of Assembly, Powertrain, Silos, Utilities & Docks 01-06.', impact: 'Zero yard blind spots' },
-      { step: 3, title: 'Click-to-Inspect Telemetry', sys: 'Interactive Raycasting', purpose: 'Click any 3D vehicle, warehouse, or worker to inspect live shipment payload.', impact: '5-second status verification' },
+      { step: 2, title: 'Real-Time Fleet Telemetry', sys: 'Operations Engine', purpose: 'Live tracking of Assembly, Powertrain, Silos, Utilities & Docks 01-06.', impact: 'Zero yard blind spots' },
+      { step: 3, title: 'Click-to-Inspect Telemetry', sys: 'Interactive Drawers', purpose: 'Inspect live shipment payload, weight, and driver credentials.', impact: '5-second status verification' },
       { step: 4, title: 'Executive Management Reports', sys: 'PDF & Excel Generator', purpose: 'One-click executive summaries with carrier rankings & exception root causes.', impact: 'Board-ready documentation' },
     ],
-    clientQuestion: 'When leadership asks for a status report on current yard operations, does your team take hours to compile it, or can you pull it up on a 3D screen in 5 seconds?',
+    clientQuestion: 'When leadership asks for a status report on current yard operations, does your team take hours to compile it, or can you pull it up on screen in 5 seconds?',
     keyPoints: [
       'Consolidates Executive KPIs, Dispatch Staging, and Corridor Logistics onto one screen.',
-      'Industry-first 360° 3D facility twin models the entire multi-unit manufacturing campus.',
-      'One-click Clean View mode hides all HUD overlays for executive boardroom presentations.'
+      'Comprehensive facility tracking covers the entire multi-unit manufacturing campus.',
+      'One-click Clean View mode for executive boardroom presentations.'
     ],
     roiMetrics: [
       { label: 'Decision Speed', value: '10x Faster', sub: 'Real-time visual command' },

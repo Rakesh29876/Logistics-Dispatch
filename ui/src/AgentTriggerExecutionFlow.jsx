@@ -622,10 +622,10 @@ ${dockList.map((b) => `- ${b.bay_id} (${b.bay_type}): ${b.allocated_vehicle} -> 
               type="button"
               className="btn-secondary"
               style={{ padding: '8px 14px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}
-              onClick={() => onNavigate?.('twin3d')}
+              onClick={() => onNavigate?.('delay')}
             >
               <Warehouse size={13} />
-              <span>3D Plant Twin</span>
+              <span>Vehicle Operations</span>
             </button>
 
             <button

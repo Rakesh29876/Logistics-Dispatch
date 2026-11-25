@@ -1,10 +1,9 @@
 import { useState } from 'react'
 import {
-  AlertCircle, ArrowRight, Building2, Camera,
+  AlertCircle, ArrowRight, Building2,
   Eye, EyeOff, Factory, Globe, KeyRound, Lock, Moon, Scale,
   ShieldCheck, Sun, Truck, UserCheck, Warehouse, X
 } from 'lucide-react'
-import LoginBackground3D from './LoginBackground3D'
 
 const DEMO_PERSONAS = [
   {
@@ -45,14 +44,6 @@ const DEMO_PERSONAS = [
   },
 ]
 
-const CAMERA_PRESETS = [
-  { id: 'overview', label: '360° Campus', icon: Globe },
-  { id: 'plant', label: 'Unit A Plant', icon: Factory },
-  { id: 'dock', label: 'Docks 01-06', icon: Warehouse },
-  { id: 'weighbridge', label: 'Weighbridge', icon: Scale },
-  { id: 'dispatch', label: 'Command Tower', icon: Building2 },
-]
-
 export default function LoginPage({ onLoginSuccess, theme, onToggleTheme }) {
   const [identifier, setIdentifier] = useState('mgr_admin')
   const [password, setPassword] = useState('GwcAdmin#2026!')
@@ -61,9 +52,6 @@ export default function LoginPage({ onLoginSuccess, theme, onToggleTheme }) {
   const [rememberMe, setRememberMe] = useState(true)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-
-  // 3D camera perspective control
-  const [cameraView, setCameraView] = useState('overview')
 
   const [showForgot, setShowForgot] = useState(false)
   const [forgotIdent, setForgotIdent] = useState('')
@@ -76,10 +64,6 @@ export default function LoginPage({ onLoginSuccess, theme, onToggleTheme }) {
     setIdentifier(p.user)
     setPassword(p.pass)
     setError('')
-    // Fly 3D drone camera to that department in the blurred background!
-    if (p.camView) {
-      setCameraView(p.camView)
-    }
   }
 
   const API_BASE = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
@@ -148,7 +132,7 @@ export default function LoginPage({ onLoginSuccess, theme, onToggleTheme }) {
       {/* ===================== 1. REALISTIC 3D MANUFACTURING FACILITY BACKGROUND ===================== */}
       <LoginBackground3D theme={theme} cameraView={cameraView} />
 
-      {/* ===================== 2. CINEMATIC FROSTED BLUR BACKDROP OVER 3D SCENE ===================== */}
+      {/* ===================== 2. CINEMATIC FROSTED BLUR BACKDROP ===================== */}
       <div className="login-blur-backdrop" />
 
       {/* ===================== 3. UNIFIED HIGH-END INTERFACE OVERLAY ===================== */}
@@ -163,36 +147,15 @@ export default function LoginPage({ onLoginSuccess, theme, onToggleTheme }) {
             />
             <span className="brand-tag-divider" />
             <span className="live-status-dot" />
-            <span className="brand-tag-text">APEX MANUFACTURING FACILITY · 3D DIGITAL TWIN</span>
+            <span className="brand-tag-text">APEX MANUFACTURING OPERATIONS · ENTERPRISE CONTROL TOWER</span>
           </div>
 
           <div className="login-top-actions">
-            {/* 3D Drone Camera Presets */}
-            <div className="camera-pill-bar">
-              <Camera size={13} color="var(--teal, #0ea5e9)" />
-              {CAMERA_PRESETS.map((c) => {
-                const Icon = c.icon
-                const isActive = cameraView === c.id
-                return (
-                  <button
-                    key={c.id}
-                    type="button"
-                    className={`cam-pill-btn ${isActive ? 'active' : ''}`}
-                    onClick={() => setCameraView(c.id)}
-                    title={`Focus 3D camera on ${c.label}`}
-                  >
-                    <Icon size={12} />
-                    <span>{c.label}</span>
-                  </button>
-                )
-              })}
-            </div>
-
             {/* Day / Night Shift Mode Toggle */}
             <button
               className="shift-mode-toggle"
               onClick={onToggleTheme}
-              title={`Switch to ${theme === 'light' ? 'Night Shift Lighting (High-Mast Floodlights)' : 'Day Shift Lighting (Industrial Daylight)'}`}
+              title={`Switch to ${theme === 'light' ? 'Night Shift Mode' : 'Day Shift Mode'}`}
             >
               {theme === 'light' ? <Moon size={14} /> : <Sun size={14} />}
               <span>{theme === 'light' ? 'Night Shift' : 'Day Shift'}</span>
@@ -216,7 +179,7 @@ export default function LoginPage({ onLoginSuccess, theme, onToggleTheme }) {
               </div>
               <h1 className="unified-title">Intelligent Logistics Operations</h1>
               <p className="unified-subtitle">
-                Autonomous Turnaround Optimization, Real-Time 3D Yard Telemetry &amp; Domo AI on Neon PostgreSQL
+                Autonomous Turnaround Optimization, Real-Time Fleet Telemetry &amp; Domo AI on Neon PostgreSQL
               </p>
             </div>
 
@@ -224,7 +187,6 @@ export default function LoginPage({ onLoginSuccess, theme, onToggleTheme }) {
             <div className="unified-persona-box">
               <div className="persona-box-header">
                 <span>SELECT DEMO PERSONA:</span>
-                <span className="persona-fly-badge">⚡ Auto-flies 3D view</span>
               </div>
 
               <div className="persona-tabs-row">
@@ -361,7 +323,7 @@ export default function LoginPage({ onLoginSuccess, theme, onToggleTheme }) {
           </div>
         </main>
 
-        {/* Bottom Orbit Guidance */}
+        {/* Bottom Status Information */}
         <footer className="login-unified-footer">
           <span>🏭 Apex Manufacturing Complex</span>
           <span>•</span>
@@ -371,7 +333,7 @@ export default function LoginPage({ onLoginSuccess, theme, onToggleTheme }) {
           <span>•</span>
           <span>Weighbridge WB-01 Active</span>
           <span>•</span>
-          <span>🖱️ Click &amp; drag outside card to orbit 3D background 360°</span>
+          <span>🔒 Enterprise Single Sign-On · AES-256 TLS 1.3 Certified Session</span>
         </footer>
       </div>
 

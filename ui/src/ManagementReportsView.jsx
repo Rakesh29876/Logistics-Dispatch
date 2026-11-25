@@ -509,9 +509,9 @@ export default function ManagementReportsView({
                       type="button"
                       className="btn btn-secondary"
                       style={{ padding: '6px 12px', fontSize: '11px', display: 'flex', alignItems: 'center', gap: '6px' }}
-                      onClick={() => setPage('twin3d')}
+                      onClick={() => setPage('delay')}
                     >
-                      <Box size={13} /> 3D Plant Twin
+                      <Truck size={13} /> Vehicle Operations
                     </button>
                   </div>
                 </div>
@@ -896,10 +896,10 @@ export default function ManagementReportsView({
                                 type="button"
                                 className="btn btn-secondary"
                                 style={{ padding: '3px 8px', fontSize: '10px' }}
-                                onClick={() => setPage('twin3d')}
-                                title="Inspect campus in 3D Digital Twin"
+                                onClick={() => setPage('delay')}
+                                title="View vehicle in Operations"
                               >
-                                3D Twin
+                                Operations
                               </button>
                             </div>
                           </td>
