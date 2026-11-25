@@ -581,19 +581,19 @@ export default function TatSmartDockView({
               <div style={{ padding: '10px 12px', borderRadius: '8px', background: 'var(--panel-bg, #ffffff)', border: '1px solid var(--border-color)', position: 'relative' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
                   <span style={{ fontSize: '9.5px', fontWeight: 800, color: '#0284c7', background: 'rgba(2, 132, 199, 0.12)', padding: '1px 6px', borderRadius: '4px' }}>
-                    1. SECURITY GATE-IN
+                    1. SECURITY GATE &amp; SAP GRN
                   </span>
                   <span style={{ fontSize: '9.5px', color: 'var(--text-muted)' }}>08:15 AM</span>
                 </div>
                 <b style={{ fontSize: '11.5px', display: 'block', color: 'var(--text-primary)' }}>
-                  Known Entry Check
+                  Security Clearance &amp; SAP GRN
                 </b>
                 <div style={{ fontSize: '10px', color: 'var(--text-muted)', margin: '3px 0' }}>
-                  Security checks truck plate &amp; driver ID. Authorized entry.
+                  Cargo inspection passed, invoice verified; SAP S/4HANA releases GRN.
                 </div>
                 <div style={{ fontSize: '9.5px', borderTop: '1px dashed var(--border-subtle)', paddingTop: '4px', marginTop: '4px' }}>
                   <span style={{ color: 'var(--text-muted)' }}>Source: </span>
-                  <strong style={{ color: '#0284c7' }}>SEC Connector (T_entry)</strong>
+                  <strong style={{ color: '#0284c7' }}>SAP S/4HANA MM (MIGO 101)</strong>
                 </div>
               </div>
 
@@ -1002,7 +1002,12 @@ export default function TatSmartDockView({
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <div>
-                      <span style={{ fontSize: '10px', fontWeight: 800, color: '#0ea5e9' }}>RANK #{rec.queue_rank}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ fontSize: '10px', fontWeight: 800, color: '#0ea5e9' }}>RANK #{rec.queue_rank}</span>
+                        <span style={{ fontSize: '9.5px', fontWeight: 800, color: '#1e3a8a', background: 'rgba(30,58,138,0.08)', padding: '1px 5px', borderRadius: '4px', fontFamily: 'monospace' }}>
+                          SAP GRN: {rec.sap_grn_no || `GRN-SAP-2026-${(rec.reference_id || '8842').slice(-4)}`}
+                        </span>
+                      </div>
                       <b style={{ display: 'block', fontSize: '12px' }}>{rec.reference_id}</b>
                       <small style={{ color: 'var(--text-muted)' }}>{rec.customer_name}</small>
                     </div>

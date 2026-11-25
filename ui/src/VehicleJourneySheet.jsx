@@ -174,6 +174,16 @@ export default function VehicleJourneySheet({
                     <span className="tel-sub">Contract Freight Rate</span>
                   </div>
                 )}
+
+                <div className="telemetry-card" style={{ borderColor: 'rgba(37, 99, 235, 0.4)', background: 'rgba(37, 99, 235, 0.04)' }}>
+                  <span className="tel-label"><Database size={13} color="#2563eb" /> SAP ERP GRN No.</span>
+                  <b className="tel-val" style={{ color: '#1e3a8a', fontFamily: 'monospace' }}>
+                    {d.sap_grn_no || `GRN-SAP-2026-${(d.shipment_id || journeyId || '8842').slice(-4)}`}
+                  </b>
+                  <span className="tel-sub">
+                    PO: {d.sap_po_no || 'PO-4500088921'} · {d.sap_invoice_no || 'INV-2026-8842'} · SAP S/4HANA Released
+                  </span>
+                </div>
               </div>
 
               {/* Hardware & IoT Sensor Status HUD */}

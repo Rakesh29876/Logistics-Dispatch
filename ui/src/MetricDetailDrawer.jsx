@@ -520,6 +520,9 @@ export default function MetricDetailDrawer({
                                   {row.customer_order_id}
                                 </small>
                               )}
+                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px', fontSize: '9px', background: 'rgba(30, 58, 138, 0.08)', color: '#1e3a8a', padding: '1px 5px', borderRadius: '3px', fontWeight: 800, marginTop: '2px', fontFamily: 'monospace' }}>
+                                SAP GRN: {row.sap_grn_no || `GRN-SAP-2026-${(row.shipment_id || row.customer_order_id || '8842').slice(-4)}`}
+                              </span>
                             </td>
                             <td>
                               <b>{row.plant_id || row.warehouse_id || 'IN-KA-01'}</b>

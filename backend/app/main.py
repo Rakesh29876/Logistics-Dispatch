@@ -1086,6 +1086,11 @@ class VehicleManualEntryIn(BaseModel):
     security_marshal: str | None = "Marshal K. Venkatesh (SEC-884)"
     seal_no: str | None = None
     checklist_status: str | None = "ALL_PASSED"
+    sap_grn_no: str | None = None
+    sap_invoice_no: str | None = None
+    sap_po_no: str | None = None
+    sap_migo_doc: str | None = None
+    sap_movement_type: str | None = "101"
     notes: str | None = None
 
 
@@ -1097,6 +1102,12 @@ def create_manual_vehicle_entry(body: VehicleManualEntryIn, user: dict = Depends
         order_id = body.customer_order_id or f"CO-M-{int(now_dt.timestamp()) % 100000:05d}"
         clean_vid = body.vehicle_id.replace('-', '').replace(' ', '')
         gate_pass = body.gate_pass_no or f"GP-{now_dt.strftime('%Y%m%d')}-{clean_vid[-4:] if len(clean_vid) >= 4 else '0001'}"
+        sap_grn = body.sap_grn_no or f"GRN-SAP-{now_dt.strftime('%Y')}-{clean_vid[-4:] if len(clean_vid) >= 4 else '0001'}"
+        sap_invoice = body.sap_invoice_no or f"INV-{now_dt.strftime('%Y%m%d')}-{clean_vid[-4:] if len(clean_vid) >= 4 else '0001'}"
+        sap_po = body.sap_po_no or f"PO-45000{int(now_dt.timestamp()) % 100000:05d}"
+        sap_migo = body.sap_migo_doc or f"MIGO-101-{int(now_dt.timestamp()) % 100000:05d}"
+        is_cleared = bool(body.inspection_verdict and body.inspection_verdict.startswith("APPROVED"))
+        sap_entry_auth = "AUTHORIZED_ENTER_PLANT" if is_cleared else "BLOCKED_PENDING_SECURITY"
 
         planned_eta = now_dt + timedelta(hours=body.planned_tat_hrs)
         net_weight = max(body.gross_weight_kg - body.tare_weight_kg, 0.0)
@@ -1199,17 +1210,23 @@ def create_manual_vehicle_entry(body: VehicleManualEntryIn, user: dict = Depends
             user.get("id"),
             "MANUAL_VEHICLE_ENTRY",
             "Inward Logistics",
-            f"Registered vehicle {body.vehicle_id} ({body.carrier}) for order {order_id}, Bay {body.dock_bay}, Stage {body.current_stage}"
+            f"Registered vehicle {body.vehicle_id} ({body.carrier}) | SAP GRN: {sap_grn} | Invoice: {sap_invoice} | PO: {sap_po} | Bay: {body.dock_bay} | Stage: {body.current_stage} | Clearance: {body.inspection_verdict}"
         )
         invalidate_analytics_cache()
 
         return {
             "status": "SUCCESS",
-            "message": f"Vehicle {body.vehicle_id} registered and entered into operations database successfully!",
+            "message": f"Vehicle {body.vehicle_id} registered and entered into operations database successfully! SAP GRN: {sap_grn}",
             "shipment_id": shipment_id,
             "customer_order_id": order_id,
             "vehicle_id": body.vehicle_id,
             "gate_pass_no": gate_pass,
+            "sap_grn_no": sap_grn,
+            "sap_invoice_no": sap_invoice,
+            "sap_po_no": sap_po,
+            "sap_migo_doc": sap_migo,
+            "sap_movement_type": body.sap_movement_type or "101",
+            "sap_entry_authorization": sap_entry_auth,
             "carrier": body.carrier,
             "plant_id": body.plant_id,
             "dock_bay": body.dock_bay,

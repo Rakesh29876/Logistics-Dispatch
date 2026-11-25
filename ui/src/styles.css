@@ -7513,6 +7513,136 @@ tr.clickable:hover td {
   background: #334155;
 }
 
+/* SAP S/4HANA ERP & GRN Integration Styles */
+.sap-grn-cockpit-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, rgba(30, 58, 138, 0.08), rgba(37, 99, 235, 0.04));
+  border: 1px solid rgba(37, 99, 235, 0.25);
+  border-left: 5px solid #2563eb;
+  border-radius: 10px;
+  padding: 10px 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.sap-grn-info-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sap-logo-badge {
+  background: #1e3a8a;
+  color: #ffffff;
+  font-family: monospace;
+  font-size: 11px;
+  font-weight: 900;
+  padding: 3px 8px;
+  border-radius: 5px;
+  letter-spacing: 0.06em;
+}
+
+.sap-grn-meta-title b {
+  font-size: 12.5px;
+  color: #1e3a8a;
+  display: block;
+}
+
+.sap-grn-meta-title span {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.sap-grn-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+
+.sap-grn-status-pill.authorized {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1.5px solid #86efac;
+}
+
+.sap-grn-status-pill.blocked {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1.5px solid #fca5a5;
+}
+
+.sap-entry-gate-card {
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.sap-entry-gate-card.cleared {
+  background: #f0fdf4;
+  border: 1.5px solid #86efac;
+}
+
+.sap-entry-gate-card.blocked {
+  background: #fef2f2;
+  border: 1.5px solid #fecaca;
+}
+
+.sap-slip-grn-highlight {
+  background: #eff6ff;
+  border: 2px solid #3b82f6;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.sap-slip-grn-val b {
+  font-size: 15px;
+  font-family: monospace;
+  color: #1e3a8a;
+  letter-spacing: 0.04em;
+  display: block;
+}
+
+.sap-slip-grn-val span {
+  font-size: 10px;
+  color: #475569;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.sap-slip-auth-status {
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 10.5px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.sap-slip-auth-status.cleared {
+  background: #16a34a;
+  color: #ffffff;
+}
+
+.sap-slip-auth-status.held {
+  background: #dc2626;
+  color: #ffffff;
+}
+
 /* Print Only Styles */
 @media print {
   body * {

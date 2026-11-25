@@ -11,7 +11,7 @@ import {
 } from 'lucide-react'
 
 // ============================================================================
-// CARGO / LOAD CLASSIFICATIONS & VEHICLE-WISE INSPECTION PROTOCOLS
+// CARGO / LOAD CLASSIFICATIONS & SAP ERP INWARD PROTOCOLS
 // ============================================================================
 export const LOAD_CATEGORIES = {
   FINISHED_GOODS: {
@@ -28,10 +28,16 @@ export const LOAD_CATEGORIES = {
     defaultRoute: 'DOCK_STAGING',
     routeLabel: 'Direct Staging Docks (Bay 01 - 04)',
     recommendedVehicle: '32FT_TRUCK',
-    gateInspectionProtocol: 'E-Way Bill validation, Tamper-Evident High-Security Bolt Seal match, Pallet Tally',
+    sapGrnPrefix: 'GRN-SAP-2026-FG',
+    sampleGrn: 'GRN-SAP-2026-08842',
+    sampleInvoice: 'INV-TVS-2026-8842',
+    samplePo: 'PO-4500088921',
+    sampleMigo: 'MIGO-101-8842',
+    gateInspectionProtocol: 'SAP 3-Way Match, E-Way Bill validation, Tamper-Evident Bolt Seal match, Pallet Tally',
     checkpoints: [
-      { id: 'eway_bill', label: 'E-Way Bill & Tax Invoice match active ERP Customer Order', mandatory: true },
-      { id: 'tamper_seal', label: 'Tamper-Evident Container Bolt Seal intact & verified against manifest', mandatory: true },
+      { id: 'sap_po_match', label: 'SAP PO & Vendor Invoice matched in SAP S/4HANA (3-Way Match Verification)', mandatory: true },
+      { id: 'eway_bill', label: 'E-Way Bill & Tax Invoice match active SAP ERP Customer Order', mandatory: true },
+      { id: 'tamper_seal', label: 'Tamper-Evident Container Bolt Seal intact & verified against SAP manifest', mandatory: true },
       { id: 'pallet_tally', label: 'Pallet shrink-wrap intact; physical carton count matches delivery challan', mandatory: true },
       { id: 'tarpaulin_weather', label: 'Vehicle cargo bay clean, dry, weather-proof with no moisture ingress', mandatory: false },
     ],
@@ -59,9 +65,15 @@ export const LOAD_CATEGORIES = {
     defaultRoute: 'WEIGHBRIDGE_IN',
     routeLabel: 'Compulsory Dual Weighbridge Scales (WB-01 & WB-02)',
     recommendedVehicle: '40FT_TRAILER',
-    gateInspectionProtocol: 'Mill Test Certificate (MTC) Heat Batch Verification, Gross/Tare Axle Load Audit',
+    sapGrnPrefix: 'GRN-SAP-2026-RM',
+    sampleGrn: 'GRN-SAP-2026-09201',
+    sampleInvoice: 'INV-JSW-2026-9201',
+    samplePo: 'PO-4500091402',
+    sampleMigo: 'MIGO-101-9201',
+    gateInspectionProtocol: 'SAP PO Line Match, Mill Test Certificate (MTC) Heat Batch Verification, Gross/Tare Scale Audit',
     checkpoints: [
-      { id: 'mtc_cert', label: 'Mill Test Certificate (MTC) & Metallurgical Heat Batch validated', mandatory: true },
+      { id: 'sap_po_match', label: 'SAP PO & Vendor Inward Delivery Challan matched in SAP S/4HANA', mandatory: true },
+      { id: 'mtc_cert', label: 'Mill Test Certificate (MTC) & Metallurgical Heat Batch validated in SAP MM', mandatory: true },
       { id: 'weighbridge_slip', label: 'Compulsory Gross Scale WB-01 verified before inward movement', mandatory: true },
       { id: 'tie_down_chains', label: 'High-tensile steel lashings and ratchet tie-down chains certified (>5T)', mandatory: true },
       { id: 'axle_overload', label: 'Axle load distribution within legal NHAI road limits (<=10.2T/axle)', mandatory: false },
@@ -90,8 +102,14 @@ export const LOAD_CATEGORIES = {
     defaultRoute: 'DOCK_STAGING',
     routeLabel: 'Isolated Hazmat Yard & Flameproof Staging Bay 06',
     recommendedVehicle: '20FT_TRUCK',
-    gateInspectionProtocol: '16-Point MSDS Compliance, Driver Hazmat Tremcard, Fire Safety & Spark Arrestor',
+    sapGrnPrefix: 'GRN-SAP-2026-HZ',
+    sampleGrn: 'GRN-SAP-2026-07719',
+    sampleInvoice: 'INV-EXD-2026-7719',
+    samplePo: 'PO-4500078210',
+    sampleMigo: 'MIGO-101-7719',
+    gateInspectionProtocol: 'SAP Dangerous Goods Master match, 16-Point MSDS Compliance, Driver Hazmat Tremcard',
     checkpoints: [
+      { id: 'sap_po_match', label: 'SAP PO & Dangerous Goods Master Declaration matched in SAP S/4HANA', mandatory: true },
       { id: 'msds_sheet', label: '16-Point Material Safety Data Sheet (MSDS / SDS) verified & on-dash', mandatory: true },
       { id: 'un_placards', label: 'UN Hazard Class 9 / Class 3 diamond placards visible on all 4 vehicle sides', mandatory: true },
       { id: 'driver_hazmat', label: 'Driver Dangerous Goods (Hazmat) Endorsement & Tremcard valid', mandatory: true },
@@ -122,8 +140,14 @@ export const LOAD_CATEGORIES = {
     defaultRoute: 'DOCK_STAGING',
     routeLabel: 'CCTV-Monitored Vault Staging Bay 02',
     recommendedVehicle: 'VAN',
-    gateInspectionProtocol: 'Active RFID Tamper-Seal validation, Shock/Tilt Impact Loggers, Armed Escort Handover',
+    sapGrnPrefix: 'GRN-SAP-2026-HV',
+    sampleGrn: 'GRN-SAP-2026-04402',
+    sampleInvoice: 'INV-BOS-2026-4402',
+    samplePo: 'PO-4500066120',
+    sampleMigo: 'MIGO-101-4402',
+    gateInspectionProtocol: 'SAP High-Value Asset Order verification, Active RFID Tamper-Seal, Shock Impact Loggers',
     checkpoints: [
+      { id: 'sap_po_match', label: 'SAP PO & High-Value Serialized Asset Order validated in SAP S/4HANA', mandatory: true },
       { id: 'rfid_active', label: 'Active RFID electronic seal verified against central gate authorization server', mandatory: true },
       { id: 'shock_indicator', label: 'Impact shock & tilt sensor indicator < 2.0G (no drop/vibration damage)', mandatory: true },
       { id: 'esd_moisture', label: 'Anti-static ESD vacuum moisture bags sealed with active cobalt indicator cards', mandatory: true },
@@ -153,8 +177,14 @@ export const LOAD_CATEGORIES = {
     defaultRoute: 'DOCK_STAGING',
     routeLabel: 'Returnable Packaging Sorter Yard & Wash Conveyor',
     recommendedVehicle: '16FT_TRUCK',
-    gateInspectionProtocol: 'Returnable Gate Pass (RGP) Tally, ISPM-15 Phytosanitary Heat Stamp Audit',
+    sapGrnPrefix: 'GRN-SAP-2026-RP',
+    sampleGrn: 'GRN-SAP-2026-03312',
+    sampleInvoice: 'INV-CHP-2026-3312',
+    samplePo: 'PO-4500055410',
+    sampleMigo: 'MIGO-101-3312',
+    gateInspectionProtocol: 'SAP Returnable Packaging Account (LE-TRA), RGP Serialized Tally, ISPM-15 Heat Stamp',
     checkpoints: [
+      { id: 'sap_po_match', label: 'SAP Returnable Packaging Ledger & Outward Challan matched in SAP', mandatory: true },
       { id: 'rgp_pass', label: 'Returnable Gate Pass (RGP) serial number matches original outward delivery challan', mandatory: true },
       { id: 'count_tally', label: 'Physical unit count of wooden pallets/crates matches declared quantity (0 variance)', mandatory: true },
       { id: 'ispm_stamp', label: 'ISPM-15 Wood Heat-Treatment stamp verified (fumigation certified)', mandatory: false },
@@ -184,8 +214,14 @@ export const LOAD_CATEGORIES = {
     defaultRoute: 'DOCK_STAGING',
     routeLabel: 'Plant Tool Crib & Line Maintenance Staging Dock',
     recommendedVehicle: 'VAN',
-    gateInspectionProtocol: 'Capital Asset Gate Pass (CAGP), Maintenance HOD Sign-off, OEM Serial Match',
+    sapGrnPrefix: 'GRN-SAP-2026-MS',
+    sampleGrn: 'GRN-SAP-2026-06088',
+    sampleInvoice: 'INV-FAN-2026-6088',
+    samplePo: 'PO-4500044980',
+    sampleMigo: 'MIGO-101-6088',
+    gateInspectionProtocol: 'SAP Plant Maintenance (PM) Order match, Capital Asset Gate Pass (CAGP), OEM Serial Match',
     checkpoints: [
+      { id: 'sap_po_match', label: 'SAP Capital Asset PO & Emergency Breakdown Work Order matched in SAP PM', mandatory: true },
       { id: 'cagp_pass', label: 'Capital Asset Gate Pass (CAGP) endorsed by Plant Engineering Maintenance HOD', mandatory: true },
       { id: 'oem_serial', label: 'Engraved OEM serial number matches emergency line-breakdown work order', mandatory: true },
       { id: 'calibration_cert', label: 'Factory calibration certificate & micrometer tolerance test sheet attached', mandatory: true },
@@ -257,6 +293,11 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
     driver_phone: '+91 98450 12345',
     rfid_tag: 'FASTAG-KA04-8842',
     gate_pass_no: '',
+    sap_grn_no: 'GRN-SAP-2026-08842',
+    sap_invoice_no: 'INV-TVS-2026-8842',
+    sap_po_no: 'PO-4500088921',
+    sap_migo_doc: 'MIGO-101-8842',
+    sap_movement_type: '101',
     tare_weight_kg: 11200,
     gross_weight_kg: 28450,
     current_stage: 'GATE_INWARD',
@@ -287,14 +328,16 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
     const totalPassed = checks.filter(c => checklist[c.id]).length
 
     if (failedMandatory.length > 0) {
-      const isSealOrEway = failedMandatory.some(c => ['eway_bill', 'tamper_seal', 'msds_sheet', 'rfid_active'].includes(c.id))
+      const isSealOrEway = failedMandatory.some(c => ['eway_bill', 'tamper_seal', 'msds_sheet', 'rfid_active', 'sap_po_match'].includes(c.id))
       return {
         status: isSealOrEway ? 'HOLD_PHYSICAL_INSPECTION' : 'HOLD_DOCUMENT_MISMATCH',
         title: 'HOLD: SECONDARY PHYSICAL CARGO INSPECTION REQUIRED',
         verdictText: 'Entry Hold',
         barrier: 'LOWERED',
         tone: 'hold',
-        reason: `Discrepancy detected in ${failedMandatory.map(c => c.label.split(' ')[0]).join(', ')}. Marshal must hold vehicle in Quarantine Inspection Bay.`,
+        sapStatus: 'BLOCKED_PENDING_SECURITY',
+        sapStatusText: 'SAP GRN HELD · NO PLANT ENTRY PERMITTED',
+        reason: `Discrepancy detected in ${failedMandatory.map(c => c.label.split(' ')[0]).join(', ')}. Marshal must hold vehicle in Quarantine Inspection Bay. SAP GRN release is blocked until physical clearance.`,
         allPassed: false,
         passedCount: totalPassed,
         totalCount: checks.length,
@@ -313,7 +356,9 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
       verdictText: 'Clearance Granted',
       barrier: 'RAISED',
       tone: 'approved',
-      reason: `All cargo-specific safety and verification protocols validated for ${currentCategory.shortName}. Authorized for entry to ${currentCategory.routeLabel}.`,
+      sapStatus: 'AUTHORIZED_ENTER_PLANT',
+      sapStatusText: 'SAP GRN RELEASED · AUTHORIZED TO ENTER PLANT',
+      reason: `All cargo-specific safety, vendor invoice, and SAP PO 3-way match protocols validated for ${currentCategory.shortName}. SAP S/4HANA releases GRN. Vehicle authorized to enter ${currentCategory.routeLabel}.`,
       allPassed: true,
       passedCount: totalPassed,
       totalCount: checks.length,
@@ -350,12 +395,17 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
       driver_phone: cat.samplePhone,
       rfid_tag: `FASTAG-${typeId.substring(0, 3)}-${ts}`,
       gate_pass_no: `GP-GATE01-${ts}`,
+      sap_grn_no: `${cat.sapGrnPrefix || 'GRN-SAP-2026'}-${ts}`,
+      sap_invoice_no: `INV-${typeId.substring(0, 3)}-2026-${ts}`,
+      sap_po_no: `PO-45000${ts}`,
+      sap_migo_doc: `MIGO-101-${ts}`,
+      sap_movement_type: '101',
       tare_weight_kg: cat.sampleTare,
       gross_weight_kg: cat.sampleGross,
       shipment_qty: cat.sampleQty,
       freight_cost_inr: cat.sampleFreight,
       seal_no: `SEAL-${typeId.substring(0, 3)}-${ts}`,
-      notes: `${cat.label} verified at Security Gate-01. Route: ${cat.routeLabel}.`,
+      notes: `${cat.label} verified at Security Gate-01 under SAP GRN & PO match. Route: ${cat.routeLabel}.`,
     }))
     setSuccessResult(null)
   }
@@ -375,17 +425,17 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
       nextChecklist[cp.id] = true
     })
     setChecklist(nextChecklist)
-    onToast?.(`✓ All ${currentCategory.checkpoints.length} security checks verified as PASSED`)
+    onToast?.(`✓ All ${currentCategory.checkpoints.length} security checks verified as PASSED · SAP GRN Released`)
   }
 
   const simulateDiscrepancy = () => {
     const checks = currentCategory.checkpoints
-    const targetCheck = checks[1] || checks[0]
+    const targetCheck = checks[0] || checks[1]
     setChecklist(prev => ({
       ...prev,
       [targetCheck.id]: false,
     }))
-    onToast?.(`⚠️ Simulated Discrepancy: ${targetCheck.label.slice(0, 40)}... flag raised!`)
+    onToast?.(`⚠️ Simulated Discrepancy: ${targetCheck.label.slice(0, 40)}... SAP GRN Blocked!`)
   }
 
   const handleSubmit = async (e) => {
@@ -423,7 +473,7 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
         loadCategory: currentCategory,
         gateVerdict,
       })
-      onToast?.(`✓ Vehicle ${data.vehicle_id} cleared Security Gate! Gate Pass: ${data.gate_pass_no}`)
+      onToast?.(`✓ Vehicle ${data.vehicle_id} cleared Security Gate! SAP GRN: ${data.sap_grn_no}`)
     } catch (err) {
       onToast?.(`Submission failed: ${err.message}`)
     } finally {
@@ -440,15 +490,15 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
           <div className="gate-title-meta">
             <div className="gate-eyebrow">
               <span className="live-dot" />
-              <span>MAIN SECURITY GATE-01 · INWARD INSPECTION &amp; CARGO CLASSIFICATION</span>
+              <span>MAIN SECURITY GATE-01 · INWARD INSPECTION &amp; SAP GRN CLEARANCE</span>
               <span className="gate-badge-tag">APEX SECURITY CONTROLLER</span>
             </div>
             <h2>
               <ShieldCheck size={24} color="#2563eb" />
-              <span>Vehicle-Wise Security Gate Inwarding &amp; Cargo Inspection Checkpoint</span>
+              <span>Vehicle-Wise Security Gate Inwarding &amp; SAP GRN Inspection Checkpoint</span>
             </h2>
             <p>
-              Inspect incoming commercial fleet based on <b>specific cargo load types</b> (Finished Goods, Heavy Raw Materials, Hazmat Batteries, High-Value Electronics, Returnables, Tooling Spares). Dynamic safety checklists, boom barrier authorization, and certified weighbridge scale routing.
+              Inward security gate checkpoint with <b>SAP S/4HANA ERP integration</b>. Every vehicle is inspected by cargo load type; <b>only once physical security check is passed does SAP release the official Goods Receipt Note (GRN) and permit entry inside the plant</b>.
             </p>
           </div>
 
@@ -497,6 +547,24 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
           </div>
         </div>
 
+        {/* SAP S/4HANA ERP Telemetry & GRN Authorization Strip */}
+        <div className="sap-grn-cockpit-strip">
+          <div className="sap-grn-info-left">
+            <span className="sap-logo-badge">SAP S/4HANA MM</span>
+            <div className="sap-grn-meta-title">
+              <b>Enterprise Source System Data Feed · Goods Receipt Note (GRN) Inwarding</b>
+              <span>Active ERP Connector (RFC / OData Sync) · Movement Type 101 (Direct Plant Receipt)</span>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span className={`sap-grn-status-pill ${gateVerdict.allPassed ? 'authorized' : 'blocked'}`}>
+              <Database size={13} />
+              <span>{gateVerdict.sapStatusText}</span>
+            </span>
+          </div>
+        </div>
+
         {/* Live Gate Telemetry Sensors Strip */}
         <div className="gate-live-telemetry-strip">
           <div className="gate-sensor-pill active-pulse">
@@ -526,7 +594,7 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
             <span>Step 1: Select Vehicle Cargo Load Classification Inside Vehicle</span>
           </h3>
           <span style={{ fontSize: '11.5px', color: '#64748b' }}>
-            Checklist protocols and gate routing automatically adapt to the cargo category.
+            SAP GRN prefix, invoice rules, and safety checklists adapt automatically to cargo type.
           </span>
         </div>
 
@@ -575,6 +643,10 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
                 <div className="cargo-card-title">{cat.label}</div>
                 <div className="cargo-card-subtitle">{cat.subtitle}</div>
 
+                <div style={{ fontSize: '10.5px', color: '#1e3a8a', fontFamily: 'monospace', fontWeight: 700, margin: '2px 0 6px 0' }}>
+                  SAP GRN: {cat.sampleGrn}
+                </div>
+
                 <div className="cargo-card-route-pill">
                   <Navigation size={11} />
                   <span>Route: {cat.routeLabel.split('(')[0]}</span>
@@ -596,7 +668,7 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
                 <span>Step 2: Security Gate Inspection Checklist ({currentCategory.shortName})</span>
               </h3>
               <p style={{ margin: '2px 0 0 0', fontSize: '11px', color: '#64748b' }}>
-                Mandatory security criteria to permit barrier lift &amp; vehicle inwarding
+                All mandatory security checks must pass to release SAP GRN &amp; lift entrance barrier
               </p>
             </div>
 
@@ -675,7 +747,7 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
           <div className="checklist-head-row">
             <h3>
               <Award size={16} color="#2563eb" />
-              <span>Step 3: Automated Security Clearance Verdict</span>
+              <span>Step 3: Security Verdict &amp; SAP Entry Permission</span>
             </h3>
             <span style={{ fontSize: '11px', fontWeight: 700, color: '#64748b' }}>
               {gateVerdict.passedCount} of {gateVerdict.totalCount} Checks Passed
@@ -696,6 +768,33 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
               </h4>
               <p style={{ color: gateVerdict.allPassed ? '#166534' : '#991b1b' }}>
                 {gateVerdict.reason}
+              </p>
+            </div>
+          </div>
+
+          {/* SAP Entry Permission Card */}
+          <div className={`sap-entry-gate-card ${gateVerdict.allPassed ? 'cleared' : 'blocked'}`}>
+            <Database size={20} color={gateVerdict.allPassed ? '#16a34a' : '#dc2626'} style={{ flexShrink: 0 }} />
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
+                <b style={{ fontSize: '12px', color: gateVerdict.allPassed ? '#15803d' : '#b91c1c' }}>
+                  {gateVerdict.allPassed ? 'SAP S/4HANA: PERMITTED TO ENTER PLANT' : 'SAP S/4HANA: ENTRY DENIED · DETAINED AT GATE'}
+                </b>
+                <span style={{
+                  fontSize: '9.5px',
+                  fontWeight: 800,
+                  padding: '1px 6px',
+                  borderRadius: '4px',
+                  background: gateVerdict.allPassed ? '#dcfce7' : '#fee2e2',
+                  color: gateVerdict.allPassed ? '#15803d' : '#dc2626',
+                }}>
+                  {gateVerdict.allPassed ? 'MIGO 101 POSTED' : 'GRN FROZEN'}
+                </span>
+              </div>
+              <p style={{ fontSize: '11px', margin: 0, color: '#475569', lineHeight: 1.35 }}>
+                {gateVerdict.allPassed
+                  ? `SAP GRN ${form.sap_grn_no} is authorized. Vehicle ${form.vehicle_id} is cleared to cross security gate and enter facility.`
+                  : `Security verification incomplete. Vehicle ${form.vehicle_id} cannot enter plant until all mandatory checks pass in SAP.`}
               </p>
             </div>
           </div>
@@ -761,11 +860,24 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
           <div className="slip-header">
             <div className="slip-brand">
               <h4>APEX PRECISION INDUSTRIAL COMPLEX · SECURITY GATE-01</h4>
-              <span>OFFICIAL VEHICLE INWARD INSPECTION CLEARANCE CERTIFICATE</span>
+              <span>OFFICIAL VEHICLE INWARD INSPECTION &amp; SAP GRN CLEARANCE CERTIFICATE</span>
             </div>
             <div className="slip-pass-id">
               <span>GATE PASS NO.</span>
               <b>{form.gate_pass_no || 'GP-GATE01-8842'}</b>
+            </div>
+          </div>
+
+          {/* SAP GRN Highlight Box at Top of Slip */}
+          <div className="sap-slip-grn-highlight">
+            <div className="sap-slip-grn-val">
+              <span>SAP S/4HANA GOODS RECEIPT NOTE (GRN) · MOVEMENT 101</span>
+              <b>{form.sap_grn_no || 'GRN-SAP-2026-08842'}</b>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span className={`sap-slip-auth-status ${gateVerdict.allPassed ? 'cleared' : 'held'}`}>
+                {gateVerdict.allPassed ? '✓ SAP GRN RELEASED · ENTER PLANT' : '⚠ SAP GRN BLOCKED · DETENTION'}
+              </span>
             </div>
           </div>
 
@@ -783,6 +895,19 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
               <span className="slip-data-value" style={{ color: currentCategory.color }}>
                 {currentCategory.label}
               </span>
+            </div>
+
+            <div className="slip-data-item">
+              <span className="slip-data-label">Vendor Tax Invoice No.</span>
+              <span className="slip-data-value">{form.sap_invoice_no || 'INV-2026-8842'}</span>
+            </div>
+            <div className="slip-data-item">
+              <span className="slip-data-label">SAP Purchase Order (PO)</span>
+              <span className="slip-data-value">{form.sap_po_no || 'PO-4500088921'}</span>
+            </div>
+            <div className="slip-data-item">
+              <span className="slip-data-label">SAP Movement Type / SLoc</span>
+              <span className="slip-data-value">101 · FG SLoc 1001</span>
             </div>
 
             <div className="slip-data-item">
@@ -829,7 +954,7 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
             <div className="slip-barcode-mock">
               <Scan size={22} color="#0f172a" />
               <span style={{ fontFamily: 'monospace', fontSize: '11px', fontWeight: 800 }}>
-                *GP-2026-{form.vehicle_id.replace(/[^A-Z0-9]/g, '')}*
+                *{form.sap_grn_no || 'GRN-SAP-8842'}*
               </span>
             </div>
 
@@ -838,7 +963,7 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
               color: gateVerdict.allPassed ? '#15803d' : '#dc2626',
             }}>
               <CheckCircle2 size={12} />
-              <span>{gateVerdict.allPassed ? 'SECURITY CLEARED · GATE-IN' : 'HOLD · PENDING MARSHAL'}</span>
+              <span>{gateVerdict.allPassed ? 'SECURITY CLEARED · SAP GRN RELEASED' : 'HOLD · PENDING MARSHAL'}</span>
             </div>
 
             <button
@@ -860,16 +985,18 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
             <CheckCircle2 size={32} color="#10b981" />
           </div>
           <div className="success-meta">
-            <h4>Vehicle Inward &amp; Security Registration Completed!</h4>
+            <h4>Vehicle Inward &amp; SAP GRN Registration Completed!</h4>
             <p>
-              Vehicle <b>{successResult.vehicle_id}</b> ({successResult.carrier}) carrying <b>{successResult.loadCategory?.label || currentCategory.label}</b> has been registered under Gate Pass <code>{successResult.gate_pass_no}</code> and Customer Order <code>{successResult.customer_order_id}</code>.
+              Vehicle <b>{successResult.vehicle_id}</b> ({successResult.carrier}) carrying <b>{successResult.loadCategory?.label || currentCategory.label}</b> has been registered in SAP S/4HANA under GRN <code>{successResult.sap_grn_no || form.sap_grn_no}</code> and Gate Pass <code>{successResult.gate_pass_no}</code>.
             </p>
             <div className="success-chips-row">
+              <span className="chip-item">SAP GRN: <b>{successResult.sap_grn_no || form.sap_grn_no}</b></span>
+              <span className="chip-item">Vendor Invoice: <b>{successResult.sap_invoice_no || form.sap_invoice_no}</b></span>
+              <span className="chip-item">SAP PO: <b>{successResult.sap_po_no || form.sap_po_no}</b></span>
               <span className="chip-item">Gate Pass: <b>{successResult.gate_pass_no}</b></span>
               <span className="chip-item">Assigned Dock: <b>{successResult.dock_bay}</b></span>
               <span className="chip-item">Net Payload: <b>{successResult.net_weight_kg.toLocaleString()} kg</b></span>
-              <span className="chip-item">Status: <b>{successResult.shipment_status}</b></span>
-              <span className="chip-item">Clearance: <b>{successResult.inspection_verdict || 'APPROVED_WEIGHBRIDGE'}</b></span>
+              <span className="chip-item">Plant Entry: <b>{successResult.sap_entry_authorization || 'AUTHORIZED_ENTER_PLANT'}</b></span>
             </div>
           </div>
           <div className="success-actions">
@@ -1087,17 +1214,66 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
           </div>
         </div>
 
-        {/* SECTION 3: CUSTOMER ORDER & CARGO ALLOCATION */}
+        {/* SECTION 3: SAP ERP COMMERCIAL INWARDING, GRN & CARGO */}
         <div className="form-section-card">
           <div className="section-head">
             <div className="section-num purple-num">3</div>
             <div>
-              <h3>Customer Order &amp; Cargo Bill of Materials</h3>
-              <p>Commercial consignment, order reference and shipment quantity</p>
+              <h3>SAP ERP Commercial Inwarding, GRN &amp; Cargo Details</h3>
+              <p>SAP Goods Receipt Note (GRN), vendor invoice, SAP PO and consignment line items</p>
             </div>
           </div>
 
           <div className="section-fields-grid">
+            <label className="field-group">
+              <span className="label-text">
+                SAP GRN Number (Goods Receipt Note) <b className="req">*</b>
+              </span>
+              <div className="input-with-icon">
+                <Database size={15} className="field-icon" color="#2563eb" />
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. GRN-SAP-2026-08842"
+                  value={form.sap_grn_no}
+                  onChange={e => setForm({ ...form, sap_grn_no: e.target.value.toUpperCase() })}
+                  style={{ fontWeight: 700, fontFamily: 'monospace', color: '#1e3a8a' }}
+                />
+              </div>
+            </label>
+
+            <label className="field-group">
+              <span className="label-text">
+                Vendor Tax Invoice Number &amp; Date <b className="req">*</b>
+              </span>
+              <div className="input-with-icon">
+                <FileText size={15} className="field-icon" />
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. INV-TVS-2026-8842"
+                  value={form.sap_invoice_no}
+                  onChange={e => setForm({ ...form, sap_invoice_no: e.target.value.toUpperCase() })}
+                />
+              </div>
+            </label>
+
+            <label className="field-group">
+              <span className="label-text">
+                SAP Purchase Order (PO) Number <b className="req">*</b>
+              </span>
+              <div className="input-with-icon">
+                <CheckCircle2 size={15} className="field-icon" />
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. PO-4500088921"
+                  value={form.sap_po_no}
+                  onChange={e => setForm({ ...form, sap_po_no: e.target.value.toUpperCase() })}
+                />
+              </div>
+            </label>
+
             <label className="field-group">
               <span className="label-text">Consignee / Customer Name</span>
               <select
@@ -1150,6 +1326,19 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
                 value={form.shipment_qty}
                 onChange={e => setForm({ ...form, shipment_qty: Number(e.target.value) })}
               />
+            </label>
+
+            <label className="field-group">
+              <span className="label-text">SAP Movement Type &amp; SLoc</span>
+              <select
+                value={form.sap_movement_type}
+                onChange={e => setForm({ ...form, sap_movement_type: e.target.value })}
+              >
+                <option value="101">101 - Direct GR for PO into Warehouse Storage (SLoc 1001)</option>
+                <option value="103">103 - GR into Security Gate Hold / GR Blocked Stock</option>
+                <option value="105">105 - Release from Gate Blocked Stock into SLoc 1001</option>
+                <option value="122">122 - Return Delivery to Transporter / Vendor</option>
+              </select>
             </label>
 
             <label className="field-group">
@@ -1289,7 +1478,7 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
           <div className="submit-disclaimer">
             <ShieldCheck size={18} color="#10b981" style={{ flexShrink: 0 }} />
             <span>
-              Submitting registers this vehicle immediately into <b>fact_shipment_milestone</b> under <b>{currentCategory.label}</b> with status <b>{gateVerdict.status}</b>, triggering live agent intelligence across 3D Digital Twin &amp; Operations Tower.
+              Submitting registers this vehicle immediately into <b>fact_shipment_milestone</b> under <b>{currentCategory.label}</b> with SAP GRN <b>{form.sap_grn_no}</b> and status <b>{gateVerdict.status}</b>, authorizing plant entry across 3D Digital Twin &amp; Operations Tower.
             </span>
           </div>
 
@@ -1315,12 +1504,12 @@ export default function VehicleEntryExitManualForm({ authFetch, onToast, onNavig
               {submitting ? (
                 <>
                   <RefreshCw size={15} className="spin" />
-                  <span>Registering at Security Gate-01...</span>
+                  <span>Registering at Security Gate-01 &amp; SAP S/4HANA...</span>
                 </>
               ) : (
                 <>
                   <Truck size={15} />
-                  <span>Submit Vehicle Entry &amp; Gate-In Record</span>
+                  <span>Submit Vehicle Entry &amp; SAP GRN Release</span>
                   <ArrowRight size={14} />
                 </>
               )}
