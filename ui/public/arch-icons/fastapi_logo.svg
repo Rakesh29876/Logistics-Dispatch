@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <filter id="softShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2.5" stdDeviation="3.5" flood-color="#00695c" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <circle cx="50" cy="50" r="46" fill="#009485" filter="url(#softShadow)"/>
+  <path fill="#ffffff" d="M 46.55 22.73 H 78 L 46.42 44.93 H 68.01 L 22.0 77.27 Q 34.28 50.0 46.55 22.73 Z"/>
+</svg>

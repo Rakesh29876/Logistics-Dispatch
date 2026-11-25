@@ -65,11 +65,11 @@ export default function AgentArchitectureView({
       number: '2',
       title: '2. API GATEWAY',
       sub: 'FastAPI Engine',
-      headerBg: 'linear-gradient(135deg, #1e40af, #1d4ed8)',
-      headerIconColor: '#1e40af',
-      headerIcon: Server,
-      headerImg: '/arch-icons/card2_header_server.png',
-      centerImg: '/arch-icons/card2_server.png',
+      headerBg: 'linear-gradient(135deg, #0f766e, #0d9488)',
+      headerIconColor: '#0f766e',
+      headerIcon: Zap,
+      headerImg: '/arch-icons/fastapi_emblem.png',
+      centerImg: '/arch-icons/fastapi_custom.png',
       tagImg: '/arch-icons/card2_lightning.png',
       type: 'gateway',
       engine: 'FastAPI Engine',
@@ -696,10 +696,11 @@ export default function AgentArchitectureView({
       shortName: 'FastAPI Engine',
       title: 'FastAPI Asynchronous Gateway (Port 8000 Uvicorn ASGI)',
       badge: 'API GATEWAY · ASYNCHRONOUS UVICORN WORKER POOLS',
-      badgeBg: 'rgba(30, 64, 175, 0.12)',
-      badgeColor: '#1d4ed8',
-      icon: Server,
-      iconColor: '#1d4ed8',
+      badgeBg: 'rgba(13, 148, 136, 0.12)',
+      badgeColor: '#0f766e',
+      icon: Zap,
+      iconColor: '#0d9488',
+      imgSrc: '/arch-icons/fastapi_emblem.png',
       description: 'High-performance asynchronous microservice gateway engineered in Python with multi-worker Uvicorn ASGI processes, managing cryptographic JWT authentication, role segregation, and sub-second SQL execution.',
       protocols: 'PROTOCOLS: Asynchronous ASGI (Uvicorn) · JWT Bearer Auth · JSON REST / Streaming SSE',
       tables: 'DATABASE TABLES: users, roles, permissions, audit_logs, api_rate_limits',
@@ -1478,10 +1479,10 @@ export default function AgentArchitectureView({
                             height: '100%',
                             minHeight: '180px',
                             width: '100%',
-                            background: 'linear-gradient(180deg, rgba(30, 64, 175, 0.06) 0%, rgba(30, 64, 175, 0.015) 100%)',
+                            background: 'linear-gradient(180deg, rgba(13, 148, 136, 0.08) 0%, rgba(13, 148, 136, 0.015) 100%)',
                             border: (inspectMode === 'item' && (selectedItem === 'fastapi_engine' || selectedItem === 'async_normalizer'))
-                              ? '2px solid #2563eb'
-                              : '1px solid rgba(30, 64, 175, 0.22)',
+                              ? '2px solid #0d9488'
+                              : '1px solid rgba(13, 148, 136, 0.28)',
                             borderRadius: '7px',
                             padding: '6px 5px',
                             textAlign: 'center',
@@ -1491,11 +1492,11 @@ export default function AgentArchitectureView({
                             justifyContent: 'space-around',
                             boxSizing: 'border-box',
                             boxShadow: (inspectMode === 'item' && (selectedItem === 'fastapi_engine' || selectedItem === 'async_normalizer'))
-                              ? '0 0 0 2px rgba(37, 99, 235, 0.35)'
+                              ? '0 0 0 2px rgba(13, 148, 136, 0.35)'
                               : 'none',
                           }}
                         >
-                          {/* 3D Server Icon clickable */}
+                          {/* FastAPI Icon clickable */}
                           <div
                             onClick={(e) => {
                               e.stopPropagation()
@@ -1505,8 +1506,8 @@ export default function AgentArchitectureView({
                             }}
                             title="Click to inspect FastAPI Engine details"
                             style={{
-                              width: '42px',
-                              height: '42px',
+                              width: '52px',
+                              height: '52px',
                               display: 'grid',
                               placeItems: 'center',
                               cursor: 'pointer',
@@ -1522,11 +1523,15 @@ export default function AgentArchitectureView({
                                   width: '100%',
                                   height: '100%',
                                   objectFit: 'contain',
-                                  filter: 'drop-shadow(0 4px 10px rgba(37, 99, 235, 0.35))',
+                                  filter: 'drop-shadow(0 3px 6px rgba(0, 150, 136, 0.35))',
                                 }}
                               />
                             ) : (
-                              <Server size={26} color="#1d4ed8" strokeWidth={2.4} />
+                              <img
+                                src="/arch-icons/fastapi_custom.png"
+                                alt="FastAPI"
+                                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                              />
                             )}
                           </div>
 
@@ -1540,7 +1545,7 @@ export default function AgentArchitectureView({
                             }}
                             style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', width: '100%', cursor: 'pointer' }}
                           >
-                            <b style={{ fontSize: '11px', color: '#1e3a8a', display: 'block', fontWeight: 800, lineHeight: 1.25, letterSpacing: '0.01em' }}>
+                            <b style={{ fontSize: '11px', color: '#0f766e', display: 'block', fontWeight: 800, lineHeight: 1.25, letterSpacing: '0.01em' }}>
                               {stage.engine}
                             </b>
                             <span style={{ fontSize: '8.2px', color: '#64748b', display: 'block', fontWeight: 600, lineHeight: 1.2, letterSpacing: '0.01em' }}>
@@ -1560,11 +1565,11 @@ export default function AgentArchitectureView({
                             style={{
                               fontSize: '8.5px',
                               lineHeight: 1.2,
-                              background: inspectMode === 'item' && selectedItem === 'async_normalizer' ? 'rgba(37, 99, 235, 0.15)' : '#ffffff',
-                              color: '#1e40af',
+                              background: inspectMode === 'item' && selectedItem === 'async_normalizer' ? 'rgba(13, 148, 136, 0.15)' : '#ffffff',
+                              color: '#0f766e',
                               padding: '3px 8px',
                               borderRadius: '14px',
-                              border: inspectMode === 'item' && selectedItem === 'async_normalizer' ? '2px solid #2563eb' : '1px solid rgba(37, 99, 235, 0.35)',
+                              border: inspectMode === 'item' && selectedItem === 'async_normalizer' ? '2px solid #0d9488' : '1px solid rgba(13, 148, 136, 0.35)',
                               display: 'inline-flex',
                               alignItems: 'center',
                               justifyContent: 'center',
@@ -1572,7 +1577,7 @@ export default function AgentArchitectureView({
                               cursor: 'pointer',
                               fontWeight: 800,
                               letterSpacing: '0.02em',
-                              boxShadow: '0 2px 5px rgba(37, 99, 235, 0.12)',
+                              boxShadow: '0 2px 5px rgba(13, 148, 136, 0.12)',
                               flexShrink: 0,
                             }}
                           >
