@@ -36,7 +36,7 @@ export default function AgentArchitectureView({
       headerImg: '/arch-icons/card1_header_factory.png',
       type: 'list',
       items: [
-        { id: 'erp', label: 'ERP Sales Orders', sub: 'SAP S/4HANA / Oracle', imgSrc: '/arch-icons/card1_erp_clipboard.png', icon: Database, iconColor: '#2563eb', iconBg: 'rgba(37, 99, 235, 0.12)', iconBorder: 'rgba(37, 99, 235, 0.28)' },
+        { id: 'erp', label: 'ERP Sales Orders', sub: 'SAP S/4HANA / Oracle', imgSrc: '/arch-icons/card1_erp_square.png', icon: Database, iconColor: '#2563eb', iconBg: 'rgba(37, 99, 235, 0.12)', iconBorder: 'rgba(37, 99, 235, 0.28)' },
         { id: 'wms', label: 'WMS FG Inventory', sub: 'Warehouse Stock FG-01', imgSrc: '/arch-icons/card1_wms.png', icon: Warehouse, iconColor: '#16a34a', iconBg: 'rgba(22, 163, 74, 0.12)', iconBorder: 'rgba(22, 163, 74, 0.28)' },
         { id: 'weighbridge', label: 'Weighbridge', sub: '60T Scales & FASTag', imgSrc: '/arch-icons/card1_weighbridge_scale.png', isWeighbridge: true, icon: Scale, iconColor: '#d97706', iconBg: 'rgba(217, 119, 6, 0.12)', iconBorder: 'rgba(217, 119, 6, 0.28)' },
         { id: 'corridor', label: 'Corridor Tracking', sub: 'Transporters BlueDart/DHL', imgSrc: '/arch-icons/card1_corridor.png', icon: Truck, iconColor: '#9333ea', iconBg: 'rgba(147, 51, 234, 0.12)', iconBorder: 'rgba(147, 51, 234, 0.28)' },
@@ -580,6 +580,7 @@ export default function AgentArchitectureView({
       badgeColor: '#2563eb',
       icon: Database,
       iconColor: '#2563eb',
+      imgSrc: '/arch-icons/card1_erp_square.png',
       description: 'Ingests real-time sales order contracts and delivery commitments from SAP S/4HANA and Oracle ERP, parsing line-item customer delivery windows, plant assignments (KA-01 / TN-01), and priority tiers (P1/P2/P3).',
       protocols: 'PROTOCOLS: SAP RFC / REST OData Webhooks · ISO-27001 TLS 1.3 · Polling Cadence: 10s',
       tables: 'DATABASE TABLES: fact_customer_order, dim_customer, dim_plant',
@@ -1645,7 +1646,7 @@ export default function AgentArchitectureView({
                               {it.imgSrc ? (
                                 <div
                                   style={{
-                                    width: (isWb || it.id === 'wms') ? '32px' : '26px',
+                                    width: (isWb || it.id === 'wms' || it.id === 'erp') ? '32px' : '26px',
                                     height: '26px',
                                     borderRadius: '5px',
                                     overflow: 'hidden',
@@ -1663,7 +1664,7 @@ export default function AgentArchitectureView({
                                     style={{
                                       width: '100%',
                                       height: '100%',
-                                      objectFit: 'contain',
+                                      objectFit: (it.id === 'erp' || it.id === 'wms') ? 'cover' : 'contain',
                                     }}
                                   />
                                 </div>
