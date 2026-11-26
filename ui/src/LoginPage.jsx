@@ -129,10 +129,7 @@ export default function LoginPage({ onLoginSuccess, theme, onToggleTheme }) {
 
   return (
     <div className="login-shell">
-      {/* ===================== 1. REALISTIC 3D MANUFACTURING FACILITY BACKGROUND ===================== */}
-      <LoginBackground3D theme={theme} cameraView={cameraView} />
-
-      {/* ===================== 2. CINEMATIC FROSTED BLUR BACKDROP ===================== */}
+      {/* ===================== CINEMATIC FROSTED BLUR BACKDROP ===================== */}
       <div className="login-blur-backdrop" />
 
       {/* ===================== 3. UNIFIED HIGH-END INTERFACE OVERLAY ===================== */}
