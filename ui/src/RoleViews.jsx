@@ -16,7 +16,7 @@ const fmt = (v) => Number(v || 0).toLocaleString('en-IN')
 const pct = (v) => `${Number(v || 0).toFixed(1)}%`
 
 /* ===================== DISPATCH WORKER DASHBOARD ===================== */
-export function DispatchDashboardView({ data, onInspectJourney, onDrilldown, onNavigate, onStartChat }) {
+export function DispatchDashboardView({ data, onInspectJourney, onDrilldown, onNavigate }) {
   const k = data?.kpis || {}
   return (
     <div className="content">
@@ -28,7 +28,7 @@ export function DispatchDashboardView({ data, onInspectJourney, onDrilldown, onN
         </div>
         <div className="heading-actions">
           <button className="btn-secondary" onClick={() => onNavigate('dock')}><Warehouse size={14} /> Staging Queue</button>
-          <button className="btn-primary" onClick={onStartChat}><Sparkles size={15} /> Ask Dispatch AI</button>
+          <button className="btn-primary" onClick={() => onNavigate('delay')}><Truck size={15} /> Inward Gate Checkpoint</button>
         </div>
       </div>
 
@@ -133,7 +133,7 @@ export function DispatchDashboardView({ data, onInspectJourney, onDrilldown, onN
 }
 
 /* ===================== LOGISTICS PERSONNEL DASHBOARD ===================== */
-export function LogisticsDashboardView({ data, onInspectJourney, onDrilldown, onNavigate, onStartChat }) {
+export function LogisticsDashboardView({ data, onInspectJourney, onDrilldown, onNavigate }) {
   const k = data?.kpis || {}
   return (
     <div className="content">
@@ -145,7 +145,7 @@ export function LogisticsDashboardView({ data, onInspectJourney, onDrilldown, on
         </div>
         <div className="heading-actions">
           <button className="btn-secondary" onClick={() => onNavigate('tat')}><Timer size={14} /> Full TAT Analysis</button>
-          <button className="btn-primary" onClick={onStartChat}><Sparkles size={15} /> Ask Logistics AI</button>
+          <button className="btn-primary" onClick={() => onNavigate('delay')}><Truck size={15} /> Vehicle Operations</button>
         </div>
       </div>
 

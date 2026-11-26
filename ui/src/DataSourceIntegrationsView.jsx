@@ -371,7 +371,7 @@ const INITIAL_CONNECTORS = [
       { id: 'ev_neon_acid_write', name: 'Immediate ACID Transaction Commit', desc: 'Guarantees zero loss of weighbridge and order entries', selected: true },
       { id: 'ev_neon_branch_sync', name: 'Instant Ephemeral Database Branching', desc: 'Enables testing AI heuristics without touching production', selected: true },
       { id: 'ev_neon_realtime_push', name: 'Real-Time SQL Query Streaming', desc: 'Sub-10ms change notification to browser UI', selected: true },
-      { id: 'ev_neon_ai_gateway', name: 'Neon AI Gateway Vector & LLM Context', desc: 'Feeds live operational state to AI Assistant & Domo AI', selected: true },
+      { id: 'ev_neon_ai_gateway', name: 'Neon AI Gateway Vector & LLM Context', desc: 'Feeds live operational state to Analytics & Intelligence Engine', selected: true },
     ],
     fields: [
       { source: 'DATABASE_URL', target: 'neon_connection_pooler', type: 'CONNECTION_URI', desc: 'High-availability connection string', sample: 'ep-gentle-field-***.neon.tech', rule: 'SSL Mode: require' },

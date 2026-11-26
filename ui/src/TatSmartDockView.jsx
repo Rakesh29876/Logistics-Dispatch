@@ -97,7 +97,6 @@ export default function TatSmartDockView({
   handleDockDecision,
   inspectJourney,
   openDrilldown,
-  startChat,
   setPage,
   hasPerm,
   user,

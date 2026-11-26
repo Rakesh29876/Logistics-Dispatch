@@ -149,7 +149,7 @@ const STAGES = [
       { name: 'Continuous Dwell Anomaly Scanner', role: 'Autonomous detection of 25 stuck vehicles inside plant' },
       { name: 'SMTP Autonomous Alert Relay', role: 'Dispatches high-priority executive emails to managers' },
       { name: 'Freight Risk Valuation Engine', role: 'Calculates exact demurrage & SLA breach exposure' },
-      { name: 'Conversational AI Assistant', role: 'Natural language plain-English operations queries' },
+      { name: 'Closed-Loop Operations Engine', role: 'Real-time proactive logistics dispatch telemetry' },
     ],
     navTarget: 'reports',
     navLabel: 'Trigger Autonomous Email Scan',
@@ -158,7 +158,7 @@ const STAGES = [
       { step: 1, title: 'Domo AI Delay Prediction', sys: 'Predictive ML Engine', purpose: 'Forecasts highway transit bottlenecks 12 to 24 hours in advance with 91.8% accuracy.', impact: 'Proactive re-routing window' },
       { step: 2, title: 'Autonomous Email Triggers', sys: 'Background Daemon', purpose: 'Automatically drafts & dispatches executive alerts for stuck vehicles with freight value.', impact: 'Zero manual monitoring' },
       { step: 3, title: 'Dynamic Staging Priority', sys: 'Optimization Agent', purpose: 'Re-orders loading dock queues based on urgency, customer tier & carrier SLA.', impact: '99.4% on-time dispatch' },
-      { step: 4, title: 'Natural Language Querying', sys: 'Intelligent AI Assistant', purpose: 'Allows managers to query yard telemetry, delay risks & carrier SLAs in plain English.', impact: 'Instant conversational BI' },
+      { step: 4, title: 'Closed-Loop Telemetry Ingestion', sys: 'Operations Control Engine', purpose: 'Consolidates yard telemetry, delay risks & carrier SLAs into executive intelligence.', impact: 'Unified operational clarity' },
     ],
     clientQuestion: 'How much did your organization spend in commercial vehicle detention charges or customer SLA breach penalties last quarter?',
     keyPoints: [
@@ -178,7 +178,7 @@ const STAGES = [
   }
 ]
 
-export default function ClientShowcaseView({ authFetch, onNavigate, onStartChat }) {
+export default function ClientShowcaseView({ authFetch, onNavigate }) {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
   const [progress, setProgress] = useState(0)

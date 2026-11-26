@@ -43,32 +43,6 @@ const ROLE_DEFAULT_PAGE = {
   LOGISTICS_PERSONNEL: 'architecture',
 }
 
-const ROLE_QUESTIONS = {
-  MANAGER: [
-    "Which vehicles are at critical or high delay risk today?",
-    "Why was shipment SHP-000002 delayed and what was its turnaround time?",
-    "What is the average vehicle turnaround time by vehicle type and carrier?",
-    "Which stage contributes the highest delay or waiting time?",
-    "Which waiting vehicles or high-priority orders should be staged next at FG-WH-01?",
-    "Prepare this week's logistics operations management report.",
-    "Prepare the daily logistics summary for 2026-10-28.",
-    "Run a read-only SQL query for total freight cost and utilization by plant and carrier.",
-  ],
-  DISPATCH_WORKER: [
-    "Show me waiting vehicles and high-priority orders needing dispatch staging.",
-    "Which dispatches in my plant scope are at CRITICAL or HIGH delay risk?",
-    "Track shipment SHP-000002 and show its milestone status.",
-    "Which finished goods staging facilities are ready at FG-WH-01?",
-  ],
-  LOGISTICS_PERSONNEL: [
-    "Which vehicles have exceeded their turnaround time?",
-    "Compare carrier performance and average corridor TAT by vehicle type.",
-    "Which stage contributes the highest waiting or slippage time?",
-    "Which docks or staging facilities are available and what dock data is missing?",
-    "Prepare the daily logistics summary for 2026-10-28.",
-  ],
-}
-
 export default function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem('forgeflow_theme') || 'light')
   const [token, setToken] = useState(() => localStorage.getItem('iloa_token') || sessionStorage.getItem('iloa_token') || '')
@@ -160,22 +134,10 @@ export default function App() {
   const [loadingDrill, setLoadingDrill] = useState(false)
   const [drillSearch, setDrillSearch] = useState('')
 
-  // AI Assistant
-  const [conversations, setConversations] = useState([])
-  const [conversationId, setConversationId] = useState(null)
-  const [messages, setMessages] = useState([])
-  const [prompt, setPrompt] = useState('')
-  const [busy, setBusy] = useState(false)
-  const endRef = useRef(null)
-
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
     localStorage.setItem('forgeflow_theme', theme)
   }, [theme])
-
-  useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages, busy])
 
   useEffect(() => {
     if (toast) {
@@ -387,7 +349,6 @@ export default function App() {
       if (hasPerm('tat_optimization')) calls.push(authFetch('/api/tat').then(async r => r.ok && setTatData(await r.json())))
       if (hasPerm('delay_risk')) calls.push(authFetch('/api/delay-risk?limit=150').then(async r => r.ok && setDelayData(await r.json())))
       if (hasPerm('dock_allocation')) calls.push(authFetch('/api/dock/recommendations').then(async r => r.ok && setDockData(await r.json())))
-      if (hasPerm('ai_assistant')) calls.push(authFetch('/api/conversations').then(async r => r.ok && setConversations(await r.json())))
       if (hasPerm('management_reports', 'logistics_reports')) calls.push(loadReport(hasPerm('management_reports') ? 'weekly' : 'daily'))
 
       await Promise.all(calls)
@@ -599,47 +560,6 @@ export default function App() {
     }
   }
 
-  const startChat = () => {
-    setPage('assistant')
-    setConversationId(null)
-    setMessages([])
-    setPrompt('')
-  }
-
-  const openConversation = async (id) => {
-    setPage('assistant')
-    setConversationId(id)
-    try {
-      const r = await authFetch(`/api/conversations/${id}/messages`)
-      if (r.ok) setMessages(await r.json())
-    } catch {}
-  }
-
-  const send = async (value = prompt) => {
-    const message = value.trim()
-    if (!message || busy) return
-    setPrompt('')
-    setMessages(m => [...m, { role: 'user', content: message }])
-    setBusy(true)
-    try {
-      const r = await authFetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ conversation_id: conversationId, message }),
-      })
-      const result = await r.json()
-      if (!r.ok) throw new Error(result.detail || 'Agent request failed')
-      setConversationId(result.conversation_id)
-      setMessages(m => [...m, { role: 'assistant', content: result.answer, steps: result.steps }])
-      const cr = await authFetch('/api/conversations')
-      if (cr.ok) setConversations(await cr.json())
-    } catch (e) {
-      setMessages(m => [...m, { role: 'assistant', content: `Request failed: ${e.message}` }])
-    } finally {
-      setBusy(false)
-    }
-  }
-
   // Auth loading gate
   if (!authReady) {
     return (
@@ -667,7 +587,6 @@ export default function App() {
     { id: 'overview', label: 'Operations Dashboard', icon: LayoutDashboard, show: true },
     { id: 'delay', label: 'Vehicle Operations', icon: Truck, show: hasPerm('delay_risk', 'tat_optimization', 'dock_allocation'), badge: 'OPS' },
     { id: 'integrations', label: 'Data Source Integrations', icon: Database, show: true, badge: '5 LIVE' },
-    { id: 'assistant', label: 'AI Assistant', icon: Bot, show: hasPerm('ai_assistant'), badge: 'AI' },
     { id: 'pipeline_flow', label: 'Data Pipeline & Telemetry', icon: Cpu, show: hasPerm('agent_architecture', 'pipeline_monitoring'), badge: 'LIVE' },
     { id: 'users', label: 'User Management', icon: Users, show: hasPerm('user_management', 'audit_logs') },
   ].filter(n => n.show)
@@ -677,7 +596,6 @@ export default function App() {
   const maxTrend = Math.max(1, ...(data?.trend || []).map(x => Number(x.shipments)))
   const delaySum = data?.delay_summary || delayData?.summary || {}
   const tatSum = data?.tat_summary || tatData?.summary || {}
-  const suggestedPrompts = ROLE_QUESTIONS[user.role] || ROLE_QUESTIONS.MANAGER
 
   return (
     <div className="shell">
@@ -1532,7 +1450,6 @@ export default function App() {
             handleDockDecision={handleDockDecision}
             inspectJourney={inspectJourney}
             openDrilldown={openDrilldown}
-            startChat={startChat}
             setPage={setPage}
             hasPerm={hasPerm}
             user={user}
@@ -1560,125 +1477,6 @@ export default function App() {
             setAlertModalOpen={setAlertModalOpen}
             initialTab={page === 'reports' ? 'reports' : (tatDockTab || (page === 'vehicle_inward' ? 'inward' : page === 'delay' ? 'inward' : page === 'dock' ? 'dock' : 'tat'))}
           />
-        )}
-
-
-
-        {/* AI LOGISTICS ASSISTANT (ROLE-SCOPED) */}
-        {pagePermitted && page === 'assistant' && (
-          <div className="assistant-page">
-            <div className="page-heading">
-              <div>
-                <div className="eyebrow"><span className="eyebrow-line" /> ROLE-SCOPED DOMO AI ASSISTANT · {user.role}</div>
-                <h1>AI Logistics Assistant</h1>
-                <p>Authorized database &amp; tool access enforced dynamically from your verified employee permissions.</p>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span className="live-tag" style={{ fontSize: '11px', padding: '4px 10px' }}>
-                  SCOPE: {user.plant_id || 'ALL PLANTS'}
-                </span>
-                <button className="btn-secondary" onClick={startChat} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Sparkles size={14} /> ＋ New Chat
-                </button>
-              </div>
-            </div>
-
-            <div className="assistant-layout">
-              {/* Left Panel: Recent Conversations history inside AI Assistant */}
-              <aside className="assistant-sidebar">
-                <div className="assistant-sidebar-header">
-                  <div className="assistant-sidebar-title">
-                    <MessageSquare size={15} />
-                    <span>Recent Chats</span>
-                  </div>
-                  <span className="assistant-sidebar-badge">{conversations.length}</span>
-                </div>
-
-                <div style={{ padding: '10px 10px 4px' }}>
-                  <button className="assistant-new-chat-btn" onClick={startChat}>
-                    <Sparkles size={13} /> ＋ Start New Chat
-                  </button>
-                </div>
-
-                <div className="assistant-history-list">
-                  {conversations.length === 0 ? (
-                    <div className="assistant-history-empty">
-                      <MessageSquare size={22} style={{ opacity: 0.4, marginBottom: '6px' }} />
-                      <p>No chat history yet</p>
-                      <span>Ask a question to start an intelligent agent thread</span>
-                    </div>
-                  ) : (
-                    conversations.map(c => {
-                      const isActive = conversationId === c.id
-                      return (
-                        <button
-                          key={c.id}
-                          className={`assistant-history-item ${isActive ? 'active' : ''}`}
-                          onClick={() => openConversation(c.id)}
-                          title={c.title}
-                        >
-                          <MessageSquare size={13} style={{ flexShrink: 0, opacity: isActive ? 1 : 0.6 }} />
-                          <span className="assistant-history-title">{c.title}</span>
-                          {isActive && <span className="assistant-active-indicator" />}
-                        </button>
-                      )
-                    })
-                  )}
-                </div>
-              </aside>
-
-              {/* Right Panel: Chat Stream & Composer */}
-              <div className="chat-workspace assistant-workspace-card">
-                <div className="chat-stream">
-                  {messages.length === 0 && (
-                    <div className="sample-questions">
-                      <div className="sample-title"><Sparkles size={14} /> Suggested Questions ({user.role})</div>
-                      <div className="sample-grid">
-                        {suggestedPrompts.map(q => (
-                          <button key={q} className="sample-card" onClick={() => send(q)}>
-                            <span>{q}</span><ArrowUpRight size={14} style={{ flexShrink: 0 }} />
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {messages.map((m, i) => (
-                    <div key={i} className={`message-row ${m.role}`}>
-                      <div className="message-avatar">{m.role === 'assistant' ? <Bot size={17} /> : user.full_name.slice(0, 2).toUpperCase()}</div>
-                      <div className="message-body">
-                        <div className="message-author">{m.role === 'assistant' ? 'Logistics Agent' : user.full_name}</div>
-                        <div className="message-text"><MarkdownView content={m.content} /></div>
-                        {m.steps?.length > 0 && (
-                          <details className="tool-trace">
-                            <summary><Command size={13} /> {m.steps.length} tool {m.steps.length === 1 ? 'call' : 'calls'} executed</summary>
-                            {m.steps.map((s, j) => (
-                              <div className="trace-step" key={j}><b>Tool: {s.tool}</b><code>{JSON.stringify(s.input)}</code><pre>{s.output}</pre></div>
-                            ))}
-                          </details>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-
-                  {busy && (
-                    <div className="message-row assistant">
-                      <div className="message-avatar"><Bot size={17} /></div>
-                      <div className="message-body"><div className="thinking"><span /><span /><span /> Checking permissions &amp; querying Neon...</div></div>
-                    </div>
-                  )}
-                  <div ref={endRef} />
-                </div>
-
-                <div className="composer">
-                  <div className="composer-box">
-                    <textarea value={prompt} onChange={e => setPrompt(e.target.value)} onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send() } }} placeholder={`Ask within ${user.role} (${user.plant_id}) scope...`} rows={1} />
-                    <button className="composer-send" disabled={!prompt.trim() || busy} onClick={() => send()}><Send size={16} /></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         )}
 
       </main>
@@ -1764,25 +1562,6 @@ export default function App() {
         </ErrorBoundary>
       )}
 
-      {/* Floating AI Assistant Launcher Popup (Compact & Small) */}
-      {page !== 'assistant' && (
-        <div
-          className="floating-ai-launcher"
-          onClick={startChat}
-          title="Click to open Operations AI Assistant"
-          role="button"
-          tabIndex={0}
-        >
-          <div className="floating-ai-icon">
-            <Sparkles size={12} color="#ffffff" />
-            <span className="floating-ai-ping" />
-          </div>
-          <div className="floating-ai-content">
-            <span className="floating-ai-title">Ask Operations AI</span>
-          </div>
-        </div>
-      )}
-
       {toast && (
         <div className="toast">
           <span>{toast}</span>
@@ -1820,62 +1599,4 @@ function StatusBadge({ value, customText }) {
   else if (['in_transit', 'pending', 'medium', 'partially_shipped', 'pending_approval'].includes(v)) cls = 'warn'
   else if (['open', 'low', 'in_production'].includes(v)) cls = 'info'
   return <span className={`status ${cls}`}>{customText || String(value || '—').replaceAll('_', ' ')}</span>
-}
-
-function MarkdownView({ content }) {
-  if (!content) return null
-  const lines = content.split('\n')
-  const elements = []
-  let tableRows = []
-  let inTable = false
-
-  const flushTable = (key) => {
-    if (tableRows.length > 0) {
-      const header = tableRows[0]
-      const body = tableRows.slice(1).filter(r => !r.every(c => /^[-:| ]+$/.test(c)))
-      elements.push(
-        <div className="table-wrap" key={`tbl-${key}`} style={{ margin: '10px 0' }}>
-          <table style={{ border: '1px solid var(--border-color)', borderRadius: '6px' }}>
-            <thead><tr>{header.map((col, idx) => <th key={idx}>{col.trim()}</th>)}</tr></thead>
-            <tbody>{body.map((row, rIdx) => <tr key={rIdx}>{row.map((col, cIdx) => <td key={cIdx}>{formatInline(col.trim())}</td>)}</tr>)}</tbody>
-          </table>
-        </div>
-      )
-      tableRows = []
-      inTable = false
-    }
-  }
-
-  lines.forEach((line, idx) => {
-    const trimmed = line.trim()
-    if (trimmed.startsWith('|') && trimmed.endsWith('|')) {
-      inTable = true
-      tableRows.push(trimmed.slice(1, -1).split('|').map(c => c.trim()))
-      return
-    } else if (inTable) {
-      flushTable(idx)
-    }
-    if (trimmed.startsWith('### ')) elements.push(<h4 key={idx}>{formatInline(trimmed.slice(4))}</h4>)
-    else if (trimmed.startsWith('## ')) elements.push(<h3 key={idx}>{formatInline(trimmed.slice(3))}</h3>)
-    else if (trimmed.startsWith('# ')) elements.push(<h3 key={idx}>{formatInline(trimmed.slice(2))}</h3>)
-    else if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) elements.push(<li key={idx} style={{ marginLeft: '18px' }}>{formatInline(trimmed.slice(2))}</li>)
-    else if (/^\d+\.\s/.test(trimmed)) elements.push(<li key={idx} style={{ marginLeft: '18px' }}>{formatInline(trimmed.replace(/^\d+\.\s/, ''))}</li>)
-    else if (trimmed) elements.push(<p key={idx}>{formatInline(trimmed)}</p>)
-  })
-  if (inTable) flushTable('last')
-  return <div className="markdown-content">{elements}</div>
-}
-
-function formatInline(text) {
-  const parts = []
-  const regex = /\*\*(.*?)\*\*/g
-  let lastIndex = 0
-  let match
-  while ((match = regex.exec(text)) !== null) {
-    if (match.index > lastIndex) parts.push(text.substring(lastIndex, match.index))
-    parts.push(<strong key={match.index}>{match[1]}</strong>)
-    lastIndex = regex.lastIndex
-  }
-  if (lastIndex < text.length) parts.push(text.substring(lastIndex))
-  return parts.length ? parts : text
 }
